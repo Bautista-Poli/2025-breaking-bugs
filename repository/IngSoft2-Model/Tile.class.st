@@ -21,12 +21,17 @@ Tile >> applyEffectTo: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-Tile >> hasThisEffect: anEffect [
-	^ (effect isKindOf: anEffect).
+Tile >> countYourselfIn: aCounter [
+    effect countYourself: aCounter.
 ]
 
 { #category : 'initialization' }
 Tile >> initializeWith: anEffect [
 
 	effect := anEffect
+]
+
+{ #category : 'behavior' }
+Tile >> isEffectEqualTo: anEffect [
+	^ effect isSameKindAs: anEffect
 ]

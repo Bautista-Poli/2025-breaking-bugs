@@ -25,6 +25,11 @@ ObtainCardEffect >> applyTo: aSpaceship in: aGame [
 ]
 
 { #category : 'initialization' }
+ObtainCardEffect >> countYourself: aCounter [
+    aCounter countObtainCard.
+]
+
+{ #category : 'initialization' }
 ObtainCardEffect >> initializeWith: aCard [
 	cardSupplier := aCard.
 ]

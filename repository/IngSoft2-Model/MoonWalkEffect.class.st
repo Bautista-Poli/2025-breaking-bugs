@@ -27,6 +27,11 @@ MoonWalkEffect >> applyTo: aSpaceship in: aGame [
 	aGame registerAppliedEffect: self.
 ]
 
+{ #category : 'operations' }
+MoonWalkEffect >> countYourself: aCounter [
+    aCounter countMoonWalk.
+]
+
 { #category : 'initialization' }
 MoonWalkEffect >> initializeFor: aNumberOfPositionsToGoBack [
 

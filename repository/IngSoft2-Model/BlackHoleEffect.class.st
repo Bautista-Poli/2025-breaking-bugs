@@ -13,3 +13,8 @@ BlackHoleEffect >> applyTo: aSpaceship in: aGame [
 	aSpaceship moveToPosition: actualPosition - 4.
 	aGame registerAppliedEffect: self
 ]
+
+{ #category : 'operations' }
+BlackHoleEffect >> countYourself: aCounter [
+    aCounter countBlackHole.
+]

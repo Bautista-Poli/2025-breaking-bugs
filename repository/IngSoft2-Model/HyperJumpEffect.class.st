@@ -60,6 +60,12 @@ HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 ]
 
 { #category : 'initialization' }
+HyperJumpEffect >> countYourself: aCounter [
+    aCounter countHyperJump.
+
+]
+
+{ #category : 'initialization' }
 HyperJumpEffect >> initializeWithParcecs: aParcecsArray [
 
 	amountOfParcecsToAdvance := aParcecsArray.

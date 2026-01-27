@@ -16,3 +16,8 @@ AtomicBombEffect >> applyTo: aSpaceship in: aGame [
 	aGame disableBattleForThisTurn.
 	aGame registerAppliedEffect: self.
 ]
+
+{ #category : 'operations' }
+AtomicBombEffect >> countYourself: aCounter [
+    aCounter countAtomicBomb.
+]

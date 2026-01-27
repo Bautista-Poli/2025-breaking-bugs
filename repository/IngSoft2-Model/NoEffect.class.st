@@ -10,3 +10,10 @@ NoEffect >> applyTo: aSpaceship in: aGame [
 
 	
 ]
+
+{ #category : 'operations' }
+NoEffect >> countYourself: aCounter [
+    aCounter countNoEffect.
+
+	
+]

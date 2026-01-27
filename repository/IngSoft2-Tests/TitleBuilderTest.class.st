@@ -7,63 +7,41 @@ Class {
 
 { #category : 'tests' }
 TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilities [
-
-	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
+	| finishLine aTileBuilder aTileCollection counter |
 	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileCollection := aTileBuilder buildRandom.
-
-	countsOfTitles := OrderedCollection new.
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: NoEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHoleEffect ]).
 	
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJumpEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalkEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJumpEffect ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBombEffect ]).
-	"HyperSpaceJump 20 MoonWalk 10 HyperJump 8 AtomicBomb 2"
-	percentages := countsOfTitles collect: [ :count | (count asFloat / finishLine) * 100 ].
+	counter := EffectDistributionCounter with: finishLine.
+	aTileCollection do: [ :tile | tile countYourselfIn: counter ].
 
-	tolerance := 0.
-
-	self assert: ((percentages at: 1) between: (39-tolerance) and: (41+tolerance)).
-	self assert: ((percentages at: 2) between: (19-tolerance) and: (21+tolerance)).
-	self assert: ((percentages at: 3) between: (19-tolerance) and: (21+tolerance)).
-	self assert: ((percentages at: 4) between: (9-tolerance) and: (11+tolerance)).
-	self assert: ((percentages at: 5) between: (7-tolerance) and: (9+tolerance)).
-	self assert: ((percentages at: 6) between: (1-tolerance) and: (3+tolerance)).
+	self assert: (counter isNoEffectPercentageBetween: 39 and: 41).
+	self assert: (counter isBlackHolePercentageBetween: 19 and: 21).
+	self assert: (counter isHyperSpaceJumpPercentageBetween: 19 and: 21).
+	self assert: (counter isMoonWalkPercentageBetween: 9 and: 11).
+	self assert: (counter isHyperJumpPercentageBetween: 7 and: 9).
+	self assert: (counter isAtomicBombPercentageBetween: 1 and: 3).
 
 ]
 
 { #category : 'tests' }
 TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCardTitle [
 
-	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
+	| finishLine aTileBuilder aTileCollection counter |
 	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder setRandomness: #(35 19 19 9 7 2 9).
 	aTileCollection := aTileBuilder buildRandom.
+	counter := EffectDistributionCounter with: finishLine.
 
-	countsOfTitles := OrderedCollection new.
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: NoEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHoleEffect ]).
-	
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJumpEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalkEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJumpEffect ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBombEffect ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: ObtainCardEffect ]).
-	
-	percentages := countsOfTitles collect: [ :count | (count asFloat / finishLine) * 100 ].
+	aTileCollection do: [ :tile | tile countYourselfIn: counter ].
 
-	tolerance := 0.
-
-	self assert: ((percentages at: 1) between: (34-tolerance) and: (37+tolerance)).
-	self assert: ((percentages at: 2) between: (18-tolerance) and: (20+tolerance)).
-	self assert: ((percentages at: 3) between: (18-tolerance) and: (20+tolerance)).
-	self assert: ((percentages at: 4) between: (8-tolerance) and: (10+tolerance)).
-	self assert: ((percentages at: 5) between: (6-tolerance) and: (8+tolerance)).
-	self assert: ((percentages at: 6) between: (1-tolerance) and: (3+tolerance)).
-	self assert: ((percentages at: 7) between: (8-tolerance) and: (10+tolerance)).
+	self assert: (counter isNoEffectPercentageBetween: 34 and: 36).
+	self assert: (counter isBlackHolePercentageBetween: 18 and: 20).
+	self assert: (counter isHyperSpaceJumpPercentageBetween: 18 and: 20).
+	self assert: (counter isMoonWalkPercentageBetween: 8 and: 10).
+	self assert: (counter isHyperJumpPercentageBetween: 6 and: 8).
+	self assert: (counter isAtomicBombPercentageBetween: 1 and: 3).
+	self assert: (counter isObtainCardPercentageBetween: 8 and: 10).
 
 ]

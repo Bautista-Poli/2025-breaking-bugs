@@ -14,3 +14,9 @@ HyperSpaceJumpEffect >> applyTo: aSpaceship in: aGame [
 	aSpaceship lowerAShield.
 	aGame registerAppliedEffect: self
 ]
+
+{ #category : 'operations' }
+HyperSpaceJumpEffect >> countYourself: aCounter [
+    aCounter countHyperSpaceJump.
+
+]
