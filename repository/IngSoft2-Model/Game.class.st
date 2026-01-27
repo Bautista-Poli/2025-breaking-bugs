@@ -63,12 +63,6 @@ Game >> getPositionTable [
 ]
 
 { #category : 'initialization' }
-Game >> hasFinished [
-
-	^ hasFinished
-]
-
-{ #category : 'initialization' }
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
 
 	hasFinished := false.
@@ -172,7 +166,7 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 	self checkIfGameHasAlreadyFinished.
 	(spaceships reject: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
 	do: [ :aSpaceship |
-		self hasFinished ifFalse: [ 
+		hasFinished ifFalse: [ 
 			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) against: nil ] ].
 
 	(spaceships select: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
@@ -193,7 +187,7 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 	activatedAtomicBomb := false.
 
 	1 to: spaceships size do: [ :i |
-		self hasFinished ifFalse: [
+		hasFinished ifFalse: [
 			self playTurnUsing: aCard of: theSpaceship to: targetSpaceship
 		]
 	].
@@ -243,7 +237,7 @@ Game >> playTurnUsing: aCard of: theSpaceship to: targetSpaceship [
 			ifTrue: [ aCard ]
 			ifFalse: [ NoEffectCard new ].
 
-		self hasFinished ifFalse: [
+		hasFinished ifFalse: [
 			self playSpaceshipTurn: spaceshipToPlay usingCard: cardToPlay against: targetSpaceship
 		].
 	].
