@@ -25,6 +25,11 @@ Tile >> countYourselfIn: aCounter [
     effect countYourself: aCounter.
 ]
 
+{ #category : 'behavior' }
+Tile >> handleArrivalOf: aSpaceship in: aGame [
+	effect handleArriveOf: aSpaceship in: aGame.
+]
+
 { #category : 'initialization' }
 Tile >> initializeWith: anEffect [
 

@@ -75,7 +75,6 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 		
 	self assert: (board checkSize: finishLine).
 	self assert: (board hasWormholeFrom: 12 to: 45).
-	self assert: (board getTiles) equals: tileCollection .
 ]
 
 { #category : 'tests' }

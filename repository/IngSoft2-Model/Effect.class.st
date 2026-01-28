@@ -17,8 +17,6 @@ Effect >> countYourself: aCounter [
 ]
 
 { #category : 'operations' }
-Effect >> isSameKindAs: anEffectOrClass [
-	^ anEffectOrClass isClass
-		ifTrue: [ self class = anEffectOrClass ]
-		ifFalse: [ self class = anEffectOrClass class ]
+Effect >> handleArriveOf: aSpaceship in: aGame [
+    self applyTo: aSpaceship in: aGame.
 ]

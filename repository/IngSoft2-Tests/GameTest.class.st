@@ -38,7 +38,7 @@ GameTest >> testAllTheEffectsOnGame [
 	game := gameBuilder
 		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
 		addBoard: board;
-		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4));
+		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4 16));
 		setLapsToWinTo: 2;
 		build.
 
@@ -47,20 +47,20 @@ GameTest >> testAllTheEffectsOnGame [
 
 	self assert: (game spaceshipMatching: aSpaceship1) getPosition equals: 0.
 	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 5.
-	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 5.
-	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 15.
+	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 0.
+	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 11.
 
 	"Ronda 2"
 	game playRound.
 	
-	self assert: (game spaceshipMatching: aSpaceship1)getPosition equals: 23. "Pisa HyperJump → avanza 10 parsecs"
-	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 18. "Pisa HyperSpaceJump → avanza 4"
-	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 19. "MoonWalk, pero no retrocede"
-	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
+	self assert: (game spaceshipMatching: aSpaceship1)getPosition equals: 0. 
+	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 5. 
+	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 20. 
+	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 14. 
 	
-	self assert: (game spaceshipMatching: aSpaceship1) getShields equals: 2.
-	self assert: (game spaceshipMatching: aSpaceship2) getShields equals: 1.
-	self assert: (game spaceshipMatching: aSpaceship3) getShields equals: 2.
+	self assert: (game spaceshipMatching: aSpaceship1) getShields equals: 1.
+	self assert: (game spaceshipMatching: aSpaceship2) getShields equals: 2.
+	self assert: (game spaceshipMatching: aSpaceship3) getShields equals: 0.
 	self assert: (game spaceshipMatching: aSpaceship4) getShields equals: 2.
 	
 	

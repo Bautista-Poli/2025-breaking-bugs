@@ -24,6 +24,11 @@ Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
 	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
 ]
 
+{ #category : 'accessing' }
+Game >> checkForBattleInvolving: aSpaceship [
+	battle checkForBattleIfNeededWith: aSpaceship.
+]
+
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
 
@@ -219,9 +224,8 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
     positionsToAdvance := self getAllDiceValuesFrom: dice.
     aSpaceship moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
 
-    board applyTileEffectTo: aSpaceship in: self.
-    
-    battle checkForBattleIfNeededWith: aSpaceship.
+    board handleLandingOf: aSpaceship in: self.
+
     hasFinished := aSpaceship hasReached: lapsToWin.
     
     targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.

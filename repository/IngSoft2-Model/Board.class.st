@@ -152,6 +152,13 @@ Board >> getTiles [
 	^ tiles 
 ]
 
+{ #category : 'initialization' }
+Board >> handleLandingOf: aSpaceship in: aGame [
+    | tile |
+    tile := tiles at: (aSpaceship getPosition + 1).
+    tile handleArrivalOf: aSpaceship in: aGame.
+]
+
 { #category : 'testing' }
 Board >> hasWormholeFrom: anEntry to: anExit [
     ^ (wormholeEntry = anEntry) 

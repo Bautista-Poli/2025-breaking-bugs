@@ -17,3 +17,10 @@ NoEffect >> countYourself: aCounter [
 
 	
 ]
+
+{ #category : 'operations' }
+NoEffect >> handleArriveOf: aSpaceship in: aGame [
+    aGame checkForBattleInvolving: aSpaceship.
+
+	
+]
