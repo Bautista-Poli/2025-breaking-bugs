@@ -117,7 +117,7 @@ Board >> applyTileEffectTo: aSpaceship in: aGame [
 	| position tile |
 	position := aSpaceship getPosition.
 	tile := tiles at: (position+1).
-	tile applyEffectTo: aSpaceship in: aGame
+	tile applyEffectTo: aSpaceship in: aGame.
 ]
 
 { #category : 'as yet unclassified' }
@@ -166,11 +166,6 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom:
 	tiles := aTileCollection.
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
-]
-
-{ #category : 'initialization' }
-Board >> move: aSpaceship by: positionsToAdvance withLapLimit: lapLimit [
-    aSpaceship moveBy: positionsToAdvance on: self withLapLimit: lapLimit.
 ]
 
 { #category : 'initialization' }

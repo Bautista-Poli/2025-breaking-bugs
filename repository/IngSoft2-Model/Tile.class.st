@@ -30,8 +30,3 @@ Tile >> initializeWith: anEffect [
 
 	effect := anEffect
 ]
-
-{ #category : 'behavior' }
-Tile >> isEffectEqualTo: anEffect [
-	^ effect isSameKindAs: anEffect
-]

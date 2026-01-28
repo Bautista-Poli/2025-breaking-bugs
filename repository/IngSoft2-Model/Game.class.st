@@ -215,23 +215,22 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 
 { #category : 'behavior' }
 Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
-    | positionsToAdvance card targetSpaceship aSpaceshipNew |
+    | positionsToAdvance card targetSpaceship |
     positionsToAdvance := self getAllDiceValuesFrom: dice.
-    board move: aSpaceship by: positionsToAdvance withLapLimit: lapsToWin.
+    aSpaceship moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
 
     board applyTileEffectTo: aSpaceship in: self.
-    aSpaceshipNew := spaceships detect: [ :each | each = aSpaceship ].
     
-    activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceshipNew].
-    hasFinished := aSpaceshipNew hasReached: lapsToWin.
+    battle checkForBattleIfNeededWith: aSpaceship.
+    hasFinished := aSpaceship hasReached: lapsToWin.
     
-    targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceshipNew inCard: aCard.
+    targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.
     card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
-    card := aSpaceshipNew extractCardIfAvailable: card.
+    card := aSpaceship extractCardIfAvailable: card.
     
     card class = CancelationCard
-        ifTrue: [ card implementEffect: activePermanentCards last by: aSpaceshipNew to: aTargetSpaceship in: self ]
-        ifFalse: [ card implementEfectBy: aSpaceshipNew on: targetSpaceship in: self ].
+        ifTrue: [ card implementEffect: activePermanentCards last by: aSpaceship to: aTargetSpaceship in: self ]
+        ifFalse: [ card implementEfectBy: aSpaceship on: targetSpaceship in: self ].
 
     card isPermanent ifTrue: [ activePermanentCards add: card ].
 

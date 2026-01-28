@@ -16,16 +16,10 @@ Battle class >> with: spaceships and: dice [
 
 { #category : 'behavior' }
 Battle >> checkForBattleIfNeededWith: aSpaceship [
-
+	"Refactorizar cuando se haga nullSpaceship"
 	| opponent |
 	opponent := spaceships
-		detect: [ :other | 
-			other ~= aSpaceship and: [ 
-				other getPosition = aSpaceship getPosition and: [ 
-					(other hasHimAsMercenary: aSpaceship) not 
-				]
-			]
-		]
+		detect: [ :other | self isBattleOpponent: other for: aSpaceship ]
 		ifNone: [ nil ].
 
 	opponent ifNotNil: [ self resolveBattleBetween: aSpaceship and: opponent ].
@@ -55,6 +49,16 @@ Battle >> initializeWith: aCollectionOfSpacehips and: aCollectionOfDice [
 
 	spaceships := aCollectionOfSpacehips.
 	dice := aCollectionOfDice.
+]
+
+{ #category : 'behavior' }
+Battle >> isBattleOpponent: other for: aSpaceship [
+	other == aSpaceship ifTrue: [ ^ false ].
+	aSpaceship getPosition == 0 ifTrue: [ ^ false ].
+	other getPosition = aSpaceship getPosition ifFalse: [ ^ false ].
+	(other hasHimAsMercenary: aSpaceship) ifTrue: [ ^ false ].
+	^ true
+
 ]
 
 { #category : 'behavior' }
