@@ -11,6 +11,12 @@ NoEffectCard >> = anotherCard [
 ^ false.
 ]
 
+{ #category : 'comparing' }
+NoEffectCard >> canBePlayedBy: aSpaceship in: aGame [
+    ^ true
+
+]
+
 { #category : 'behavior' }
 NoEffectCard >> checkIfEffectCanBeApplyToTarget: aTarget [ 
 ]

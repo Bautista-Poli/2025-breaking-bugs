@@ -12,6 +12,12 @@ AccelerationCard >> = anotherCard [
 ]
 
 { #category : 'behavior' }
+AccelerationCard >> canBePlayedBy: aSpaceship in: aGame [
+		"NUEVO"
+    ^ aGame isCurrentTurnOf: aSpaceship
+]
+
+{ #category : 'behavior' }
 AccelerationCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [ 
 ]
 
@@ -29,6 +35,13 @@ AccelerationCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame 
 { #category : 'initialization' }
 AccelerationCard >> initialize [
 id := 'AccelerationCard-' , (0 to: 9999) atRandom asString.
+]
+
+{ #category : 'behavior' }
+AccelerationCard >> playBy: aSpaceship in: aGame targeting: aTarget [
+    aGame makeAllSpaceShipsMoveAtHigherVelocity.
+    aGame registerThrownCard: self.
+    aGame registerPermanentCard: self ownedBy: aSpaceship.
 ]
 
 { #category : 'behavior' }

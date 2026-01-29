@@ -8,6 +8,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'behavior' }
+Card >> canBePlayedBy: aSpaceship in: aGame [
+    ^ true
+]
+
 { #category : 'comparing' }
 Card >> compareID: anId [ 
 
@@ -24,4 +29,9 @@ Card >> isInstant [
 Card >> isPermanent [
 
 	self subclassResponsibility
+]
+
+{ #category : 'behavior' }
+Card >> playBy: aSpaceship in: aGame targeting: aTarget [
+    self subclassResponsibility
 ]

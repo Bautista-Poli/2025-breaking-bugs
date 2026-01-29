@@ -24,6 +24,18 @@ Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
 	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
 ]
 
+{ #category : 'behavior' }
+Game >> activePermanentCards [
+    "Nuevo"
+    ^ activePermanentCards
+]
+
+{ #category : 'accessing' }
+Game >> addActivePermanentCard: aCard [
+    "NUEVO"
+    activePermanentCards add: aCard.
+]
+
 { #category : 'accessing' }
 Game >> checkForBattleInvolving: aSpaceship [
 	battle checkForBattleIfNeededWith: aSpaceship.
@@ -103,6 +115,11 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 
 ]
 
+{ #category : 'behavior' }
+Game >> isCurrentTurnOf: aSpaceship [
+    ^ (spaceships at: turnIndex) = aSpaceship
+]
+
 { #category : 'accessing' }
 Game >> lastActivePermanentCard [
 
@@ -133,6 +150,27 @@ Game >> makeAllSpaceShipsMoveAtLowerVelocity [
 
 	spaceships do: [ :spaceship |
 		spaceship moveAtLowerVelocity ]
+]
+
+{ #category : 'behavior' }
+Game >> playCard: aCard by: aSpaceship targeting: aTarget [
+    "NUEVO"
+    | spaceshipInGame targetInGame card |
+    
+    spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
+    
+    targetInGame := aTarget 
+        ifNil: [ nil ]
+        ifNotNil: [ spaceships detect: [ :each | each = aTarget ] ifNone: [ nil ] ].
+    
+
+    (aCard canBePlayedBy: spaceshipInGame in: self)
+        ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
+    
+    card := spaceshipInGame extractCardIfAvailable: aCard.
+    card playBy: spaceshipInGame in: self targeting: targetInGame.
+    
+    ^ card
 ]
 
 { #category : 'behavior' }
@@ -276,6 +314,18 @@ Game >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
 Game >> registerAppliedEffect: anEffect [
 
 	lastTileEffectApplied := anEffect
+]
+
+{ #category : 'accessing' }
+Game >> registerLastCardPlayed: aCard [
+    "NUEVO"
+    cardsThrown := aCard.
+]
+
+{ #category : 'behavior' }
+Game >> registerPermanentCard: aCard ownedBy: aSpaceship [
+    "NUEVO"
+    activePermanentCards add: aCard.
 ]
 
 { #category : 'behavior' }

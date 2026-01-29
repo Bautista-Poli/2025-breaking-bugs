@@ -84,6 +84,13 @@ Spaceship >> applyAtomicBomb [
     self lowerAShield.
 ]
 
+{ #category : 'testing' }
+Spaceship >> beMercenaryOf: anOwnerSpaceship [
+    "NUEVO"
+    owner := true.
+    anOwnerSpaceship makeHimOwnerOf: self.
+]
+
 { #category : 'behavior' }
 Spaceship >> canPlay [
 

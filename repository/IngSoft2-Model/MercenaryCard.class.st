@@ -40,6 +40,18 @@ id := 'MercenaryCard-' , (0 to: 9999) atRandom asString.
 ]
 
 { #category : 'behavior' }
+MercenaryCard >> playBy: aSpaceship in: aGame targeting: aTargetSpaceship [
+    "Tell, Don't Ask: No preguntamos si puede ser mercenaria, 
+     simplemente ejecutamos la acción de vinculación."
+    
+    aTargetSpaceship beMercenaryOf: aSpaceship.
+    
+    "Registramos la carta en el juego porque su efecto es permanente"
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
 MercenaryCard >> undoEffect: aGame to: aTargetSpaceship [ 
 
 	affectedSpaceship fire: aTargetSpaceship.
