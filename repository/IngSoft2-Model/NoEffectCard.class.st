@@ -47,6 +47,12 @@ NoEffectCard >> isPermanent [
 ]
 
 { #category : 'behavior' }
+NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTarget [
+    ^ self
+
+]
+
+{ #category : 'behavior' }
 NoEffectCard >> undoEffect: aGame to: anUndefinedObject [
 
 	
