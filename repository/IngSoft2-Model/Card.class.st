@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : 'behavior' }
+Card >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aRollValue
+]
+
+{ #category : 'behavior' }
 Card >> canBePlayedBy: aSpaceship in: aGame [
     ^ true
 ]

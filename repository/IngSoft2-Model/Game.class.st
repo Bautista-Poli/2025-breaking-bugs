@@ -36,6 +36,18 @@ Game >> addActivePermanentCard: aCard [
     activePermanentCards add: aCard.
 ]
 
+{ #category : 'behavior' }
+Game >> calculateTotalRollFor: aSpaceship [
+
+	| baseRoll |
+	"NUEVO"
+	baseRoll := self getAllDiceValuesFrom: dice.
+	^ activePermanentCards
+		  inject: baseRoll
+		  into: [ :currentTotal :eachCard |
+			  eachCard applyBonusTo: currentTotal for: aSpaceship ]
+]
+
 { #category : 'accessing' }
 Game >> checkForBattleInvolving: aSpaceship [
 	battle checkForBattleIfNeededWith: aSpaceship.
@@ -259,7 +271,7 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 { #category : 'behavior' }
 Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
     | positionsToAdvance card targetSpaceship |
-    positionsToAdvance := self getAllDiceValuesFrom: dice.
+    positionsToAdvance := self calculateTotalRollFor: aSpaceship.
     aSpaceship moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
 
     board handleLandingOf: aSpaceship in: self.

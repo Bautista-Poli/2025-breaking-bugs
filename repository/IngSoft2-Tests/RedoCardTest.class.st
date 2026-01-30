@@ -128,7 +128,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 
 	self
 		assert: (aGame spaceshipMatching: aSpaceship) getPosition
-		equals: position1 * 3 + 1.
+		equals: position1 * 3 + 2.
 ]
 
 { #category : 'tests' }
