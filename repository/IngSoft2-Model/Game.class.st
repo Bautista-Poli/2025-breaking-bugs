@@ -138,10 +138,9 @@ Game >> lastActivePermanentCard [
 	^ activePermanentCards removeLast
 ]
 
-{ #category : 'behavior' }
+{ #category : 'accessing' }
 Game >> lastCardThrown [
-
-	^ cardsThrown
+    ^ cardsThrown
 ]
 
 { #category : 'accessing' }
@@ -330,8 +329,8 @@ Game >> registerAppliedEffect: anEffect [
 
 { #category : 'accessing' }
 Game >> registerLastCardPlayed: aCard [
-    "NUEVO"
-    cardsThrown := aCard.
+    "Solo registramos si no es una RedoCard para poder repetir la anterior"
+    (aCard isKindOf: RedoCard) ifFalse: [ cardsThrown := aCard ].
 ]
 
 { #category : 'behavior' }

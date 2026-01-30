@@ -62,3 +62,10 @@ RedoCard >> isPermanent [
 
 	^ false.
 ]
+
+{ #category : 'behavior' }
+RedoCard >> playBy: aSpaceship in: aGame targeting: aTarget [
+    | cardToRedo |
+    cardToRedo := aGame lastCardThrown.
+    cardToRedo playBy: aSpaceship in: aGame targeting: aTarget.
+]
