@@ -86,9 +86,12 @@ Spaceship >> applyAtomicBomb [
 
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
-    "NUEVO"
-    owner := true.
-    anOwnerSpaceship makeHimOwnerOf: self.
+	"NUEVO"
+
+	self hasOwner ifTrue: [
+		Error signal: 'A mercenary cannot hire other spaceships' ].
+	owner := true.
+	anOwnerSpaceship makeHimOwnerOf: self
 ]
 
 { #category : 'behavior' }
@@ -224,8 +227,9 @@ Spaceship >> lowerAShield [
 ]
 
 { #category : 'behavior' }
-Spaceship >> makeHimOwnerOf: aSpaceship [ 
-	mercenaries add: aSpaceship.
+Spaceship >> makeHimOwnerOf: aMercenarySpaceship [ 
+    self hasOwner ifTrue: [ Error signal: 'A mercenary cannot hire other spaceships' ].
+    mercenaries add: aMercenarySpaceship.
 
 ]
 
