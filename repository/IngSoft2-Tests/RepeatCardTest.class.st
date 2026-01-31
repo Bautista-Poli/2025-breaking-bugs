@@ -7,83 +7,82 @@ Class {
 
 { #category : 'tests' }
 RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenItIsReapplied [
+    | aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
+    
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
-	aGameBuilder := GameBuilder new.
-	aRepeatCard := RepeatCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    finishLine := 90.
+    aTileBuilder := TilesBuilder with: finishLine.
+    aTileBuilder with: BlackHoleEffect new at: 4.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship;
+                 addBoard: aBoard;
+                 addDice: (SequentialFixedDice onFaces: #(4 5));
+                 build.
 
-	finishLine := 90.
-	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder with: BlackHoleEffect new at: 4.
-	aTileCollection := aTileBuilder build.
-	aBoard := Board
-		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
-		          and: aTileCollection.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: { 4. 5 });
-		         build.
 
-	aGame playRound.
-	aGame playRound.
-	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
+    aGame playRound.
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 1
+    aGame playRound.
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
+
+    aGame playCard: aRepeatCard by: aSpaceship targeting: aSpaceship.
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 1.
 ]
 
 { #category : 'tests' }
 RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenItIsReapplied [
+    | aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
+    
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship2 := Spaceship new.
+    aSpaceship3 := Spaceship new.
 
-	| aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
-	aGameBuilder := GameBuilder new.
-	aRepeatCard := RepeatCard new.
-	aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+    finishLine := 90.
+    aTileBuilder := (TilesBuilder with: finishLine)
+                        with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
+                        at: 4.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addSpaceship: aSpaceship3;
+                 addBoard: aBoard;
+                 addDice: (FixedDice onFace: 4);
+                 build.
 
-	finishLine := 90.
-	aTileBuilder := (TilesBuilder with: finishLine)
-		                with:
-		                (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
-		                at: 4.
-	aTileCollection := aTileBuilder build.
-	aBoard := Board
-		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
-		          and: aTileCollection.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship1;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
-		         build.
 
-	aGame playRound.
-	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.
-	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
+    aGame playRound.
+    
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
+    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.
+    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
 
-	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship2.
+    aGame playCard: aRepeatCard by: aSpaceship1 targeting: aSpaceship2.
 
-	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 29.
-	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
+    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 29.
+    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
 ]
 
 { #category : 'tests' }
 RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenItIsReapplied [
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
 	aGameBuilder := GameBuilder new.
 	aRepeatCard := RepeatCard new.
 	aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
-
+	aSpaceship2 := Spaceship new.
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
 		                with: HyperSpaceJumpEffect new
@@ -94,57 +93,62 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 		          andWormholeFrom: 80
 		          to: 89
 		          and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
+		         addDice: (SequentialFixedDice onFaces: #(4 2));
 		         build.
 
 	aGame playRound.
-	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
+
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
+
+	aGame playCard: aRepeatCard by: aSpaceship targeting: aSpaceship.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 12.
-	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 1
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 1.
 ]
 
 { #category : 'tests' }
 RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenItIsReapplied [
+    | aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship2 := Spaceship new.
+    aSpaceship3 := Spaceship new.
 
-	| aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
-	aGameBuilder := GameBuilder new.
-	aRepeatCard := RepeatCard new.
-	aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+    finishLine := 90.
+    aTileBuilder := (TilesBuilder with: finishLine)
+                        with: (MoonWalkEffect for: 3)
+                        at: 9.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 85 and: aTileCollection.
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addSpaceship: aSpaceship3;
+                 addBoard: aBoard;
+                 addDice: (SequentialFixedDice onFaces: #(7 8 9));
+                 build.
 
-	finishLine := 90.
-	aTileBuilder := (TilesBuilder with: finishLine)
-		                with: (MoonWalkEffect for: 3)
-		                at: 9.
-	aTileCollection := aTileBuilder build.
-	aBoard := Board
-		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
-		          and: aTileCollection.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship1;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: { 7. 8. 9 });
-		         build.
+    aGame playRound.
+    
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 4. 
+    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 5. 
+    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
 
-	aGame playRound.
-	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 4.
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 5.
-	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 9.
+    aGame playCard: aRepeatCard by: aSpaceship1 targeting: aSpaceship1.
 
-	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship3.
-
-	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 1.
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 2.
-	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 9
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 4. 
+    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 2. 
+    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 6.
 ]
 
 { #category : 'tests' }
@@ -167,54 +171,116 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 		          andWormholeFrom: 80
 		          to: 89
 		          and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
 		         addSpaceship: aSpaceship3;
 		         addBoard: aBoard;
-		         addDice:
-			         (SequentialFixedDice onFaces: { 4. 5. 6. 7. 8. 9 });
+		         addDice: (SequentialFixedDice onFaces: #( 4 5 6 7 8 9 ));
 		         build.
 
 	aGame playRound.
-	aGame playRound.
-	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 7.
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 8.
-	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 9.
-	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship2.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+	
+	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 2.
 
-	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 0.
+	aGame playRound.
+
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 7.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
+
+	aGame playCard: aRepeatCard by: aSpaceship1 targeting: aSpaceship2.
+
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+
 	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 1.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 1.
-	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 1
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 1.
+]
+
+{ #category : 'tests' }
+RepeatCardTest >> testWhenUsingARepeatCardAfterLandingOnANoEffectTileThenNothingHappens [
+    | aSpaceship1 aSpaceship2 aGameBuilder aGame aBoard aRepeatCard |
+    
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship2 := Spaceship new.
+
+    aBoard := Board withSize: 90 andWormholeFrom: 80 to: 89.
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addBoard: aBoard;
+                 addDice: (FixedDice onFace: 5);
+                 build.
+
+
+    aGame playRound.
+    
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 5.
+    aGame playCard: aRepeatCard by: aSpaceship1 targeting: aSpaceship2.
+
+    self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 5.
+    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+    self assert: (aGame spaceshipMatching: aSpaceship1) getCards isEmpty.
+]
+
+{ #category : 'tests' }
+RepeatCardTest >> testWhenUsingARepeatCardBeforeAnyMoveThenNothingHappens [
+    | aSpaceship aGameBuilder aGame aRepeatCard |
+    
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship;
+                 addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
+                 addDice: (FixedDice onFace: 5);
+                 build.
+
+
+    aGame playCard: aRepeatCard by: aSpaceship targeting: aSpaceship.
+
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
+    self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 ]
 
 { #category : 'tests' }
 RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNothingHappens [
+    | aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
+    
+    aGameBuilder := GameBuilder new.
+    aRepeatCard := RepeatCard new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
-	aGameBuilder := GameBuilder new.
-	aRepeatCard := RepeatCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    finishLine := 90.
+    aTileBuilder := TilesBuilder with: finishLine.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+    
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship;
+                 addBoard: aBoard;
+                 addDice: (FixedDice onFace: 4);
+                 build.
 
-	finishLine := 90.
-	aTileBuilder := TilesBuilder with: finishLine.
-	aTileCollection := aTileBuilder build.
-	aBoard := Board
-		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
-		          and: aTileCollection.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
-		         build.
+    aGame playRound.
+    
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
 
-	aGame playRound.
-	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
+    aGame playCard: aRepeatCard by: aSpaceship targeting: aSpaceship.
 
-	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 4
+    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
+    self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 ]

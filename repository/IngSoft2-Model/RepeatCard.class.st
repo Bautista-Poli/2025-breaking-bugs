@@ -1,6 +1,6 @@
 Class {
 	#name : 'RepeatCard',
-	#superclass : 'InstantCard',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -13,7 +13,7 @@ RepeatCard >> = anotherCard [
 
 { #category : 'comparing' }
 RepeatCard >> compareID: anId [ 
-	^ false.
+	^ id = anId.
 ]
 
 { #category : 'behavior' }
@@ -29,4 +29,14 @@ RepeatCard >> implementEffect: aPermanentCard by: aSpaceship to: aTargetSpaceshi
 RepeatCard >> initialize [
 
 	id := 'RepeatCard-' , (0 to: 9999) atRandom asString
+]
+
+{ #category : 'initialization' }
+RepeatCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    | lastEffect |
+    
+    lastEffect := aGame lastTileEffectApplied.
+    lastEffect applyTo: aTargetSpaceship in: aGame.
+    
+    aGame registerLastCardPlayed: self.
 ]

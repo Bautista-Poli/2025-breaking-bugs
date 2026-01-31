@@ -19,35 +19,17 @@ Class {
 { #category : 'instance creation' }
 Spaceship class >> new [
 
-	| randomCards |
-	randomCards := OrderedCollection
+	| randomCardsCollection |
+	randomCardsCollection := OrderedCollection
 		               with: RandomCard obtainCard
 		               with: RandomCard obtainCard.
-	^ self basicNew
-		  initializeWithPosition: 0
-		  laps: 0
-		  shields: 3
-		  turnsPenalize: -1
-		  cards: randomCards
-		  velocity: 0
-		  mercenaries: OrderedCollection new
-		  owner: false
-		  id: 'Nave-' , (0 to: 9999) atRandom asString
+	^ self basicNew initializeWith: randomCardsCollection.
 ]
 
 { #category : 'instance creation' }
 Spaceship class >> with: cardsCollection [
 
-	^ self basicNew
-		  initializeWithPosition: 0
-		  laps: 0
-		  shields: 3
-		  turnsPenalize: -1
-		  cards: cardsCollection
-		  velocity: 0
-		  mercenaries: OrderedCollection new
-		  owner: false
-		  id: 'Nave-' , (0 to: 9999) atRandom asString
+	^ self basicNew initializeWith:cardsCollection.
 ]
 
 { #category : 'adding' }
@@ -76,12 +58,6 @@ Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize wi
     ^ (self hasReached: lapLimit)
         ifTrue: [ aBoardSize asParsec ]
         ifFalse: [ positionInBoard ]
-]
-
-{ #category : 'getter' }
-Spaceship >> applyAtomicBomb [
-    self moveToPosition: 0.
-    self lowerAShield.
 ]
 
 { #category : 'testing' }
@@ -185,22 +161,6 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	id := 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
-{ #category : 'initialization' }
-Spaceship >> initializeWithPosition: aPosition laps: aLaps shields: aShields turnsPenalize: aTurns cards: aCollectionOfCards velocity: aVelocity mercenaries: aMercenaries owner: anOwner id: anId [
-
-	position := aPosition.
-	laps := aLaps.
-	shields := aShields.
-	turnsPenalize := aTurns.
-	cards := aCollectionOfCards.
-	velocity := aVelocity.
-	mercenaries := aMercenaries.
-	owner := anOwner.
-	id := anId.
-
-	^ self
-]
-
 { #category : 'adding' }
 Spaceship >> isAheadOf: anotherSpaceship [
     (laps = anotherSpaceship getLapsCompleted)
@@ -239,22 +199,6 @@ Spaceship >> makeSpaceshipOwnedBy: aSpaceship [
 
 ]
 
-{ #category : 'behavior' }
-Spaceship >> moveBack: positionsToBack on: aBoard [
-    | boardSize |
-    boardSize := aBoard getSize asParsec.
-    position := position - positionsToBack.
-
-    position < 0 ifTrue: [
-        laps > 0 ifTrue: [
-            laps := laps - 1.
-            position := boardSize + position 
-        ] ifFalse: [
-            position := 0 
-        ]
-    ].
-]
-
 { #category : 'getter' }
 Spaceship >> moveBy: positionsToAdvance on: aBoard withLapLimit: lapLimit [
     | tentativePosition finalPosition |
@@ -283,11 +227,6 @@ Spaceship >> numberOfMercenaries [
 ]
 
 { #category : 'behavior' }
-Spaceship >> obtainNewPosition: positionsToAdvance [ 
-	^ position + positionsToAdvance.
-]
-
-{ #category : 'behavior' }
 Spaceship >> penalize [
 
 	turnsPenalize := turnsPenalize + 1.
@@ -306,6 +245,6 @@ Spaceship >> rechargeShields [
 { #category : 'behavior' }
 Spaceship >> validateIfCardIsInDeck: aCard [
     (cards includes: aCard) ifFalse: [ 
-        Error signal: '...' 
+        Error signal: 'Cant use a card that is not on the deck' 
     ].
 ]

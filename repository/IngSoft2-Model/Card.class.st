@@ -30,6 +30,11 @@ Card >> playBy: aSpaceship in: aGame targeting: aTarget [
 ]
 
 { #category : 'behavior' }
+Card >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    self subclassResponsibility
+]
+
+{ #category : 'behavior' }
 Card >> undoEffect: aGame [
 
 	self subclassResponsibility

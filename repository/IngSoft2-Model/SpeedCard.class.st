@@ -21,21 +21,9 @@ SpeedCard >> applyBonusTo: aRollValue for: aSpaceship [
         ifFalse: [ aRollValue ]
 ]
 
-{ #category : 'behavior' }
-SpeedCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
-]
-
 { #category : 'comparing' }
 SpeedCard >> compareID: anId [ 
 	^ id = anId.
-]
-
-{ #category : 'behavior' }
-SpeedCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
-	
-	spaceshipAffected := aSpaceship.
-	aSpaceship moveAtHigherVelocity.
-	aGame registerThrownCard: self.
 ]
 
 { #category : 'initialization' }
@@ -50,6 +38,15 @@ SpeedCard >> playBy: aSpaceship in: aGame targeting: aTargetSpaceship [
     spaceshipAffected := aTargetSpaceship.
     
     "Se registra como permanente para que el Game la consulte en cada tirada"
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
+SpeedCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    
+    spaceshipAffected := aTargetSpaceship.
+    
     aGame addActivePermanentCard: self.
     aGame registerLastCardPlayed: self.
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : 'CancelationCard',
-	#superclass : 'InstantCard',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -24,6 +24,13 @@ id := 'CancelationCard-' , (0 to: 9999) atRandom asString.
 
 { #category : 'behavior' }
 CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel [
+    aCardToCancel undoEffect: aGame.
+    aGame removeActivePermanentCard: aCardToCancel.
+    aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'as yet unclassified' }
+CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecting: aTargetSpaceship [ 
     aCardToCancel undoEffect: aGame.
     aGame removeActivePermanentCard: aCardToCancel.
     aGame registerLastCardPlayed: self.

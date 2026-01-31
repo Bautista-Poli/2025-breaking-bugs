@@ -24,6 +24,12 @@ NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTarget [
 ]
 
 { #category : 'behavior' }
+NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    ^ self
+
+]
+
+{ #category : 'behavior' }
 NoEffectCard >> undoEffect: aGame [
 
 	

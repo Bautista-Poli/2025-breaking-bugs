@@ -83,12 +83,13 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWi
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFortheOwner [
-    | aGameBuilder aSpaceship aSpaceship2 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aGame aCard aCard2|
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: MercenaryCard new).
-    aSpaceship2 := Spaceship with: (OrderedCollection with: MercenaryCard new with: MercenaryCard new).
+	 aCard2 := MercenaryCard new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard ).
+    aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2).
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -100,7 +101,7 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
 	self
-		should: [ aGame playCard: aCard by: aSpaceship2 targeting: aSpaceship. ]
+		should: [ aGame playCard: aCard2 by: aSpaceship2 targeting: aSpaceship. ]
 		raise: Error
 		withMessageText: 'A mercenary cannot hire other spaceships'
 		

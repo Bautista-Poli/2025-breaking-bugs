@@ -74,6 +74,47 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 ]
 
 { #category : 'tests' }
+CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPermanentCardIsCanceled [
+	| aGame aSpaceship aGameBuilder aSpeedCard aAccelCard aCancelCard aRedoCard |
+	
+	aGameBuilder := GameBuilder new.
+	aSpeedCard := SpeedCard new.
+	aAccelCard := AccelerationCard new.
+	aCancelCard := CancelationCard new.
+	aRedoCard := RedoCard new.
+	
+	"Nave 1 arranca con todo el mazo necesario"
+	aSpaceship := Spaceship with: (OrderedCollection 
+		with: aSpeedCard 
+		with: aAccelCard 
+		with: aCancelCard 
+		with: aRedoCard).
+	
+	aGame := aGameBuilder
+		addSpaceship: aSpaceship;
+		addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
+		addDice: (FixedDice onFace: 5);
+		build.
+
+
+	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
+	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
+	self assert: aGame activePermanentCards size equals: 2.
+
+	aGame play: aCancelCard by: aSpaceship affecting: aSpeedCard targeting: nil.
+	self assert: aGame activePermanentCards size equals: 1.
+	self assert: (aGame activePermanentCards includes: aAccelCard).
+
+	
+	aGame play: aRedoCard by: aSpaceship affecting: aAccelCard targeting: aSpaceship.
+	self assert: aGame activePermanentCards isEmpty.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
+	
+	aGame playRound.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
+]
+
+{ #category : 'tests' }
 CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpeedAgain [
 	| aGame aSpaceship aGameBuilder aSpeedCard aCancelationCard |
 	

@@ -39,6 +39,12 @@ AccelerationCard >> playBy: aSpaceship in: aGame targeting: aTarget [
 ]
 
 { #category : 'behavior' }
+AccelerationCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
 AccelerationCard >> undoEffect: aGame [
 	^ self.
 ]

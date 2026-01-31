@@ -11,10 +11,6 @@ RedoCard >> = anotherCard [
 ^ (anotherCard compareID: id).
 ]
 
-{ #category : 'behavior' }
-RedoCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
-]
-
 { #category : 'comparing' }
 RedoCard >> compareID: anId [ 
 	^ id = anId.
@@ -26,19 +22,15 @@ RedoCard >> initialize [
 ]
 
 { #category : 'behavior' }
-RedoCard >> isInstant [
-	^ true.
-]
-
-{ #category : 'behavior' }
-RedoCard >> isPermanent [
-
-	^ false.
-]
-
-{ #category : 'behavior' }
 RedoCard >> playBy: aSpaceship in: aGame targeting: aTarget [
     | cardToRedo |
     cardToRedo := aGame lastCardThrown.
     cardToRedo playBy: aSpaceship in: aGame targeting: aTarget.
+]
+
+{ #category : 'behavior' }
+RedoCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    | cardToRedo |
+    cardToRedo := aGame lastCardThrown.
+    cardToRedo playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship.
 ]
