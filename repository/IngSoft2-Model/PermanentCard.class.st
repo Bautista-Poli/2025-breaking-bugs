@@ -26,9 +26,3 @@ PermanentCard >> isPermanent [
 
 	^true.
 ]
-
-{ #category : 'behavior' }
-PermanentCard >> undoEffect: aGame to: aTargetSpaceship [
-
-	self subclassResponsibility
-]

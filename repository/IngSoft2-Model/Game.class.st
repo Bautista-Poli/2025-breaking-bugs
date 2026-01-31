@@ -150,17 +150,28 @@ Game >> lastTileEffectApplied [
 ]
 
 { #category : 'behavior' }
-Game >> makeAllSpaceShipsMoveAtHigherVelocity [
-
-	spaceships do: [ :spaceship |
-		spaceship moveAtHigherVelocity ]
-]
-
-{ #category : 'behavior' }
-Game >> makeAllSpaceShipsMoveAtLowerVelocity [
-
-	spaceships do: [ :spaceship |
-		spaceship moveAtLowerVelocity ]
+Game >> play: aCard by: aSpaceship affecting: aTargetCard targeting: aTargetShip [
+    "NUEVO"
+    | spaceshipInGame targetInGame card realCardTarget |
+    
+    spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
+    
+    targetInGame := aTargetShip 
+        ifNil: [ nil ]
+        ifNotNil: [ spaceships detect: [ :each | each = aTargetShip ] ifNone: [ nil ] ].
+	
+	realCardTarget := activePermanentCards 
+        detect: [ :each | each = aTargetCard ] 
+        ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
+    
+	spaceshipInGame validateIfCardIsInDeck: aCard.
+    (aCard canBePlayedBy: spaceshipInGame in: self)
+        ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
+    
+    card := spaceshipInGame extractCardIfAvailable: aCard.
+    card playBy: spaceshipInGame in: self targeting: realCardTarget.
+    
+    ^ card
 ]
 
 { #category : 'behavior' }
@@ -235,21 +246,6 @@ Game >> playRound [
 ]
 
 { #category : 'behavior' }
-Game >> playRoundSkipping: aSpaceshipCollection [ 
-
-	self checkIfGameHasAlreadyFinished.
-	(spaceships reject: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
-	do: [ :aSpaceship |
-		hasFinished ifFalse: [ 
-			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) against: nil ] ].
-
-	(spaceships select: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
-	do: [ :aSpaceship | aSpaceship rechargeShields ].
-
-
-]
-
-{ #category : 'behavior' }
 Game >> playRoundUsing: aCard of: theSpaceship [
 
 	self playRoundUsing: aCard of: theSpaceship to: nil.
@@ -260,7 +256,7 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 	self checkIfGameHasAlreadyFinished.
 	1 to: spaceships size do: [ :i |
 		self hasFinished ifFalse: [
-			self playTurnUsing: aCard of: theSpaceship to: targetSpaceship
+			self playTurn
 		]
 	].
 
@@ -268,50 +264,22 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 ]
 
 { #category : 'behavior' }
-Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
-    | positionsToAdvance card targetSpaceship |
-    positionsToAdvance := self calculateTotalRollFor: aSpaceship.
-    aSpaceship moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
+Game >> playTurn [
+    | spaceshipToPlay positionsToAdvance |
 
-    board handleLandingOf: aSpaceship in: self.
+    self checkIfGameHasAlreadyFinished.
+    spaceshipToPlay := spaceships at: turnIndex.
 
-    hasFinished := aSpaceship hasReached: lapsToWin.
-    
-    targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.
-    card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
-    card := aSpaceship extractCardIfAvailable: card.
-    
-    card class = CancelationCard
-        ifTrue: [ card implementEffect: activePermanentCards last by: aSpaceship to: aTargetSpaceship in: self ]
-        ifFalse: [ card implementEfectBy: aSpaceship on: targetSpaceship in: self ].
+    (spaceshipToPlay canPlay) ifTrue: [
+        positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
+        spaceshipToPlay moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
+        board handleLandingOf: spaceshipToPlay in: self.
+        hasFinished := spaceshipToPlay hasReached: lapsToWin.
+    ].
 
-    card isPermanent ifTrue: [ activePermanentCards add: card ].
-
-
-]
-
-{ #category : 'behavior' }
-Game >> playTurnUsing: aCard of: theSpaceship to: targetSpaceship [
-	| spaceshipToPlay cardToPlay |
-
-	self checkIfGameHasAlreadyFinished.
-
-	spaceshipToPlay := spaceships at: turnIndex.
-
-	(spaceshipToPlay canPlay) ifTrue: [
-		cardToPlay := (spaceshipToPlay = theSpaceship)
-			ifTrue: [ aCard ]
-			ifFalse: [ NoEffectCard new ].
-
-		self hasFinished ifFalse: [
-			self playSpaceshipTurn: spaceshipToPlay usingCard: cardToPlay against: targetSpaceship
-		].
-	].
-
-	turnIndex := turnIndex + 1.
-	turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
-
-	self endCycleIfNeeded.
+    turnIndex := turnIndex + 1.
+    turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
+    self endCycleIfNeeded.
 
 
 ]
@@ -343,6 +311,29 @@ Game >> registerPermanentCard: aCard ownedBy: aSpaceship [
 Game >> registerThrownCard: aCard [
 
 	cardsThrown := aCard
+]
+
+{ #category : 'accessing' }
+Game >> removeActivePermanentCard: aCard [
+    activePermanentCards remove: aCard ifAbsent: [ ^ self ].
+]
+
+{ #category : 'behavior' }
+Game >> skipTurn [
+    | spaceshipToPlay |
+
+    self checkIfGameHasAlreadyFinished.
+    spaceshipToPlay := spaceships at: turnIndex.
+
+    "La nave recupera la totalidad de sus escudos al saltear el turno"
+    spaceshipToPlay rechargeShields.
+
+    "Avanzamos al siguiente turno sin mover ni disparar efectos de casillero"
+    turnIndex := turnIndex + 1.
+    turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
+    self endCycleIfNeeded.
+
+
 ]
 
 { #category : 'getter' }

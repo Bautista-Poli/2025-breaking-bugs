@@ -12,24 +12,19 @@ AccelerationCard >> = anotherCard [
 ]
 
 { #category : 'behavior' }
+AccelerationCard >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aRollValue + 1.
+]
+
+{ #category : 'behavior' }
 AccelerationCard >> canBePlayedBy: aSpaceship in: aGame [
 		"NUEVO"
     ^ aGame isCurrentTurnOf: aSpaceship
 ]
 
-{ #category : 'behavior' }
-AccelerationCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [ 
-]
-
 { #category : 'comparing' }
 AccelerationCard >> compareID: anId [ 
 	^ id = anId.
-]
-
-{ #category : 'behavior' }
-AccelerationCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
-	aGame makeAllSpaceShipsMoveAtHigherVelocity.
-	aGame registerThrownCard: self.
 ]
 
 { #category : 'initialization' }
@@ -39,13 +34,11 @@ id := 'AccelerationCard-' , (0 to: 9999) atRandom asString.
 
 { #category : 'behavior' }
 AccelerationCard >> playBy: aSpaceship in: aGame targeting: aTarget [
-    aGame makeAllSpaceShipsMoveAtHigherVelocity.
-    aGame registerThrownCard: self.
-    aGame registerPermanentCard: self ownedBy: aSpaceship.
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
 ]
 
 { #category : 'behavior' }
-AccelerationCard >> undoEffect: aGame to: aTargetSpaceship [
-
-	aGame makeAllSpaceShipsMoveAtLowerVelocity
+AccelerationCard >> undoEffect: aGame [
+	^ self.
 ]

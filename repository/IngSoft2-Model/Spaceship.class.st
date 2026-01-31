@@ -240,18 +240,6 @@ Spaceship >> makeSpaceshipOwnedBy: aSpaceship [
 ]
 
 { #category : 'behavior' }
-Spaceship >> moveAtHigherVelocity [
-
-	velocity := velocity + 1
-]
-
-{ #category : 'behavior' }
-Spaceship >> moveAtLowerVelocity [
-
-	velocity := velocity - 1
-]
-
-{ #category : 'behavior' }
 Spaceship >> moveBack: positionsToBack on: aBoard [
     | boardSize |
     boardSize := aBoard getSize asParsec.
@@ -313,4 +301,11 @@ Spaceship >> penalize [
 Spaceship >> rechargeShields [
 
 	shields := 3
+]
+
+{ #category : 'behavior' }
+Spaceship >> validateIfCardIsInDeck: aCard [
+    (cards includes: aCard) ifFalse: [ 
+        Error signal: '...' 
+    ].
 ]

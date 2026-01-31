@@ -2,7 +2,8 @@ Class {
 	#name : 'MercenaryCard',
 	#superclass : 'PermanentCard',
 	#instVars : [
-		'affectedSpaceship'
+		'affectedSpaceship',
+		'ownerSpaceship'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -41,15 +42,17 @@ id := 'MercenaryCard-' , (0 to: 9999) atRandom asString.
 
 { #category : 'behavior' }
 MercenaryCard >> playBy: aSpaceship in: aGame targeting: aTargetSpaceship [
+	ownerSpaceship := aSpaceship.
+   affectedSpaceship := aTargetSpaceship.
 
 	aTargetSpaceship beMercenaryOf: aSpaceship.
 
 	aGame addActivePermanentCard: self.
-	aGame registerLastCardPlayed: self
+	aGame registerLastCardPlayed: self.
 ]
 
 { #category : 'behavior' }
-MercenaryCard >> undoEffect: aGame to: aTargetSpaceship [ 
+MercenaryCard >> undoEffect: aGame [ 
 
-	affectedSpaceship fire: aTargetSpaceship.
+	ownerSpaceship fire: affectedSpaceship.
 ]

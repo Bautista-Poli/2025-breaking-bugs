@@ -55,7 +55,5 @@ SpeedCard >> playBy: aSpaceship in: aGame targeting: aTargetSpaceship [
 ]
 
 { #category : 'behavior' }
-SpeedCard >> undoEffect: aGame to: aTargetSpaceship [ 
-
-	spaceshipAffected moveAtLowerVelocity
+SpeedCard >> undoEffect: aGame [
 ]

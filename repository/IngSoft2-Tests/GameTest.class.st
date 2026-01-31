@@ -129,7 +129,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self deny: aGame hasFinished.
 
 	
-	aGame playRoundUsing:  aAccelerationCard of: aSpaceship3  .
+	aGame playRoundUsing:  aAccelerationCard of: aSpaceship3 to: nil .
 	
 
 	
@@ -144,7 +144,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  1.
 
 	
-	aGame playRoundUsing:  aSpeedCard of: aSpaceship1 .
+	aGame playRoundUsing:  aSpeedCard of: aSpaceship1 to: nil.
 	
 	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 28.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 35.

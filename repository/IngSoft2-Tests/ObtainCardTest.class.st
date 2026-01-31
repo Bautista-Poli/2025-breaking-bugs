@@ -27,7 +27,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 		         addDice: (SequentialFixedDice onFaces: {position.position2});
 		         build.
 		
-	aGame playRoundUsing: aSpeedCard of: aSpaceship2.
+	aGame playRoundUsing: aSpeedCard of: aSpaceship2 to: nil.
 	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  3.
 	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  1.
 
@@ -125,7 +125,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTitle [
 					setLapsToWinTo: 2;
 		         addDice: (FixedDice onFace: position);
 		         build.
-	aGame playRoundUsing: aCard of: aSpaceship.
+	aGame playRoundUsing: aCard of: aSpaceship to: nil.
 	aGame playRound.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position*2+1.
@@ -153,7 +153,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 		         addDice: (FixedDice onFace: position);
 		         build.
 		
-	aGame playRoundUsing: aCard of: aSpaceship.
+	aGame playRoundUsing: aCard of: aSpaceship to: nil.
 	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 2.
 	

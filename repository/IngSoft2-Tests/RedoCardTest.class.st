@@ -119,7 +119,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 		         addDice: (FixedDice onFace: position1);
 		         build.
 
-	aGame playRoundUsing: aSpeedCard of: aSpaceship.
+	aGame playRoundUsing: aSpeedCard of: aSpaceship to: nil.
 	aGame playRoundUsing: anotherSpeedCard of: aSpaceship.
 	aGame playInstant: aCancellationCard of: aSpaceship on: aSpeedCard.
 	lastCard := aGame lastCardThrown.
@@ -179,7 +179,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
 		         addDice: (FixedDice onFace: position1);
 		         build.
 
-	aGame playRoundUsing: aSpeedCard of: aSpaceship.
+	aGame playRoundUsing: aSpeedCard of: aSpaceship to: nil.
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 	aGame playRoundUsing: anotherRedoCard of: aSpaceship.
 	aGame playRound.
@@ -205,8 +205,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
 		         addDice: (FixedDice onFace: position1);
 		         build.
 
-	aGame playRoundUsing: aSpeedCard of: aSpaceship.
-	aGame playRoundUsing: aRedoCard of: aSpaceship.
+	aGame playRoundUsing: aSpeedCard of: aSpaceship to: nil.
+	aGame playRoundUsing: aRedoCard of: aSpaceship to: nil.
 	aGame playRound.
 
 	self
@@ -237,8 +237,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
 						          position2 });
 		         build.
 
-	aGame playRoundUsing: anAccelerationCard of: aSpaceship.
-	aGame playRoundUsing: aRedoCard of: aSpaceship.
+	aGame playRoundUsing: anAccelerationCard of: aSpaceship to: nil.
+	aGame playRoundUsing: aRedoCard of: aSpaceship to: nil.
 	aGame playRound.
 
 	self
@@ -265,7 +265,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenError [
 		         build.
 	
 	self
-		should: [ aGame playRoundUsing: aRedoCard of: aSpaceship. ]
+		should: [ aGame playRoundUsing: aRedoCard of: aSpaceship to: nil. ]
 		raise: Error
 		withMessageText: 'The way the redo card was implemented is not correct'
 ]

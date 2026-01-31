@@ -25,18 +25,12 @@ Card >> compareID: anId [
 ]
 
 { #category : 'behavior' }
-Card >> isInstant [
-
-	self subclassResponsibility
-]
-
-{ #category : 'behavior' }
-Card >> isPermanent [
-
-	self subclassResponsibility
-]
-
-{ #category : 'behavior' }
 Card >> playBy: aSpaceship in: aGame targeting: aTarget [
     self subclassResponsibility
+]
+
+{ #category : 'behavior' }
+Card >> undoEffect: aGame [
+
+	self subclassResponsibility
 ]

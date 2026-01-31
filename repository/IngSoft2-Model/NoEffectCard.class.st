@@ -12,38 +12,9 @@ NoEffectCard >> = anotherCard [
 ]
 
 { #category : 'comparing' }
-NoEffectCard >> canBePlayedBy: aSpaceship in: aGame [
-    ^ true
-
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> checkIfEffectCanBeApplyToTarget: aTarget [ 
-]
-
-{ #category : 'comparing' }
 NoEffectCard >> compareID: anId [ 
 
 ^ false.
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> implementEffectTo: aSpaceship in: aGame [
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> isInstant [
-	^ false.
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> isPermanent [
-
-	^ false
 ]
 
 { #category : 'behavior' }
@@ -53,7 +24,7 @@ NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTarget [
 ]
 
 { #category : 'behavior' }
-NoEffectCard >> undoEffect: aGame to: anUndefinedObject [
+NoEffectCard >> undoEffect: aGame [
 
 	
 ]
