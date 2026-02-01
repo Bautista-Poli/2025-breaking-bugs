@@ -13,7 +13,6 @@ AtomicBombEffect >> applyTo: aSpaceship in: aGame [
 		ship lowerAShield
 	].
 
-	aGame disableBattleForThisTurn.
 	aGame registerAppliedEffect: self.
 ]
 

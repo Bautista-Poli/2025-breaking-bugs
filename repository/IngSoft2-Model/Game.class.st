@@ -10,7 +10,6 @@ Class {
 		'lapsToWin',
 		'activePermanentCards',
 		'cardsThrown',
-		'activatedAtomicBomb',
 		'lastTileEffectApplied',
 		'turnIndex',
 		'remainingTurnsInCycle'
@@ -72,17 +71,11 @@ Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
 ]
 
 { #category : 'behavior' }
-Game >> disableBattleForThisTurn [
-	activatedAtomicBomb := true.
-]
-
-{ #category : 'behavior' }
 Game >> endCycleIfNeeded [
 	remainingTurnsInCycle := remainingTurnsInCycle - 1.
 	remainingTurnsInCycle > 0 ifTrue: [ ^ self ].
 
 	(spaceships select: [ :s | s getShields = 0 ]) do: [ :s | s penalize ].
-	activatedAtomicBomb := false.
 	remainingTurnsInCycle := spaceships size.
 
 
@@ -131,7 +124,6 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	lastTileEffectApplied := NoEffect new.
 	turnIndex := 1.
 	remainingTurnsInCycle := aCollectionOfSpacehips size.
-	activatedAtomicBomb := false.
 
 ]
 
