@@ -32,9 +32,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 		addDice: (SequentialFixedDice onFaces: {position. position2});
 		build.
 
-	aGame playCard: aSpeedCard by: aSpaceship2 targeting: aSpaceship2.
-	
 	aGame playTurn. 
+	aGame playCard: aSpeedCard by: aSpaceship2 targeting: aSpaceship2.
 	aGame playTurn. 
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 3.
@@ -54,41 +53,47 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 
 { #category : 'tests' }
 ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
-    | aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
-    
-    aGameBuilder := GameBuilder new.
-    aSpaceship := Spaceship new. 
-    aSpaceship2 := Spaceship new. 
-    aSpaceship3 := Spaceship new.
-    
-    position := 6.
-    aTileBuilder := TilesBuilder with: 60.
-    aCard := MercenaryCard new.
-    
-    aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
-    aTileCollection := aTileBuilder build.
-    
-    aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 and: aTileCollection.
-    
-    aGame := aGameBuilder
-        addSpaceship: aSpaceship;
-        addSpaceship: aSpaceship2;
-        addSpaceship: aSpaceship3;
-        addBoard: aBoard;
-        setLapsToWinTo: 2;
-        addDice: (SequentialFixedDice onFaces: {position. 15});
-        build.
 
-    aGame playTurn.
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position.
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 3.
+	position := 6.
+	aTileBuilder := TilesBuilder with: 60.
+	aCard := MercenaryCard new.
 
-    aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
+	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
+	aTileCollection := aTileBuilder build.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
-    self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship2).
+	aBoard := Board
+		          withSize: 60
+		          andWormholeFrom: 40
+		          to: 45
+		          and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addBoard: aBoard;
+		         setLapsToWinTo: 2;
+		         addDice: (SequentialFixedDice onFaces: { position. 15 });
+		         build.
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 3.
+
+	aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
+
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
+	self assert:((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship2)
 ]
 
 { #category : 'tests' }

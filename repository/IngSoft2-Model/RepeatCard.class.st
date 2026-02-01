@@ -5,17 +5,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-RepeatCard >> = anotherCard [
-
-^ (anotherCard compareID: id).
-]
-
-{ #category : 'comparing' }
-RepeatCard >> compareID: anId [ 
-	^ id = anId.
-]
-
 { #category : 'behavior' }
 RepeatCard >> implementEffect: aPermanentCard by: aSpaceship to: aTargetSpaceship in: aGame [
 

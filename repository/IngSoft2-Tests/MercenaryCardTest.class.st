@@ -100,6 +100,7 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
         
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
+	aGame playTurn.
 	self
 		should: [ aGame playCard: aCard2 by: aSpaceship2 targeting: aSpaceship. ]
 		raise: Error

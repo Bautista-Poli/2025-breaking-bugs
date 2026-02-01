@@ -87,8 +87,9 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
     self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
     self assert: (aGame spaceshipMatching: aSpaceship2) getCards size equals: 2.
     
+	aGame playTurn. 
     aGame playCard: aCard2 by: aSpaceship2 targeting: aSpaceship2.
-    aGame playTurn. aGame playTurn. 
+    aGame playTurn. 
     
     self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
     self assert: (aGame spaceshipMatching: aSpaceship2) getCards size equals: 1.

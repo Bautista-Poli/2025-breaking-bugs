@@ -242,6 +242,17 @@ Spaceship >> rechargeShields [
 	shields := 3
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> use: aCard targeting: aTargetCard affecting: aTargetShip in: aGame [
+    | cardToPlay |
+    self validateIfCardIsInDeck: aCard.
+    aCard canBePlayedBy: self in: aGame.
+        
+
+    cardToPlay := self extractCardIfAvailable: aCard.
+    cardToPlay playBy: self in: aGame targeting: aTargetCard affecting: aTargetShip.
+]
+
 { #category : 'behavior' }
 Spaceship >> validateIfCardIsInDeck: aCard [
     (cards includes: aCard) ifFalse: [ 

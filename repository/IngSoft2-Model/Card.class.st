@@ -8,6 +8,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'comparing' }
+Card >> = anotherCard [
+^ (anotherCard compareID: id).
+]
+
 { #category : 'behavior' }
 Card >> applyBonusTo: aRollValue for: aSpaceship [
     ^ aRollValue
@@ -20,13 +25,7 @@ Card >> canBePlayedBy: aSpaceship in: aGame [
 
 { #category : 'comparing' }
 Card >> compareID: anId [ 
-
-	self subclassResponsibility
-]
-
-{ #category : 'behavior' }
-Card >> playBy: aSpaceship in: aGame targeting: aTarget [
-    self subclassResponsibility
+	^ id = anId.
 ]
 
 { #category : 'behavior' }

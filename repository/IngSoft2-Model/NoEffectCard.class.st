@@ -18,12 +18,6 @@ NoEffectCard >> compareID: anId [
 ]
 
 { #category : 'behavior' }
-NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTarget [
-    ^ self
-
-]
-
-{ #category : 'behavior' }
 NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
     ^ self
 

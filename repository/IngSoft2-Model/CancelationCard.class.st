@@ -5,33 +5,16 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-CancelationCard >> = anotherCard [
-
-^ (anotherCard compareID: id).
-
-]
-
-{ #category : 'comparing' }
-CancelationCard >> compareID: anId [ 
-	^ id = anId.
-]
-
 { #category : 'initialization' }
 CancelationCard >> initialize [
 id := 'CancelationCard-' , (0 to: 9999) atRandom asString.
 ]
 
-{ #category : 'behavior' }
-CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel [
-    aCardToCancel undoEffect: aGame.
-    aGame removeActivePermanentCard: aCardToCancel.
-    aGame registerLastCardPlayed: self.
-]
-
 { #category : 'as yet unclassified' }
-CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecting: aTargetSpaceship [ 
-    aCardToCancel undoEffect: aGame.
-    aGame removeActivePermanentCard: aCardToCancel.
-    aGame registerLastCardPlayed: self.
+CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecting: aTargetSpaceship [
+	| realCardToCancel |
+	realCardToCancel := aGame getRealCard: aCardToCancel.
+	realCardToCancel undoEffect: aGame.
+	aGame removeActivePermanentCard: realCardToCancel.
+	aGame registerLastCardPlayed: self.
 ]

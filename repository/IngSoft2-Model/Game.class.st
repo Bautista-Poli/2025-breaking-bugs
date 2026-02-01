@@ -9,8 +9,8 @@ Class {
 		'battle',
 		'lapsToWin',
 		'activePermanentCards',
-		'activatedAtomicBomb',
 		'cardsThrown',
+		'activatedAtomicBomb',
 		'lastTileEffectApplied',
 		'turnIndex',
 		'remainingTurnsInCycle'
@@ -26,8 +26,8 @@ Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
 
 { #category : 'behavior' }
 Game >> activePermanentCards [
-    "Nuevo"
-    ^ activePermanentCards
+    "ROMPE INMUTABILIDAD"
+    ^ activePermanentCards deepCopy.
 ]
 
 { #category : 'accessing' }
@@ -104,6 +104,14 @@ Game >> getPositionTable [
 
 ]
 
+{ #category : 'behavior' }
+Game >> getRealCard: aTargetCard [
+	"ROMPE INMUTABILIDAD"
+     ^ activePermanentCards 
+        detect: [ :each | each = aTargetCard ] 
+        ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
+]
+
 { #category : 'accessing' }
 Game >> hasFinished [ 
 	^ hasFinished.
@@ -133,12 +141,6 @@ Game >> isCurrentTurnOf: aSpaceship [
 ]
 
 { #category : 'accessing' }
-Game >> lastActivePermanentCard [
-
-	^ activePermanentCards removeLast
-]
-
-{ #category : 'accessing' }
 Game >> lastCardThrown [
     ^ cardsThrown
 ]
@@ -151,46 +153,18 @@ Game >> lastTileEffectApplied [
 
 { #category : 'behavior' }
 Game >> play: aCard by: aSpaceship affecting: aTargetCard targeting: aTargetShip [
-    "NUEVO"
-    | spaceshipInGame aSpaceshipTarget card aCardTarget |
-    
-    spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
-    
-    aSpaceshipTarget := aTargetShip 
-        ifNil: [ nil ]
-        ifNotNil: [ spaceships detect: [ :each | each = aTargetShip ] ifNone: [ nil ] ].
+
+	| spaceshipInGame aSpaceshipTarget |
+	spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
+	aSpaceshipTarget := aTargetShip ifNotNil: [
+		                    spaceships detect: [ :each | each = aTargetShip ] ].
 	
-	aCardTarget := activePermanentCards 
-        detect: [ :each | each = aTargetCard ] 
-        ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
-    
-	spaceshipInGame validateIfCardIsInDeck: aCard.
-    (aCard canBePlayedBy: spaceshipInGame in: self)
-        ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
-    
-    card := spaceshipInGame extractCardIfAvailable: aCard.
-    card playBy: spaceshipInGame in: self targeting: aCardTarget affecting: aSpaceshipTarget.
-    
-    ^ card
+	spaceshipInGame use: aCard targeting: aTargetCard affecting: aSpaceshipTarget in: self.
 ]
 
 { #category : 'behavior' }
 Game >> playCard: aCard by: aSpaceship targeting: aTargetSpaceship [
-    "NUEVO"
-    | spaceshipInGame aSpaceshipTarget card |
-    
-    spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
-    
-    aSpaceshipTarget := aTargetSpaceship 
-        ifNil: [ nil ]
-        ifNotNil: [ spaceships detect: [ :each | each = aTargetSpaceship ] ifNone: [ nil ] ].
-    
-	spaceshipInGame validateIfCardIsInDeck: aCard.
-    (aCard canBePlayedBy: spaceshipInGame in: self)
-        ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
-    
-    card := spaceshipInGame extractCardIfAvailable: aCard.
-    card playBy: spaceshipInGame in: self targeting: (NoEffectCard new) affecting: aSpaceshipTarget.
+    self play: aCard by: aSpaceship affecting: (NoEffectCard new)  targeting: aTargetSpaceship
 ]
 
 { #category : 'behavior' }
