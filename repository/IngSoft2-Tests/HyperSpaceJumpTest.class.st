@@ -25,7 +25,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 		         addBoard: aBoard;
 		         addDice: (FixedDice onFace: 4);
 		         build.
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 8.
 	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
 	

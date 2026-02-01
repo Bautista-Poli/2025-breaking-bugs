@@ -28,7 +28,7 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 		         addBoard: aBoard;
 		         addDice: (SequentialFixedDice onFaces: #( 2 4 ));
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 4
@@ -54,7 +54,7 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 					setLapsToWinTo: 2;
 		         addDice: (SequentialFixedDice onFaces: #( 25 24 ));
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 4.
@@ -86,8 +86,8 @@ MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 		         setLapsToWinTo: 2;
 		         addDice: (SequentialFixedDice onFaces: #( 2 9 4 4 ));
 		         build.
-	aGame playRound.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 6.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 11.

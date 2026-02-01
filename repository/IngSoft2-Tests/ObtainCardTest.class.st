@@ -1,12 +1,12 @@
 Class {
-	#name : 'ObtainCardTestNP',
+	#name : 'ObtainCardTest',
 	#superclass : 'TestCase',
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle [
+ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle [
 	| aSpaceship aSpaceship2 aGameBuilder position position2 aGame aBoard aTileBuilder aTileCollection aSpeedCard aCard |
 	
 	aGameBuilder := GameBuilder new.
@@ -53,7 +53,7 @@ ObtainCardTestNP >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTit
 ]
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
+ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
     | aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
     
     aGameBuilder := GameBuilder new.
@@ -92,7 +92,7 @@ ObtainCardTestNP >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle
 ]
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
+ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aMercenaryCard aRedoCard |
 	
 	aGameBuilder := GameBuilder new.
@@ -132,46 +132,56 @@ ObtainCardTestNP >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 ]
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
-    | aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
-    
-    aGameBuilder := GameBuilder new.
-    aSpaceship := Spaceship new.
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
-    
-    position := 6.
-    aTileBuilder := TilesBuilder with: 60.
-    aCard := SpeedCard new.
-    
+ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 
-    aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
-    aTileCollection := aTileBuilder build.
-    
-    aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 and: aTileCollection.
-    
-    aGame := aGameBuilder
-        addSpaceship: aSpaceship;
-        addSpaceship: aSpaceship2;
-        addSpaceship: aSpaceship3;
-        addBoard: aBoard;
-        setLapsToWinTo: 2;
-        addDice: (FixedDice onFace: position);
-        build.
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
+
+	position := 6.
+	aTileBuilder := TilesBuilder with: 60.
+	aCard := SpeedCard new.
 
 
-    aGame playRound. 
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 3.
+	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
+	aTileCollection := aTileBuilder build.
 
-    aGame playCard: aCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 13.
-    
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
+	aBoard := Board
+		          withSize: 60
+		          andWormholeFrom: 40
+		          to: 45
+		          and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addBoard: aBoard;
+		         setLapsToWinTo: 2;
+		         addDice: (FixedDice onFace: position);
+		         build.
+
+
+	aGame playTurn. aGame playTurn. aGame playTurn. 
+	self
+		assert: (aGame spaceshipMatching: aSpaceship) getCards size
+		equals: 3.
+
+	aGame playCard: aCard by: aSpaceship targeting: aSpaceship.
+	aGame playTurn. aGame playTurn. aGame playTurn. 
+	self
+		assert: (aGame spaceshipMatching: aSpaceship) getPosition
+		equals: 13.
+
+	self
+		assert: (aGame spaceshipMatching: aSpaceship) getCards size
+		equals: 2
 ]
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTitle [
+ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTitle [
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
 	
 	aGameBuilder := GameBuilder new.
@@ -219,7 +229,7 @@ ObtainCardTestNP >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheT
 ]
 
 { #category : 'tests' }
-ObtainCardTestNP >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
+ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
@@ -238,7 +248,7 @@ ObtainCardTestNP >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 					setLapsToWinTo: 2;
 		         addDice: (FixedDice onFace: 4);
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn. 
 
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 4.
 	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 3.

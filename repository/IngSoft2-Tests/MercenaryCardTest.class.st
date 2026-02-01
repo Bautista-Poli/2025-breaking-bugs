@@ -184,7 +184,7 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
     self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries 
          equals: (OrderedCollection with: aSpaceship2).
 
-    aGame playRound.
+    aGame playTurn. aGame playTurn. aGame playTurn.
 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
     self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 2.
@@ -220,8 +220,8 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
     self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship2).
     self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship3).
 
-    aGame playRound. 
-    aGame playRound.
+    aGame playTurn. aGame playTurn. aGame playTurn.
+    aGame playTurn. aGame playTurn. aGame playTurn.
 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 10.
     self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 12.
@@ -248,8 +248,8 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
 
-    aGame playRound.
-    aGame playRound. 
+    aGame playTurn. aGame playTurn. aGame playTurn.
+    aGame playTurn. aGame playTurn. aGame playTurn. 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 6.
     self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 6.
     
@@ -276,7 +276,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
         build.
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
-    aGame playRound.
+    aGame playTurn. aGame playTurn. aGame playTurn.
 	"Batallan, spaceship3 saca un 5 mientras que una de las otras dos saca un 7"
 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
@@ -312,7 +312,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     
     self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 0.
     
-    aGame playRound.
+    aGame playTurn. aGame playTurn. aGame playTurn.
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
 	 self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 10.
 ]
@@ -335,7 +335,7 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
         build.
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
-    aGame playRound.
+    aGame playTurn. aGame playTurn. aGame playTurn.
 
     self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
     self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.

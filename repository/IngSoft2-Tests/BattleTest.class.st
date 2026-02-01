@@ -53,14 +53,14 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 		         addDice: (SequentialFixedDice onFaces: #("turn"2 2 "battle"10 12 "turn"1 3 "battle"10 12 "turn"2 5 "battle"10 12 "turn"1 "turn"1 "turn"2 4));
 		         build.
 
-	aGame playRound.
-	aGame playRound.
-	aGame playRound.
-	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
-	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn. "Se queda sin escudos por lo cual no va a poder moverse"
+	aGame playTurn. aGame playTurn. "Se queda sin escudos por lo cual no va a poder moverse"
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
 	
@@ -107,12 +107,12 @@ BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 		         addDice: (SequentialFixedDice onFaces: #("turn"2 2 "battle"10 12 "turn"1 3 "battle"10 12 "turn"2 5 "battle"10 12 "turn"4 2));
 		         build.
 
-	aGame playRound.
-	aGame playRound.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 0.
-	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
+	aGame playTurn. aGame playTurn. "Se queda sin escudos por lo cual no va a poder moverse"
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 0.
 	
@@ -132,7 +132,7 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14));
 		         build.
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship)getShields equals: 3.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
@@ -154,7 +154,7 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 		         addDice: (SequentialFixedDice onFaces: #(4 4 4 4 ));
 		         build.
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
@@ -176,7 +176,7 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
 		         build.
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.

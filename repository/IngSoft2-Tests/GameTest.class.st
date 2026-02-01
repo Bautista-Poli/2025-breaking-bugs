@@ -17,9 +17,9 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 
 { #category : 'tests' }
 GameTest >> testAllTheEffectsOnGame [
-	| game aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board gameBuilder finishLine tileBuilder tileCollection |
+	| aGame aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board aGameBuilder finishLine tileBuilder tileCollection |
 
-	gameBuilder := GameBuilder new.
+	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new. aSpaceship2 := Spaceship new. aSpaceship3 := Spaceship new. aSpaceship4 := Spaceship new.
 	finishLine := 25.
 
@@ -35,7 +35,7 @@ GameTest >> testAllTheEffectsOnGame [
 
 	board := Board withSize: finishLine andWormholeFrom: 4 to: 15 and: tileCollection.
 
-	game := gameBuilder
+	aGame := aGameBuilder
 		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
 		addBoard: board;
 		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4 16));
@@ -43,25 +43,25 @@ GameTest >> testAllTheEffectsOnGame [
 		build.
 
 	"Ronda 1"
-	game playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 
-	self assert: (game spaceshipMatching: aSpaceship1) getPosition equals: 0.
-	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 5.
-	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 0.
-	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 11.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 5.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 11.
 
 	"Ronda 2"
-	game playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 	
-	self assert: (game spaceshipMatching: aSpaceship1)getPosition equals: 0. 
-	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 5. 
-	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 20. 
-	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 14. 
+	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 0. 
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 5. 
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 20. 
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 14. 
 	
-	self assert: (game spaceshipMatching: aSpaceship1) getShields equals: 1.
-	self assert: (game spaceshipMatching: aSpaceship2) getShields equals: 2.
-	self assert: (game spaceshipMatching: aSpaceship3) getShields equals: 0.
-	self assert: (game spaceshipMatching: aSpaceship4) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getShields equals: 2.
 	
 	
 
@@ -110,7 +110,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 		build.
 
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
@@ -141,7 +141,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatching: aSpaceship2) getCards size equals: 1.
 
 	aGame playCard: aSpeedCard by: aSpaceship1 targeting: aSpaceship1.
-	aGame playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 	
 	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 29.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 35.
@@ -149,7 +149,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 25.
 	
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 33.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: finishLine.
 	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 27.
@@ -199,7 +199,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		         setLapsToWinTo: 2;
 		         build.
 
-	aGame playRound.
+	aGame playTurn. 
+	aGame playTurn.
+	 aGame playTurn.
+	aGame playTurn.
 
 
 
@@ -214,7 +217,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self assert: (aGame spaceshipMatching: aSpaceship4) getShields equals: 2.
 	self deny: aGame hasFinished.
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: aGame hasFinished.
 	aPositionTable := (aGame getPositionTable).
 	self assert: (aPositionTable isWinner: aSpaceship2).
@@ -246,8 +249,8 @@ GameTest >> testFullGameSimulationWithWinner [
 					addDice: (FixedDice onFace: 1);
 		         build.
 
-	aGame playRound.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
+	aGame playTurn.
 
 	
 	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: finishLine.
@@ -269,7 +272,7 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 					addDice: (FixedDice onFace: 5);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
 ]
 
@@ -285,7 +288,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 					addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 9.
 ]
 
@@ -301,7 +304,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		         addDice: (FixedDice onFace: 9);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
 ]
 
@@ -317,9 +320,9 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self
-		should: [ aGame playRound. ]
+		should: [ aGame playTurn. ]
 		raise: Error
 		withMessageText: 'Cannot play a turn after the game has finished.'
 ]
@@ -339,7 +342,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 					addDice: (FixedDice onFace: finishLine);
 		         build.
 		
-	aGame playRound.
+	aGame playTurn.
 
 	self assert: aGame hasFinished.
 	
@@ -361,7 +364,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: aGame hasFinished
 ]
 
@@ -392,7 +395,7 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 		         addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 
 	self assert: aGame hasFinished
 ]
@@ -409,7 +412,7 @@ GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 					addDice: (FixedDice onFace: 25);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 
 	self assert: aGame hasFinished.
 ]
@@ -427,7 +430,7 @@ GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds 
 					addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 
 	self assert: aGame hasFinished
 ]

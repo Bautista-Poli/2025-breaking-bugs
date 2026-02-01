@@ -29,7 +29,7 @@ AccelerationCardTest >> testAccelerationCardIncreasesMovementWithNewProtocol [
     self assert: ((game spaceshipMatching: spaceship1) getCards size) equals: 0.
     self assert: (game activePermanentCards includes: accelerationCard).
 
-    game playRound.
+    game playTurn. game playTurn.
     
     self assert: (game spaceshipMatching: spaceship1) getPosition equals: position1 + 1.
     self assert: (game spaceshipMatching: spaceship2) getPosition equals: position2 + 1.

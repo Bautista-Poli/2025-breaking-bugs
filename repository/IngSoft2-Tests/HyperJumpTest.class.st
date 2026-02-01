@@ -31,7 +31,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 		         addBoard: aBoard;
 		         addDice: (FixedDice onFace: 4);
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.
@@ -64,7 +64,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 		         addBoard: aBoard;
 		         addDice: (FixedDice onFace: 4);
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.

@@ -32,7 +32,7 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 		         addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self
 		should: [ aGame getPositionTable ]
 		raise: Error
@@ -55,7 +55,7 @@ PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
 
 	self assert: (aPositionTable isShip: aFirstSpaceship atLap: 1 andSquare: 20).
@@ -82,23 +82,16 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 					setLapsToWinTo: 2;
 		         build.
 
-	aGame playRound.
-	aGame playRound.
+	aGame playTurn.  aGame playTurn.  aGame playTurn.  aGame playTurn. 
+	aGame playTurn. 
 	
 	aPosicionTable := (aGame getPositionTable ).
 	
 	aRankingPosition := aPosicionTable getRanking.
 	expectedRanking := { aFirstSpaceship. aSecondSpaceship. aThirdSpaceship. aFourthSpaceship }.
-	"nave 1: ganadora
-	nave2: posicion 0 vueltas 1
-	nave3: posicion 17 vueltas 0
-	nave4: posicion 6 vueltas 0 "
+
 	
 	self assert: aRankingPosition size equals: expectedRanking size.
-"	self assert: (aRankingPosition at: 1 )equals: (expectedRanking at: 1).
-	self assert: (aRankingPosition at: 2 )equals: (expectedRanking at: 2).
-	self assert: (aRankingPosition at: 4 )equals: (expectedRanking at: 4).
-	self assert: (aRankingPosition at: 3 )equals: (expectedRanking at: 3)."
 	1 to: aRankingPosition size do: [ :i |
 		self assert: (aRankingPosition at: i) equals: (expectedRanking at: i) ].
 
@@ -118,7 +111,7 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	aPositionTable := (aGame getPositionTable).
 	self assert: (aPositionTable isWinner: aSpaceship)
 ]
@@ -136,7 +129,7 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheF
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	aPositionTable := (aGame getPositionTable).
 	self deny: (aPositionTable isWinner: aSecondSpaceship).
 ]

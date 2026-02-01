@@ -25,13 +25,13 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 
 
 	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 7.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 5.
 	aGame play: aCancelationCard by: aSpaceship affecting: aAccelCard targeting: nil.
 
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 13.
 	
@@ -110,7 +110,7 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 	self assert: aGame activePermanentCards isEmpty.
 	self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 	
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
 ]
 
@@ -131,11 +131,11 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 		build.
 
 	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 7.
 
 	aGame play: aCancelationCard by: aSpaceship affecting: aSpeedCard targeting: nil.
-	aGame playRound.
+	aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 13. "7+6"
 	self assert: aGame activePermanentCards isEmpty.

@@ -194,24 +194,6 @@ Game >> playCard: aCard by: aSpaceship targeting: aTargetSpaceship [
 ]
 
 { #category : 'behavior' }
-Game >> playRound [
-
-	self playRoundUsing: (NoEffectCard new) of: nil to:nil.
-]
-
-{ #category : 'behavior' }
-Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
-	self checkIfGameHasAlreadyFinished.
-	1 to: spaceships size do: [ :i |
-		self hasFinished ifFalse: [
-			self playTurn
-		]
-	].
-
-
-]
-
-{ #category : 'behavior' }
 Game >> playTurn [
     | spaceshipToPlay positionsToAdvance |
 
@@ -228,8 +210,6 @@ Game >> playTurn [
     turnIndex := turnIndex + 1.
     turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
     self endCycleIfNeeded.
-
-
 ]
 
 { #category : 'initialization' }

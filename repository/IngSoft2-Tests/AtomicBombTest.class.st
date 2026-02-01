@@ -27,7 +27,7 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 		         addDice: (SequentialFixedDice onFaces: #(4 5 6));
 		         build.
 		
-	aGame playRound.
+	aGame playTurn. aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 5.
 	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 6.

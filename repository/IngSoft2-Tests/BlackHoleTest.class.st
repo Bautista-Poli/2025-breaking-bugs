@@ -23,7 +23,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 		         addBoard: aBoard;
 		         addDice: (SequentialFixedDice onFaces: #( 13 9 ));
 		         build.
-	aGame playRound.
+	aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
 ]
@@ -45,7 +45,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 			      addBoard: aBoard;   
 		         addDice: (FixedDice onFace: 4);
 		         build.
-	aGame playRound.
+	aGame playTurn.
 	
 	self assert: (aSpaceship isAtPosition:0).
 

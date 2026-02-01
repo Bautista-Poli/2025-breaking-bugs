@@ -90,7 +90,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 		         setLapsToWinTo: 2;
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
 	
 ]
@@ -108,7 +108,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 					addDice: (FixedDice onFace: 22); "Si es 20 da error"
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
 ]
 
@@ -125,7 +125,7 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 					setLapsToWinTo: 3;
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 2.
 ]
 
@@ -142,7 +142,7 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 					setLapsToWinTo: 2;
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 5.
 ]
 

@@ -1,12 +1,12 @@
 Class {
-	#name : 'RedoCardTestNP',
+	#name : 'RedoCardTest',
 	#superclass : 'TestCase',
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
     | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherSpeedCard aCancellationCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
@@ -33,14 +33,14 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstA
     aGame play: aCancellationCard by: aSpaceship affecting: aSpeedCard targeting: nil.
     aGame play: aRedoCard by: aSpaceship affecting: anotherSpeedCard targeting: nil.
 
-    aGame playRound.
+    aGame playTurn.
 
     self assert: aGame activePermanentCards isEmpty.
     self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHas2Mercenaries [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHas2Mercenaries [
     | aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 aMercenaryCard aRedoCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
@@ -70,7 +70,7 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceship
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsReapplied [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsReapplied [
     | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherRedoCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
@@ -90,21 +90,21 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsR
         build.
 
     aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
+    aGame playTurn. 
     
     aGame playCard: aRedoCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
+    aGame playTurn. 
     
     aGame playCard: anotherRedoCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
+    aGame playTurn. 
 
-    aGame playRound.
+    aGame playTurn. 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 33.
     self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOnTarget [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOnTarget [
     | gameBuilder board titleBuilder dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game |
     
     repeatCard := RepeatCard new.
@@ -129,7 +129,7 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffect
                 addDice: dice;
                 build.
 
-    game playRound.
+    game playTurn. game playTurn. game playTurn.
 
     self assert: (game spaceshipMatching: spaceship1) getPosition equals: 19. 
     self assert: (game spaceshipMatching: spaceship2) getPosition equals: 14. 
@@ -147,7 +147,7 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffect
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDoublesItsSpeed [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDoublesItsSpeed [
     | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
@@ -163,18 +163,18 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDoub
         build.
 
     aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
+    aGame playTurn.
 
     aGame playCard: aRedoCard by: aSpaceship targeting: aSpaceship.
-    aGame playRound.
-    aGame playRound.
+    aGame playTurn. 
+    aGame playTurn. 
 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 23.
     self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpaceshipsDoubleItsSpeed [
+RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpaceshipsDoubleItsSpeed [
     | aGame aSpaceship aSpaceship2 aGameBuilder position1 position2 anAccelerationCard aRedoCard |
     position1 := 6.
     position2 := 4.
@@ -195,16 +195,16 @@ RedoCardTestNP >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpace
         build.
 
     aGame playCard: anAccelerationCard by: aSpaceship targeting: nil.
-    aGame playRound.
+    aGame playTurn. aGame playTurn. 
     aGame playCard: aRedoCard by: aSpaceship targeting: nil.
-    aGame playRound.
-    aGame playRound.
+    aGame playTurn. aGame playTurn. 
+    aGame playTurn. aGame playTurn. 
     self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 23.
     self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 17.
 ]
 
 { #category : 'tests' }
-RedoCardTestNP >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens [
+RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens [
     | aGame aSpaceship aGameBuilder position1 aRedoCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
