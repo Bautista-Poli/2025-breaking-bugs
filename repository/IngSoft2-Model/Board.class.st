@@ -102,8 +102,6 @@ Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wo
 
     sizeInParsecs := aSize // 3.
 
-	"entryInParsecs := wormholeEntry // 3.
-    exitInParsecs := wormholeExit // 3. "
     ^ self 
         withSizeDistance: (LightYear with: aSize)
         andWormholeFrom: wormholeEntry   

@@ -245,14 +245,8 @@ Game >> registerAppliedEffect: anEffect [
 
 { #category : 'accessing' }
 Game >> registerLastCardPlayed: aCard [
-    "Solo registramos si no es una RedoCard para poder repetir la anterior"
-    (aCard isKindOf: RedoCard) ifFalse: [ cardsThrown := aCard ].
-]
 
-{ #category : 'behavior' }
-Game >> registerPermanentCard: aCard ownedBy: aSpaceship [
-    "NUEVO"
-    activePermanentCards add: aCard.
+    cardsThrown := aCard.
 ]
 
 { #category : 'behavior' }
@@ -272,11 +266,7 @@ Game >> skipTurn [
 
     self checkIfGameHasAlreadyFinished.
     spaceshipToPlay := spaceships at: turnIndex.
-
-    "La nave recupera la totalidad de sus escudos al saltear el turno"
     spaceshipToPlay rechargeShields.
-
-    "Avanzamos al siguiente turno sin mover ni disparar efectos de casillero"
     turnIndex := turnIndex + 1.
     turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
     self endCycleIfNeeded.
