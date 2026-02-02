@@ -18,7 +18,7 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 { #category : 'tests' }
 GameTest >> testAllTheEffectsOnGame [
 	| aGame aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board aGameBuilder finishLine tileBuilder tileCollection |
-
+	"board con laps 2"
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new. aSpaceship2 := Spaceship new. aSpaceship3 := Spaceship new. aSpaceship4 := Spaceship new.
 	finishLine := 25.
@@ -39,7 +39,6 @@ GameTest >> testAllTheEffectsOnGame [
 		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
 		addBoard: board;
 		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4 16));
-		setLapsToWinTo: 2;
 		build.
 
 	"Ronda 1"
@@ -106,7 +105,6 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 		addBoard: aBoard;
 		addDice: (SequentialFixedDice onFaces: #(2 7 8 14 18 12));
 		addDice: (FixedDice onFace: 1);
-		setLapsToWinTo: 1;
 		build.
 
 
@@ -167,6 +165,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |
+	"board con laps 2"
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -186,6 +185,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		          withSize: finishLine
 		          andWormholeFrom: 4
 		          to: 15
+					 andLapsToWin: 2
 		          and: aTileCollection.
 		
 	aGame := aGameBuilder
@@ -196,7 +196,6 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		         addBoard: aBoard;
 		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 100 ));
 		         addDice: (FixedDice onFace: 1);
-		         setLapsToWinTo: 2;
 		         build.
 
 	aGame playTurn. 

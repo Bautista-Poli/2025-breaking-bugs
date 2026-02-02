@@ -7,7 +7,6 @@ Class {
 		'dice',
 		'hasFinished',
 		'battle',
-		'lapsToWin',
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
@@ -19,13 +18,17 @@ Class {
 }
 
 { #category : 'creation' }
+Game class >> with: aBoard and: spaceships and: dice [
+	^ self new initializeWith: aBoard and: spaceships and: dice.
+]
+
+{ #category : 'creation' }
 Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
 	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
 ]
 
 { #category : 'behavior' }
 Game >> activePermanentCards [
-    "ROMPE INMUTABILIDAD"
     ^ activePermanentCards deepCopy.
 ]
 
@@ -99,13 +102,12 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
+Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice [
 
 	hasFinished := false.
 	spaceships := aCollectionOfSpacehips deepCopy.
 	board := aBoard.
 	dice := aCollectionOfDice.
-	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
@@ -156,9 +158,8 @@ Game >> playTurn [
 
     (spaceshipToPlay canPlay) ifTrue: [
         positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
-        spaceshipToPlay moveBy: positionsToAdvance on: board withLapLimit: lapsToWin.
+        hasFinished := spaceshipToPlay moveBy: positionsToAdvance on: board.
         board handleLandingOf: spaceshipToPlay in: self.
-        hasFinished := spaceshipToPlay hasReached: lapsToWin.
     ].
 
     turnIndex := turnIndex \\ spaceships size + 1.
@@ -180,12 +181,6 @@ Game >> registerAppliedEffect: anEffect [
 Game >> registerLastCardPlayed: aCard [
 
     cardsThrown := aCard.
-]
-
-{ #category : 'behavior' }
-Game >> registerThrownCard: aCard [
-
-	cardsThrown := aCard
 ]
 
 { #category : 'accessing' }

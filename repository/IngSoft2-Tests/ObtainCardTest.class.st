@@ -22,13 +22,12 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
 	aTileCollection := aTileBuilder build.
 	
-	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 and: aTileCollection.
+	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 andLapsToWin: 2 and: aTileCollection.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
 		addSpaceship: aSpaceship2;
 		addBoard: aBoard;
-		setLapsToWinTo: 2;
 		addDice: (SequentialFixedDice onFaces: {position. position2});
 		build.
 
@@ -71,6 +70,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 		          withSize: 60
 		          andWormholeFrom: 40
 		          to: 45
+				    andLapsToWin: 2
 		          and: aTileCollection.
 
 	aGame := aGameBuilder
@@ -78,7 +78,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 		         addSpaceship: aSpaceship2;
 		         addSpaceship: aSpaceship3;
 		         addBoard: aBoard;
-		         setLapsToWinTo: 2;
 		         addDice: (SequentialFixedDice onFaces: { position. 15 });
 		         build.
 
@@ -113,14 +112,13 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	aTileBuilder with: (ObtainCardEffect with: aRedoCard) at: position.
 	aTileCollection := aTileBuilder build.
 	
-	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 and: aTileCollection.
+	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 andLapsToWin: 2 and: aTileCollection.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
 		addSpaceship: aSpaceship2;
 		addSpaceship: aSpaceship3;
 		addBoard: aBoard;
-		setLapsToWinTo: 2;
 		addDice: (FixedDice onFace: position);
 		build.
 		
@@ -157,6 +155,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 		          withSize: 60
 		          andWormholeFrom: 40
 		          to: 45
+		          andLapsToWin: 2
 		          and: aTileCollection.
 
 	aGame := aGameBuilder
@@ -164,7 +163,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 		         addSpaceship: aSpaceship2;
 		         addSpaceship: aSpaceship3;
 		         addBoard: aBoard;
-		         setLapsToWinTo: 2;
 		         addDice: (FixedDice onFace: position);
 		         build.
 
@@ -208,7 +206,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 		addSpaceship: aSpaceship2;
 		addSpaceship: aSpaceship3;
 		addBoard: aBoard;
-		setLapsToWinTo: 2;
 		addDice: (SequentialFixedDice onFaces: {position. 4. 6});
 		build.
 
@@ -250,7 +247,6 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-					setLapsToWinTo: 2;
 		         addDice: (FixedDice onFace: 4);
 		         build.
 	aGame playTurn. aGame playTurn. 

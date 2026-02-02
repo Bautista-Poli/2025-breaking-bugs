@@ -5,15 +5,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'behavior' }
-RepeatCard >> implementEffect: aPermanentCard by: aSpaceship to: aTargetSpaceship in: aGame [
-
-	| lastEffectApplied |
-	lastEffectApplied := aGame lastTileEffectApplied.
-	lastEffectApplied applyTo: aTargetSpaceship in: aGame.
-	aGame registerThrownCard: self.
-]
-
 { #category : 'initialization' }
 RepeatCard >> initialize [
 

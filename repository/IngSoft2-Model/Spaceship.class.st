@@ -47,6 +47,21 @@ Spaceship >> addNewCard: aCard [
 ]
 
 { #category : 'as yet unclassified' }
+Spaceship >> adjustPositionAfterMoving: newPosition on: aBoard [
+	 "NUEVO"
+    | lapsCompleted positionInBoard aBoardSize |
+	 aBoardSize := aBoard getSize.
+    lapsCompleted := aBoardSize calculateLapsIn: newPosition.
+    positionInBoard := aBoardSize calculatePositionIn: newPosition.
+    
+    self incrementLapsBy: lapsCompleted.
+    
+    ^ (aBoard hasSpaceshipFinished: self) 
+        ifTrue: [ aBoardSize asParsec ]
+        ifFalse: [ positionInBoard ]
+]
+
+{ #category : 'as yet unclassified' }
 Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize withLapLimit: lapLimit [
     | lapsCompleted positionInBoard |
     lapsCompleted := aBoardSize calculateLapsIn: newPosition.
@@ -204,6 +219,20 @@ Spaceship >> makeHimOwnerOf: aMercenarySpaceship [
 Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
 	owner := true.
 
+]
+
+{ #category : 'getter' }
+Spaceship >> moveBy: positionsToAdvance on: aBoard [
+	 "NUEVO"
+    | tentativePosition finalPosition |
+    
+    tentativePosition := position + positionsToAdvance.
+    tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
+    finalPosition := self adjustPositionAfterMoving: tentativePosition 
+                             on: aBoard.
+    
+    self moveToPosition: finalPosition.
+	 ^ aBoard hasSpaceshipFinished: self.
 ]
 
 { #category : 'getter' }

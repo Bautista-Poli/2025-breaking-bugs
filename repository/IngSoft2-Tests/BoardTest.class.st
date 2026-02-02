@@ -40,7 +40,7 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
 
 	| aBoard aSize |
 	aSize := 60.
-	aBoard := Board withSizeInLightYears: aSize andWormholeFrom: 12 to: 27.
+	aBoard := Board withSizeInLightYears: aSize andWormholeFrom: 12 to: 27 andLapsToWin: 1.
 	self assert: (aBoard checkSize: aSize ).
 	self assert: (aBoard hasWormholeFrom: 12 to: 27)
 ]
@@ -49,7 +49,7 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
 BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 	
 	| game aSpaceship1  board gameBuilder finishLine tileBuilder tileCollection |
-
+	"board con laps 2"
 	gameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new. 
 	finishLine := 75.
@@ -64,13 +64,12 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 
 	tileCollection := tileBuilder build.
 
-	board := Board withSizeInLightYears: finishLine andWormholeFrom: 12 to: 45 and: tileCollection.
+	board := Board withSizeInLightYears: finishLine andWormholeFrom: 12 to: 45 andLapsToWin: 1 and: tileCollection.
 
 	game := gameBuilder
 		addSpaceship: aSpaceship1; 
 		addBoard: board;
 		addDice: (SequentialFixedDice onFaces: #(9 27 15 12 30 33 42 12));
-		setLapsToWinTo: 2;
 		build.
 		
 	self assert: (board checkSize: finishLine).
@@ -81,13 +80,13 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 
 	| aGameBuilder aSpaceship aGame |
+	"board con laps 2"
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 25);
-		         setLapsToWinTo: 2;
 		         build.
 
 	aGame playTurn.
@@ -116,13 +115,13 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 	
 	| aGameBuilder aSpaceship aGame |
+	"ESTA MAL ESTE TEST"
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 					addDice: (FixedDice onFace: 40);
-					setLapsToWinTo: 3;
 		         build.
 
 	aGame playTurn.
@@ -137,9 +136,8 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9 andLapsToWin: 2);
 					addDice: (FixedDice onFace: 25);
-					setLapsToWinTo: 2;
 		         build.
 
 	aGame playTurn.

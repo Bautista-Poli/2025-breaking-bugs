@@ -46,12 +46,11 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalkEffect for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
+	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 andLapsToWin:2 and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-					setLapsToWinTo: 2;
 		         addDice: (SequentialFixedDice onFaces: #( 25 24 ));
 		         build.
 	aGame playTurn. aGame playTurn.
@@ -78,12 +77,12 @@ MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 		          withSize: finishLine
 		          andWormholeFrom: 5
 		          to: 15
+					 andLapsToWin: 2
 		          and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         setLapsToWinTo: 2;
 		         addDice: (SequentialFixedDice onFaces: #( 2 9 4 4 ));
 		         build.
 	aGame playTurn. aGame playTurn.

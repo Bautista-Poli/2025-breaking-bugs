@@ -5,7 +5,8 @@ Class {
 		'aSize',
 		'wormholeEntry',
 		'wormholeExit',
-		'tiles'
+		'tiles',
+		'lapsToWin'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -48,28 +49,44 @@ Board class >> validateAreNotNegative: wormholeEntry and: wormholeExit [
 		Error signal: 'The wormhole cannot have negative entry or exit' ]
 ]
 
-{ #category : 'creation' }
+{ #category : 'as yet unclassified' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
+    ^ self 
+        withSize: aSize
+        andWormholeFrom: wormholeEntry
+        to: wormholeExit
+		  andLapsToWin: 1.
+]
+
+{ #category : 'as yet unclassified' }
+Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+	^ self withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: 1 and: tiles.
+]
+
+{ #category : 'creation' }
+Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: aLapsToWin [
     | tiles |
     tiles := (1 to: aSize + 1) collect: [ :i | Tile with: NoEffect new ].
     ^ self 
         withSizeDistance: (Parsec with: aSize)
         andWormholeFrom: wormholeEntry
         to: wormholeExit
+		  andLapsToWin: aLapsToWin
         and: tiles
 ]
 
 { #category : 'creation' }
-Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: aLapsToWin and: tiles [
     ^ self 
         withSizeDistance: (Parsec with: aSize)
         andWormholeFrom: wormholeEntry
         to: wormholeExit
+		  andLapsToWin: aLapsToWin
         and: tiles   
 ]
 
 { #category : 'as yet unclassified' }
-Board class >> withSizeDistance: aSizeDistance andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+Board class >> withSizeDistance: aSizeDistance andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: aLapsToWin and: tiles [
     
     aSizeDistance validate.
     self validateAreNotNegative: wormholeEntry and: wormholeExit.
@@ -82,10 +99,11 @@ Board class >> withSizeDistance: aSizeDistance andWormholeFrom: wormholeEntry to
         andSize: aSizeDistance
         andWormholeFrom: wormholeEntry
         to: wormholeExit
+		  andLapsToWin: aLapsToWin
 ]
 
 { #category : 'as yet unclassified' }
-Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
+Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: aLapsToWin [
     | tiles |
     tiles := (1 to: (aSize // 3) + 1) collect: [ :i | Tile with: NoEffect new ].
     
@@ -93,11 +111,12 @@ Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wo
         withSizeDistance: (LightYear with: aSize) 
         andWormholeFrom: wormholeEntry 
         to: wormholeExit 
+		  andLapsToWin: aLapsToWin
         and: tiles
 ]
 
 { #category : 'as yet unclassified' }
-Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit andLapsToWin: aLapsToWin and: tiles [
  	|  sizeInParsecs  |
 
     sizeInParsecs := aSize // 3.
@@ -105,7 +124,8 @@ Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wo
     ^ self 
         withSizeDistance: (LightYear with: aSize)
         andWormholeFrom: wormholeEntry   
-        to: wormholeExit                   
+        to: wormholeExit  
+		  andLapsToWin: aLapsToWin                 
         and: tiles
 ]
 
@@ -158,6 +178,11 @@ Board >> handleLandingOf: aSpaceship in: aGame [
 ]
 
 { #category : 'testing' }
+Board >> hasSpaceshipFinished: aSpaceship [ 
+	^ aSpaceship hasReached: lapsToWin
+]
+
+{ #category : 'testing' }
 Board >> hasWormholeFrom: anEntry to: anExit [
     ^ (wormholeEntry = anEntry) 
         and: [ wormholeExit = anExit ]
@@ -165,19 +190,21 @@ Board >> hasWormholeFrom: anEntry to: anExit [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom: aWormholeEntry to: aWormholeExit [
+Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom: aWormholeEntry to: aWormholeExit andLapsToWin: aLapsToWin [
 
 	aSize := aDistanceSize.
 	tiles := aTileCollection.
 	wormholeEntry := aWormholeEntry.
-	wormholeExit := aWormholeExit
+	wormholeExit := aWormholeExit.
+	lapsToWin := aLapsToWin.
+	
 ]
 
 { #category : 'initialization' }
 Board >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
 	| boardSize currentPosition newPosition currentLap |
 
-	boardSize := self getSize asParsec. 
+	boardSize := aSize asParsec. 
 	currentPosition := aSpaceship getPosition.
 	currentLap := aSpaceship getLapsCompleted.
 

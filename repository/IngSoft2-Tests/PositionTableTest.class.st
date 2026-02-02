@@ -77,9 +77,8 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 					addSpaceship: aSecondSpaceship; 
 					addSpaceship: aThirdSpaceship;
 					addSpaceship: aFourthSpaceship ; 
-		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 15);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 15 andLapsToWin: 2);
 		         addDice: (SequentialFixedDice onFaces: #(22 4 10 5 20 10 7 1));
-					setLapsToWinTo: 2;
 		         build.
 
 	aGame playTurn.  aGame playTurn.  aGame playTurn.  aGame playTurn. 
