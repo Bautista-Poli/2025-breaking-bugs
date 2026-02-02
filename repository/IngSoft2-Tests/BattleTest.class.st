@@ -56,10 +56,11 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 	aGame playTurn. aGame playTurn.
 	aGame playTurn. aGame playTurn.
 	aGame playTurn. aGame playTurn.
+	aGame playTurn. aGame playTurn."Se queda sin escudos por lo cual no va a poder moverse"
 	aGame playTurn. aGame playTurn. "Se queda sin escudos por lo cual no va a poder moverse"
-	aGame playTurn. aGame playTurn. "Se queda sin escudos por lo cual no va a poder moverse"
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
+	
 	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 9.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.

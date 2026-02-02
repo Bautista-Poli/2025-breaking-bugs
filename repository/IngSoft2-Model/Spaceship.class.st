@@ -4,13 +4,12 @@ Class {
 	#instVars : [
 		'position',
 		'laps',
-		'shields',
 		'turnsPenalize',
 		'cards',
-		'velocity',
 		'mercenaries',
 		'id',
-		'owner'
+		'owner',
+		'shieldStatus'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -73,7 +72,12 @@ Spaceship >> beMercenaryOf: anOwnerSpaceship [
 { #category : 'behavior' }
 Spaceship >> canPlay [
 
-	^ shields > 0
+	^ shieldStatus canPlay
+]
+
+{ #category : 'behavior' }
+Spaceship >> changeShieldStatusTo: aNewShieldStatus [
+    shieldStatus := aNewShieldStatus
 ]
 
 { #category : 'behavior' }
@@ -122,7 +126,12 @@ Spaceship >> getPosition [
 { #category : 'getter' }
 Spaceship >> getShields [
 
-	^ shields
+	^ shieldStatus shieldCount
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> handleEndOfCycle [
+	shieldStatus handleEndOfCycleFor: self
 ]
 
 { #category : 'testing' }
@@ -152,13 +161,11 @@ Spaceship >> initializeWith: aCollectionOfCards [
 
 	position := 0.
 	laps := 0.
-	shields := 3.
-	turnsPenalize := -1.
+	shieldStatus := ShieldsActive withCount: 3.
 	cards := aCollectionOfCards.
-	velocity := 0.
 	mercenaries := OrderedCollection new.
 	owner := false.
-	id := 'Nave-' , (0 to: 9999) atRandom asString
+	id := 'Nave-' , (0 to: 9999) atRandom asString.
 ]
 
 { #category : 'adding' }
@@ -183,7 +190,7 @@ Spaceship >> isAtPosition: aPosition [
 { #category : 'behavior' }
 Spaceship >> lowerAShield [
 
-	shields > 0 ifTrue: [ shields := shields - 1 ]
+	shieldStatus lowerShieldFor: self
 ]
 
 { #category : 'behavior' }
@@ -217,7 +224,7 @@ Spaceship >> moveToPosition: aPosition [
 
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
-	position := aPosition + velocity
+	position := aPosition.
 ]
 
 { #category : 'getter' }
@@ -239,7 +246,7 @@ Spaceship >> penalize [
 { #category : 'behavior' }
 Spaceship >> rechargeShields [
 
-	shields := 3
+	shieldStatus rechargeShieldsFor: self
 ]
 
 { #category : 'as yet unclassified' }
@@ -248,7 +255,6 @@ Spaceship >> use: aCard targeting: aTargetCard affecting: aTargetShip in: aGame 
     self validateIfCardIsInDeck: aCard.
     aCard canBePlayedBy: self in: aGame.
         
-
     cardToPlay := self extractCardIfAvailable: aCard.
     cardToPlay playBy: self in: aGame targeting: aTargetCard affecting: aTargetShip.
 ]

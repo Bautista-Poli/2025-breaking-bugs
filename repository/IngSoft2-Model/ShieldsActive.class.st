@@ -1,0 +1,47 @@
+Class {
+	#name : 'ShieldsActive',
+	#superclass : 'Object',
+	#instVars : [
+		'countOfShields'
+	],
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
+}
+
+{ #category : 'as yet unclassified' }
+ShieldsActive class >> withCount: aNumberOfShields [
+    ^ self new initializeWithCount: aNumberOfShields.
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> canPlay [ 
+    ^ true
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> handleEndOfCycleFor: aSpaceship [
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> initializeWithCount: aNumberOfShields [
+    countOfShields := aNumberOfShields.
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> lowerShieldFor: aSpaceship [ 
+    countOfShields := countOfShields - 1.
+    countOfShields = 0 ifTrue: [ 
+        aSpaceship changeShieldStatusTo: ShieldsEmpty new]
+    
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> rechargeShieldsFor: aSpaceship [ 
+    countOfShields := 3.
+    
+]
+
+{ #category : 'initialization' }
+ShieldsActive >> shieldCount [ 
+    ^ countOfShields.
+]

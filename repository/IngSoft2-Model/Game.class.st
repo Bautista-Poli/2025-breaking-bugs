@@ -71,18 +71,6 @@ Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
 ]
 
 { #category : 'behavior' }
-Game >> endCycleIfNeeded [
-	remainingTurnsInCycle := remainingTurnsInCycle - 1.
-	remainingTurnsInCycle > 0 ifTrue: [ ^ self ].
-
-	(spaceships select: [ :s | s getShields = 0 ]) do: [ :s | s penalize ].
-	remainingTurnsInCycle := spaceships size.
-
-
-
-]
-
-{ #category : 'behavior' }
 Game >> getAllDiceValuesFrom: diceCollection [
 
 	^ diceCollection
@@ -173,9 +161,8 @@ Game >> playTurn [
         hasFinished := spaceshipToPlay hasReached: lapsToWin.
     ].
 
-    turnIndex := turnIndex + 1.
-    turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
-    self endCycleIfNeeded.
+    turnIndex := turnIndex \\ spaceships size + 1.
+    spaceshipToPlay handleEndOfCycle.
 ]
 
 { #category : 'initialization' }
@@ -213,9 +200,8 @@ Game >> skipTurn [
     self checkIfGameHasAlreadyFinished.
     spaceshipToPlay := spaceships at: turnIndex.
     spaceshipToPlay rechargeShields.
-    turnIndex := turnIndex + 1.
-    turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
-    self endCycleIfNeeded.
+    turnIndex := turnIndex \\ spaceships size + 1.
+    spaceshipToPlay handleEndOfCycle.
 
 
 ]
