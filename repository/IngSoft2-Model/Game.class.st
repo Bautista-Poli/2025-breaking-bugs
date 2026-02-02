@@ -5,13 +5,11 @@ Class {
 		'board',
 		'spaceships',
 		'dice',
-		'hasFinished',
 		'battle',
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
-		'turnIndex',
-		'remainingTurnsInCycle'
+		'turnIndex'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -58,8 +56,8 @@ Game >> checkForBattleInvolving: aSpaceship [
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
 
-	hasFinished ifTrue: [
-		Error signal: 'Cannot play a turn after the game has finished.' ]
+	(board hasAnySpaceshipFinished: spaceships) ifTrue: [
+		Error signal: 'Cannot play a turn after the game has finished.' ].
 ]
 
 { #category : 'behavior' }
@@ -83,7 +81,7 @@ Game >> getAllDiceValuesFrom: diceCollection [
 
 { #category : 'behavior' }
 Game >> getPositionTable [
-    hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
+    (board hasAnySpaceshipFinished: spaceships) ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
 ]
@@ -98,13 +96,12 @@ Game >> getRealCard: aTargetCard [
 
 { #category : 'accessing' }
 Game >> hasFinished [ 
-	^ hasFinished.
+	^ board hasAnySpaceshipFinished: spaceships.
 ]
 
 { #category : 'initialization' }
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice [
 
-	hasFinished := false.
 	spaceships := aCollectionOfSpacehips deepCopy.
 	board := aBoard.
 	dice := aCollectionOfDice.
@@ -113,7 +110,6 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
 	turnIndex := 1.
-	remainingTurnsInCycle := aCollectionOfSpacehips size.
 
 ]
 
@@ -158,7 +154,7 @@ Game >> playTurn [
 
     (spaceshipToPlay canPlay) ifTrue: [
         positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
-        hasFinished := spaceshipToPlay moveBy: positionsToAdvance on: board.
+        spaceshipToPlay moveBy: positionsToAdvance on: board.
         board handleLandingOf: spaceshipToPlay in: self.
     ].
 

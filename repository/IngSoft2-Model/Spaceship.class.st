@@ -61,19 +61,6 @@ Spaceship >> adjustPositionAfterMoving: newPosition on: aBoard [
         ifFalse: [ positionInBoard ]
 ]
 
-{ #category : 'as yet unclassified' }
-Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize withLapLimit: lapLimit [
-    | lapsCompleted positionInBoard |
-    lapsCompleted := aBoardSize calculateLapsIn: newPosition.
-    positionInBoard := aBoardSize calculatePositionIn: newPosition.
-    
-    self incrementLapsBy: lapsCompleted.
-    
-    ^ (self hasReached: lapLimit)
-        ifTrue: [ aBoardSize asParsec ]
-        ifFalse: [ positionInBoard ]
-]
-
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
 	"NUEVO"
@@ -233,19 +220,6 @@ Spaceship >> moveBy: positionsToAdvance on: aBoard [
     
     self moveToPosition: finalPosition.
 	 ^ aBoard hasSpaceshipFinished: self.
-]
-
-{ #category : 'getter' }
-Spaceship >> moveBy: positionsToAdvance on: aBoard withLapLimit: lapLimit [
-    | tentativePosition finalPosition |
-    
-    tentativePosition := position + positionsToAdvance.
-    tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
-    finalPosition := self adjustPositionAfterMoving: tentativePosition 
-                             onBoardOfSize: aBoard getSize 
-                             withLapLimit: lapLimit.
-    
-    self moveToPosition: finalPosition.
 ]
 
 { #category : 'move' }
