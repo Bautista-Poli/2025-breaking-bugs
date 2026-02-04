@@ -46,21 +46,6 @@ Spaceship >> addNewCard: aCard [
 	
 ]
 
-{ #category : 'as yet unclassified' }
-Spaceship >> adjustPositionAfterMoving: newPosition on: aBoard [
-	 "NUEVO"
-    | lapsCompleted positionInBoard aBoardSize |
-	 aBoardSize := aBoard getSize.
-    lapsCompleted := aBoardSize calculateLapsIn: newPosition.
-    positionInBoard := aBoardSize calculatePositionIn: newPosition.
-    
-    self incrementLapsBy: lapsCompleted.
-    
-    ^ (aBoard hasSpaceshipFinished: self) 
-        ifTrue: [ aBoardSize asParsec ]
-        ifFalse: [ positionInBoard ]
-]
-
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
 	"NUEVO"
@@ -208,18 +193,51 @@ Spaceship >> makeSpaceshipOwnedBy: aSpaceship [
 
 ]
 
+{ #category : 'testing' }
+Spaceship >> moveBackBy: positions on: aBoard [
+    | boardSize tentativePosition lapsChange |
+    
+    boardSize := aBoard getSize asParsec.
+    tentativePosition := position - positions.
+    lapsChange := 0.
+    
+
+    [ tentativePosition < 0 and: [ laps + lapsChange > 0 ] ] whileTrue: [
+        lapsChange := lapsChange - 1.
+        tentativePosition := tentativePosition + boardSize.
+    ].
+    
+    "Si llegamos antes del inicio, resetear a 0,0"
+    (tentativePosition < 0 or: [ laps + lapsChange < 0 ])
+        ifTrue: [ 
+            self moveToPosition: 0.
+            self incrementLapsBy: (0 - laps). "Resetear laps a 0"
+        ]
+        ifFalse: [
+            self moveToPosition: tentativePosition.
+            self incrementLapsBy: lapsChange.
+        ].
+]
+
 { #category : 'getter' }
 Spaceship >> moveBy: positionsToAdvance on: aBoard [
-	 "NUEVO"
-    | tentativePosition finalPosition |
-    
-    tentativePosition := position + positionsToAdvance.
-    tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
-    finalPosition := self adjustPositionAfterMoving: tentativePosition 
-                             on: aBoard.
-    
-    self moveToPosition: finalPosition.
-	 ^ aBoard hasSpaceshipFinished: self.
+	| tentativePosition aBoardSize lapsCompleted positionInBoard finalPosition |
+
+	tentativePosition := position + positionsToAdvance.
+	tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
+
+	aBoardSize := aBoard getSize.
+	lapsCompleted := aBoardSize calculateLapsIn: tentativePosition.
+	positionInBoard := aBoardSize calculatePositionIn: tentativePosition.
+
+	self incrementLapsBy: lapsCompleted.
+
+	finalPosition := (aBoard hasSpaceshipFinished: self)
+		ifTrue: [ aBoardSize asParsec ]
+		ifFalse: [ positionInBoard ].
+
+	self moveToPosition: finalPosition.
+
 ]
 
 { #category : 'move' }

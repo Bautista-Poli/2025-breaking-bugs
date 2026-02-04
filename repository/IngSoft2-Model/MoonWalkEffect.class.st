@@ -16,12 +16,8 @@ MoonWalkEffect class >> for: aNumberOfPositionToGoBack [
 
 { #category : 'operations' }
 MoonWalkEffect >> applyTo: aSpaceship in: aGame [
-	| newPosition |
 	aGame spaceshipsExcept: aSpaceship do: [ :ship |
-		newPosition := aGame
-			positionAfterMovingBack: numberOfPositionsToGoBack
-			for: ship.
-		ship moveToPosition: newPosition
+		ship moveBackBy: numberOfPositionsToGoBack on: aGame board.
 	].
 
 	aGame registerAppliedEffect: self.

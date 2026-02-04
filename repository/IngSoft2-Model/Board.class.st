@@ -165,11 +165,6 @@ Board >> getSize [
 	^ aSize.
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> getTiles [
-	^ tiles 
-]
-
 { #category : 'initialization' }
 Board >> handleLandingOf: aSpaceship in: aGame [
     | tile |
@@ -203,23 +198,4 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom:
 	wormholeExit := aWormholeExit.
 	lapsToWin := aLapsToWin.
 	
-]
-
-{ #category : 'initialization' }
-Board >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
-	| boardSize currentPosition newPosition currentLap |
-
-	boardSize := aSize asParsec. 
-	currentPosition := aSpaceship getPosition.
-	currentLap := aSpaceship getLapsCompleted.
-
-	newPosition := currentPosition - positionsToGoBack.
-
-	newPosition < 0 ifTrue: [
-		currentLap = 0 ifTrue: [ ^ 0 ].
-		aSpaceship incrementLapsBy: -1.
-		^ boardSize + newPosition
-	].
-
-	^ newPosition
 ]

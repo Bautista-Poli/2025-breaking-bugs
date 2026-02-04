@@ -36,6 +36,11 @@ Game >> addActivePermanentCard: aCard [
     activePermanentCards add: aCard.
 ]
 
+{ #category : 'initialization' }
+Game >> board [
+    ^ board
+]
+
 { #category : 'behavior' }
 Game >> calculateTotalRollFor: aSpaceship [
 
@@ -160,11 +165,6 @@ Game >> playTurn [
 
     turnIndex := turnIndex \\ spaceships size + 1.
     spaceshipToPlay handleEndOfCycle.
-]
-
-{ #category : 'initialization' }
-Game >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
-	^ board positionAfterMovingBack: positionsToGoBack for: aSpaceship.
 ]
 
 { #category : 'behavior' }

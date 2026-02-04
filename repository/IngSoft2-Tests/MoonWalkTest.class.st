@@ -6,6 +6,35 @@ Class {
 }
 
 { #category : 'tests' }
+MoonWalkTest >> testMoonWalkCannotMoveSpaceshipToNegativeLaps [
+
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	finishLine := 10.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (MoonWalkEffect for: 20) at: 6.
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 5
+		          to: 9
+					 andLapsToWin: 3
+		          and: aTileCollection.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 15 6 ));
+		         build.
+	aGame playTurn. aGame playTurn.
+
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 0.
+]
+
+{ #category : 'tests' }
 MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
