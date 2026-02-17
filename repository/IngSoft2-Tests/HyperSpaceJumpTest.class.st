@@ -10,7 +10,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	finishLine := 19.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 4.

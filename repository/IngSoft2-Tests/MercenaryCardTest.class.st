@@ -24,9 +24,9 @@ MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyA
     aCard2 := MercenaryCard new.
     
     "Nave 1 tiene una carta, Nave 3 tiene otra"
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard1).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship with: (OrderedCollection with: aCard2).
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard1) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: (OrderedCollection with: aCard2) and: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -54,9 +54,9 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWi
 	aCard1 := MercenaryCard new.
 	aCard2 := MercenaryCard new.
 	aSpaceship := Spaceship with:
-		              (OrderedCollection with: aCard1 with: aCard2).
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+		              (OrderedCollection with: aCard1 with: aCard2) and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -88,8 +88,8 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
 	 aCard2 := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard ).
-    aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2).
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard ) and: 'nave1'.
+    aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2) and: 'nave2'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -112,13 +112,14 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsInvalidIfASpaceshipThatUseMercenaryCardWantsToHaveHimselfAsMercenary [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aCollectionOfCards |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+	 aCollectionOfCards := (OrderedCollection with: aCard with: SpeedCard new).
+    aSpaceship := Spaceship with: aCollectionOfCards and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -141,9 +142,9 @@ MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
     aSecondCard := SpeedCard new.
     
     "La nave arranca con 2 cartas"
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -168,9 +169,9 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: (SpeedCard new)).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: (SpeedCard new)) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -201,9 +202,9 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
     aCard1 := MercenaryCard new.
     aCard2 := MercenaryCard new.
     
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -235,9 +236,9 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -264,9 +265,9 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -296,9 +297,9 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
     aSecondCard := AccelerationCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard).
-    aSpaceship2 := Spaceship new. 
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -323,9 +324,9 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
     | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard)and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;

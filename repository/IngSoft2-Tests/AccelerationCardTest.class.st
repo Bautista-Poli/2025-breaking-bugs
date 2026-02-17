@@ -13,8 +13,8 @@ AccelerationCardTest >> testAccelerationCardIncreasesMovementWithNewProtocol [
     position2 := 4.
     
     accelerationCard := AccelerationCard new.
-    spaceship1 := Spaceship with: (OrderedCollection with: accelerationCard).
-    spaceship2 := Spaceship with: (OrderedCollection new).
+    spaceship1 := Spaceship with: (OrderedCollection with: accelerationCard) and: 'nave1'.
+    spaceship2 := Spaceship with: (OrderedCollection new) and: 'nave2'.
     
     game := GameBuilder new
         addSpaceship: spaceship1;

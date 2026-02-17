@@ -7,19 +7,16 @@ Class {
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
-    | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherSpeedCard aCancellationCard |
+    | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherSpeedCard aCollectionOfCards aCancellationCard |
     position1 := 6.
     aGameBuilder := GameBuilder new.
     aSpeedCard := SpeedCard new.
     anotherSpeedCard := SpeedCard new.
     aCancellationCard := CancelationCard new.
     aRedoCard := RedoCard new.
+	 aCollectionOfCards	:= (OrderedCollection with: aSpeedCard with: aRedoCard with: aCancellationCard with: anotherSpeedCard).
     
-    aSpaceship := Spaceship with: (OrderedCollection 
-        with: aSpeedCard 
-        with: aRedoCard 
-        with: aCancellationCard 
-        with: anotherSpeedCard).
+    aSpaceship := Spaceship with: aCollectionOfCards and: 'nave1'.
         
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -46,11 +43,11 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
     aGameBuilder := GameBuilder new.
     aMercenaryCard := MercenaryCard new.
     aRedoCard := RedoCard new.
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
     aSpaceship := Spaceship with: (OrderedCollection
                                     with: aMercenaryCard
-                                    with: aRedoCard).
+                                    with: aRedoCard) and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'. 
+	aSpaceship3 := Spaceship with: 'nave3'.
                                     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -81,7 +78,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
     aSpaceship := Spaceship with: (OrderedCollection 
                                     with: aSpeedCard 
                                     with: aRedoCard 
-                                    with: anotherRedoCard).
+                                    with: anotherRedoCard) and: 'nave1'.
                                     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -110,9 +107,9 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
     repeatCard := RepeatCard new.
     redoCard := RedoCard new.
 
-    spaceship1 := Spaceship with: (OrderedCollection with: repeatCard with: redoCard).
-    spaceship2 := Spaceship new.
-    spaceship3 := Spaceship new.
+    spaceship1 := Spaceship with: (OrderedCollection with: repeatCard with: redoCard) and: 'nave1'.
+    spaceship2 := Spaceship with: 'nave2'. 
+	 spaceship3 := Spaceship with: 'nave3'.
 
     titleBuilder := ((TilesBuilder with: 90)
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
@@ -154,7 +151,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
     aSpeedCard := SpeedCard new.
     aRedoCard := RedoCard new.
     
-    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard) and: 'nave1'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -184,8 +181,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
     
     aSpaceship := Spaceship with: (OrderedCollection
                                     with: anAccelerationCard
-                                    with: aRedoCard).
-    aSpaceship2 := Spaceship new.
+                                    with: aRedoCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -209,7 +206,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
     position1 := 6.
     aGameBuilder := GameBuilder new.
     aRedoCard := RedoCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aRedoCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aRedoCard) and: 'nave1'.
     
     aGame := aGameBuilder
                  addSpaceship: aSpaceship;

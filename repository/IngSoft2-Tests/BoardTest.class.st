@@ -51,7 +51,7 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 	| game aSpaceship1  board gameBuilder finishLine tileBuilder tileCollection |
 	"board con laps 2"
 	gameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship new. 
+	aSpaceship1 := Spaceship with: 'nave1'. 
 	finishLine := 75.
 
 	tileBuilder := TilesBuilder withInLightYears: finishLine.
@@ -82,7 +82,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 	| aGameBuilder aSpaceship aGame |
 	"board con laps 2"
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -99,10 +99,10 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 	
 	| aGameBuilder aSpaceship aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-					addSpaceship: Spaceship new;
+					addSpaceship: (Spaceship with: 'nave2');
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 					addDice: (FixedDice onFace: 22); "Si es 20 da error"
 		         build.
@@ -117,7 +117,7 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 	| aGameBuilder aSpaceship aGame |
 	"ESTA MAL ESTE TEST"
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -133,7 +133,7 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	
 	| aGameBuilder aSpaceship aGame  |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9 andLapsToWin: 2);

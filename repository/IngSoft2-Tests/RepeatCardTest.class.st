@@ -11,7 +11,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
     
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
 
     finishLine := 90.
     aTileBuilder := TilesBuilder with: finishLine.
@@ -42,9 +42,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
     
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'. 
+	 aSpaceship3 := Spaceship with: 'nave3'.
 
     finishLine := 90.
     aTileBuilder := (TilesBuilder with: finishLine)
@@ -81,8 +81,8 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
 	aGameBuilder := GameBuilder new.
 	aRepeatCard := RepeatCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
-	aSpaceship2 := Spaceship new.
+	aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'. 
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
 		                with: HyperSpaceJumpEffect new
@@ -119,9 +119,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
     | aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'. 
+	 aSpaceship3 := Spaceship with: 'nave3'.
 
     finishLine := 90.
     aTileBuilder := (TilesBuilder with: finishLine)
@@ -157,9 +157,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 	| aSpaceship1 aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder aRepeatCard |
 	aGameBuilder := GameBuilder new.
 	aRepeatCard := RepeatCard new.
-	aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'. 
+	aSpaceship3 := Spaceship with: 'nave3'.
 
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
@@ -212,8 +212,8 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterLandingOnANoEffectTileThenNothing
     
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard).
-    aSpaceship2 := Spaceship new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'. 
 
     aBoard := Board withSize: 90 andWormholeFrom: 80 to: 89.
     
@@ -241,7 +241,7 @@ RepeatCardTest >> testWhenUsingARepeatCardBeforeAnyMoveThenNothingHappens [
     
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
     
     aGame := aGameBuilder
                  addSpaceship: aSpaceship;
@@ -262,7 +262,7 @@ RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNoth
     
     aGameBuilder := GameBuilder new.
     aRepeatCard := RepeatCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aRepeatCard) and: 'nave1'.
 
     finishLine := 90.
     aTileBuilder := TilesBuilder with: finishLine.

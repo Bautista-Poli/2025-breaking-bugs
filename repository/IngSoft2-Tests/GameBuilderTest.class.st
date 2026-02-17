@@ -20,7 +20,7 @@ GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
 
 	| aBoard aSpaceship aGameBuilder aDice aGame |
 	aBoard := Board withSize: 9 andWormholeFrom: 2 to: 5.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGameBuilder := GameBuilder new.
 	aDice := Dice new.
 	aGameBuilder addSpaceship: aSpaceship.
@@ -37,7 +37,7 @@ GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
 GameBuilderTest >> testWhenTryingToBuildAGameWithoutABoardBuildFails [
 
 	| aSpaceship aGameBuilder aDice |
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aDice := Dice new.
 	aGameBuilder := GameBuilder new.
 	aGameBuilder addSpaceship: aSpaceship.
@@ -55,7 +55,7 @@ GameBuilderTest >> testWhenTryingToBuildAGameWithoutDiceBuildFails [
 
 	| aBoard aGameBuilder aSpaceship |
 	aBoard := Board withSize: 9 andWormholeFrom: 2 to: 5.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGameBuilder := GameBuilder new.
 	aGameBuilder addSpaceship: aSpaceship.
 	aGameBuilder addBoard: aBoard.

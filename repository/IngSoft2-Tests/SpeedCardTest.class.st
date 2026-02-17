@@ -12,8 +12,8 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 	positions := 6.
 	aGameBuilder := GameBuilder new.
 	aCard := SpeedCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new).
-	aSpaceship2 := Spaceship with: (OrderedCollection with: SpeedCard new with: SpeedCard new).
+	aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: 'nave1'.
+	aSpaceship2 := Spaceship with: (OrderedCollection with: SpeedCard new with: SpeedCard new) and: 'nave2'.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -44,7 +44,7 @@ SpeedCardTest >> testIsValidIfCardUsageIsOnlyRemovedFromOwnersHand [
     position2 := 4.
     aGameBuilder := GameBuilder new.
     aCard := SpeedCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new).
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: 'nave1'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -71,8 +71,8 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
     aGameBuilder := GameBuilder new.
     aCard1 := SpeedCard new.
     aCard2 := SpeedCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: SpeedCard new).
-    aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2 with: SpeedCard new).
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: SpeedCard new) and: 'nave1'.
+    aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2 with: SpeedCard new) and: 'nave2'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -107,7 +107,7 @@ SpeedCardTest >> testIsValidIfSpeedCardIncrementsPositionDynamically [
     position := 6.
     aGameBuilder := GameBuilder new.
     aCard := SpeedCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard).
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: 'nave1'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -130,7 +130,7 @@ SpeedCardTest >> testSpaceshipUsesTwoSpeedCardsAndBonusesAccumulateImmediately [
 	aGameBuilder := GameBuilder new.
 	aCard1 := SpeedCard new.
 	aCard2 := SpeedCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2).
+	aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: 'nave1'.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -153,8 +153,8 @@ SpeedCardTest >> testSpeedAndAccelerationBonusesAccumulateForTargetSpaceship [
     aGameBuilder := GameBuilder new.
     aSpeedCard := SpeedCard new.
     aAccelerationCard := AccelerationCard new. 
-    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aAccelerationCard).
-    aSpaceship2 := Spaceship new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aAccelerationCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'. 
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;

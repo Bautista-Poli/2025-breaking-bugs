@@ -20,7 +20,10 @@ GameTest >> testAllTheEffectsOnGame [
 	| aGame aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board aGameBuilder finishLine tileBuilder tileCollection |
 	"board con laps 2"
 	aGameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship new. aSpaceship2 := Spaceship new. aSpaceship3 := Spaceship new. aSpaceship4 := Spaceship new.
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
+	aSpaceship4 := Spaceship with: 'nave4'.
 	finishLine := 25.
 
 	tileBuilder := TilesBuilder with: finishLine.
@@ -80,10 +83,10 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	aAccelerationCard2 := AccelerationCard new.
 	aMercenaryCard2 := MercenaryCard new.
 	
-	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with: aMercenaryCard2).
-	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancellationCard with: aSpeedCard2).
-	aSpaceship3 := Spaceship with: (OrderedCollection with: aAccelerationCard with: aCancellationCard2).
-	aSpaceship4 := Spaceship with: (OrderedCollection with: aMercenaryCard with: aAccelerationCard2).
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with: aMercenaryCard2) and: 'nave1'.
+	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancellationCard with: aSpeedCard2) and: 'nave2'.
+	aSpaceship3 := Spaceship with: (OrderedCollection with: aAccelerationCard with: aCancellationCard2) and: 'nave3'.
+	aSpaceship4 := Spaceship with: (OrderedCollection with: aMercenaryCard with: aAccelerationCard2) and: 'nave4'.
 	
 	finishLine := 43.
 	aTileBuilder := TilesBuilder with: finishLine.
@@ -167,10 +170,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |
 	"board con laps 2"
 	aGameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
-	aSpaceship4 := Spaceship new.
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
+	aSpaceship4 := Spaceship with: 'nave4'.
 	finishLine := 25.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder
@@ -237,8 +240,8 @@ GameTest >> testFullGameSimulationWithWinner [
 
 	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |
 	aGameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship new.
-	aSpaceship2 := Spaceship new.
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	finishLine := 19.
 	aGame := aGameBuilder
 					addSpaceship: aSpaceship1;
@@ -264,7 +267,7 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 	
 
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -280,7 +283,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -296,7 +299,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -312,7 +315,7 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -331,8 +334,8 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 
 	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine |
 	aGameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship new.
-	aSpaceship2 := Spaceship new.
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	finishLine := 20.
 	aGame := aGameBuilder
 					addSpaceship: aSpaceship1;
@@ -356,7 +359,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 	
 
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -374,7 +377,7 @@ GameTest >> testWhenGameCreatedItDoesntFinish [
 	
 	aGameBuilder := GameBuilder new.
 	aGame := aGameBuilder
-		         addSpaceship: Spaceship new;
+		         addSpaceship: (Spaceship with: 'nave1');
 		         addBoard: (Board withSize: 6 andWormholeFrom: 2 to: 5);
 				   addDice: (FixedDice onFace: 4);
 		         build.
@@ -387,7 +390,7 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 
 		| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 20);
@@ -404,7 +407,7 @@ GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -421,7 +424,7 @@ GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds 
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);

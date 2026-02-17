@@ -13,8 +13,8 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 	aAccelCard := AccelerationCard new.
 	aCancelationCard := CancelationCard new.
 	
-	aSpaceship := Spaceship with: (OrderedCollection with: aAccelCard with: aCancelationCard).
-	aSpaceship2 := Spaceship new.
+	aSpaceship := Spaceship with: (OrderedCollection with: aAccelCard with: aCancelationCard)and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -50,9 +50,9 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
     
     aSpaceship := Spaceship with: (OrderedCollection
                                     with: aPermanentCard
-                                    with: aCancelationCard).
-    aSpaceship2 := Spaceship new.
-    aSpaceship3 := Spaceship new.
+                                    with: aCancelationCard) and: 'nave1'.
+    aSpaceship2 := Spaceship with: 'nave2'.
+    aSpaceship3 := Spaceship with: 'nave3'.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -88,7 +88,7 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 		with: aSpeedCard 
 		with: aAccelCard 
 		with: aCancelCard 
-		with: aRedoCard).
+		with: aRedoCard) and: 'nave1'.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -122,7 +122,7 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 	aSpeedCard := SpeedCard new.
 	aCancelationCard := CancelationCard new.
 	
-	aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aCancelationCard).
+	aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aCancelationCard) and: 'nave1'.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;

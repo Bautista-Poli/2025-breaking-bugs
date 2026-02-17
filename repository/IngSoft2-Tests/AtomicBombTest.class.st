@@ -10,9 +10,9 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 
 	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (AtomicBombEffect new) at: 4.

@@ -10,7 +10,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	finishLine := 19.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (BlackHoleEffect new) at: 9.
@@ -18,7 +18,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 	aTileCollection := aTileBuilder build.
 	aBoard := Board withSize: finishLine andWormholeFrom: 10 to: 15 and: aTileCollection.
 	aGame := aGameBuilder
-		         addSpaceship: Spaceship new;
+		         addSpaceship: (Spaceship with: 'nave2');
 		         addSpaceship: aSpaceship;
 		         addBoard: aBoard;
 		         addDice: (SequentialFixedDice onFaces: #( 13 9 ));
@@ -33,7 +33,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	
 	finishLine := 19.
 	aTileBuilder := TilesBuilder with: finishLine.

@@ -17,18 +17,23 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
+	self error: 'Debe ser inicializado con un id'
+]
+
+{ #category : 'instance creation' }
+Spaceship class >> with: anId [
 
 	| randomCardsCollection |
 	randomCardsCollection := OrderedCollection
 		               with: RandomCard obtainCard
 		               with: RandomCard obtainCard.
-	^ self basicNew initializeWith: randomCardsCollection.
+	^ self basicNew initializeWith: randomCardsCollection and: anId.
 ]
 
 { #category : 'instance creation' }
-Spaceship class >> with: cardsCollection [
+Spaceship class >> with: cardsCollection and: anId [
 
-	^ self basicNew initializeWith:cardsCollection.
+	^ self basicNew initializeWith:cardsCollection and: anId.
 ]
 
 { #category : 'adding' }
@@ -144,7 +149,7 @@ Spaceship >> incrementLapsBy: lapsIncremented [
 ]
 
 { #category : 'initialization' }
-Spaceship >> initializeWith: aCollectionOfCards [
+Spaceship >> initializeWith: aCollectionOfCards and: anId [
 
 	position := 0.
 	laps := 0.
@@ -152,7 +157,7 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	cards := aCollectionOfCards.
 	mercenaries := OrderedCollection new.
 	owner := false.
-	id := 'Nave-' , (0 to: 9999) atRandom asString.
+	id:= anId.
 ]
 
 { #category : 'adding' }

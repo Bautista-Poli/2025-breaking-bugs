@@ -13,8 +13,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	aSpeedCard := SpeedCard new. 
 	aCard := CancelationCard new.
 	
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship with: (OrderedCollection with: aSpeedCard with: aSpeedCard).
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: (OrderedCollection with: aSpeedCard with: aSpeedCard) and: 'nave2'.
 	
 	position := 6. 
 	position2 := 4.
@@ -55,9 +55,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+   aSpaceship2 := Spaceship with: 'nave2'.
+   aSpaceship3 := Spaceship with: 'nave3'.
 
 	position := 6.
 	aTileBuilder := TilesBuilder with: 60.
@@ -102,9 +102,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	aGameBuilder := GameBuilder new.
 	aMercenaryCard := MercenaryCard new.
 	aRedoCard := RedoCard new.
-	aSpaceship := Spaceship with: (OrderedCollection with: aMercenaryCard with: MercenaryCard new).
-	aSpaceship2 := Spaceship new. 
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: (OrderedCollection with: aMercenaryCard with: MercenaryCard new) and: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'. 
+	aSpaceship3 := Spaceship with: 'nave3'.
 	
 	position := 6.
 	aTileBuilder := TilesBuilder with: 60.
@@ -139,9 +139,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+   aSpaceship2 := Spaceship with: 'nave2'.
+   aSpaceship3 := Spaceship with: 'nave3'.
 
 	position := 6.
 	aTileBuilder := TilesBuilder with: 60.
@@ -188,9 +188,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard |
 	
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new. 
-	aSpaceship2 := Spaceship new. 
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+   aSpaceship2 := Spaceship with: 'nave2'.
+   aSpaceship3 := Spaceship with: 'nave3'.
 	position := 3.
 	
 	aTileBuilder := TilesBuilder with: 60.
@@ -235,9 +235,9 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSpaceship3 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+   aSpaceship2 := Spaceship with: 'nave2'.
+   aSpaceship3 := Spaceship with: 'nave3'.
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (ObtainCardEffect new) at: 4.

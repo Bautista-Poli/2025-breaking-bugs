@@ -18,18 +18,17 @@ SpaceshipTest >> should: anErrorBlock raise: anErrorClass withMessageText: error
 { #category : 'tests' }
 SpaceshipTest >> testWhenCreatingASpaceshipThenItIsAtTheInitialPosition [
 
-	| aSpaceship initialPosition |
-	aSpaceship := Spaceship new.
-	initialPosition := 0.
+	| aSpaceship |
+	aSpaceship := Spaceship with: 'nave1'.
 
-	self assert: (aSpaceship isAtPosition: initialPosition)
+	self assert: (aSpaceship isAtPosition: 0)
 ]
 
 { #category : 'tests' }
 SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 
 	| aSpaceship finalPosition |
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	finalPosition := 3.
 
 	aSpaceship moveToPosition: finalPosition.
@@ -41,7 +40,7 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 SpaceshipTest >> testWhenTryingToMoveToANegativePositionTheSpaceshipIsNotAllowed [
 
 	| aSpaceship finalPosition |
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	finalPosition := -1.
 
 	self

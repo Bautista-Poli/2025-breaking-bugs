@@ -9,7 +9,7 @@ Class {
 BattleTest >> testIsValidIfSpaceshipHasThreeShieldsWhenCreated [
 
 | aSpaceship |
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 self assert: aSpaceship getShields equals: 3.
 ]
 
@@ -18,9 +18,9 @@ BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 
 	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSecondOponent := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSecondOponent := Spaceship with: 'nave3'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -44,8 +44,8 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 
 	| aGameBuilder aSpaceship aSpaceship2 aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -73,9 +73,9 @@ BattleTest >> testSpaceshipRecoversShieldsAfterSkippingTurn [
 
 	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSecondOponent := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSecondOponent := Spaceship with: 'nave3'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -99,8 +99,8 @@ BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 
 	| aGameBuilder aSpaceship aSpaceship2 aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -124,8 +124,8 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 
 	| aGameBuilder aSpaceship aSpaceship2 aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -145,9 +145,9 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 
 	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSecondOponent := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSecondOponent := Spaceship with: 'nave3'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
@@ -167,9 +167,9 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 
 	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
-	aSpaceship2 := Spaceship new.
-	aSecondOponent := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSecondOponent := Spaceship with: 'nave3'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
