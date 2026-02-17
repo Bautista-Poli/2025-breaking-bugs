@@ -25,7 +25,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 		         build.
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: 'nave1') getPosition equals: 5.
 ]
 
 { #category : 'tests' }

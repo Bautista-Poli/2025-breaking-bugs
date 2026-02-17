@@ -17,16 +17,20 @@ MercenaryCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: e
 
 { #category : 'tests' }
 MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyAMercenary [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard1 := MercenaryCard new.
     aCard2 := MercenaryCard new.
     
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+    
     "Nave 1 tiene una carta, Nave 3 tiene otra"
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard1) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: (OrderedCollection with: aCard2) and: 'nave3'.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard1) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: (OrderedCollection with: aCard2) and: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -36,49 +40,54 @@ MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyA
         addDice: (SequentialFixedDice onFaces: #(4 2 6));
         build.
 
-
     aGame playCard: aCard1 by: aSpaceship targeting: aSpaceship2.
     
-    self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship2).
-    self assert: (aGame spaceshipMatching: aSpaceship2) hasOwner. 
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries includes: (aGame spaceshipMatchWith: id2)).
+    self assert: (aGame spaceshipMatchWith: id2) hasOwner.
 
-    self deny: ((aGame spaceshipMatching: aSpaceship3) getMercenaries includes: aSpaceship2).
-    self assert: (aGame spaceshipMatching: aSpaceship3) getCards size equals: 1.
+    self deny: ((aGame spaceshipMatchWith: id3) getMercenaries includes: (aGame spaceshipMatchWith: id2)).
+    self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsInvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWithTwoDifferentMercenariesCards [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 |
+	| aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 id1 id2 id3 |
 	aGameBuilder := GameBuilder new.
 	aCard1 := MercenaryCard new.
 	aCard2 := MercenaryCard new.
-	aSpaceship := Spaceship with:
-		              (OrderedCollection with: aCard1 with: aCard2) and: 'nave1'.
-	aSpaceship2 := Spaceship with: 'nave2'.
-	aSpaceship3 := Spaceship with: 'nave3'.
+
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	id3 := 'nave3'.
+
+	aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: id1.
+	aSpaceship2 := Spaceship with: id2.
+	aSpaceship3 := Spaceship with: id3.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addSpaceship: aSpaceship3;
 		         addBoard: (Board withSize: 90 andWormholeFrom: 49 to: 67);
-		         addDice: (SequentialFixedDice onFaces: #( 4 2 6 ));
+		         addDice: (SequentialFixedDice onFaces: #(4 2 6));
 		         build.
 
 	aGame playCard: aCard1 by: aSpaceship targeting: aSpaceship2.
-	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
-
+	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 
 	self
 		should: [
-		aGame playCard: aCard2 by: aSpaceship targeting: aSpaceship2 ]
+			aGame playCard: aCard2 by: aSpaceship targeting: aSpaceship2 ]
 		raise: Error
 		withMessageText: 'A mercenary cannot hire other spaceships'.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
+	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	"CAMBIAR No deberia ser 0 sino 1"
-	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 0.
+	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+
+
 ]
 
 { #category : 'tests' }
@@ -112,14 +121,19 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsInvalidIfASpaceshipThatUseMercenaryCardWantsToHaveHimselfAsMercenary [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aCollectionOfCards |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aCollectionOfCards id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-	 aCollectionOfCards := (OrderedCollection with: aCard with: SpeedCard new).
-    aSpaceship := Spaceship with: aCollectionOfCards and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+	aCollectionOfCards := (OrderedCollection with: aCard with: SpeedCard new).
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: aCollectionOfCards and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -129,22 +143,27 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipThatUseMercenaryCardWantsToHaveHim
         addDice: (SequentialFixedDice onFaces: #(4 2));
         build.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries isEmpty.
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries isEmpty.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aSecondCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aSecondCard id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
     aSecondCard := SpeedCard new.
     
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
     "La nave arranca con 2 cartas"
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -156,22 +175,27 @@ MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
     
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipThatHeSpecifiesAsMercenary [ 
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: (SpeedCard new)) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: (SpeedCard new)) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -183,28 +207,33 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
 
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries 
-         equals: (OrderedCollection with: aSpaceship2).
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries 
+         equals: (OrderedCollection with: (aGame spaceshipMatchWith: id2)).
 
     aGame playTurn. aGame playTurn. aGame playTurn.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 2.
-    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 4.
+    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 2.
+    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceshipsThatHeSpecifiesAsMercenaries [ 
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard1 aCard2 id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     "Importante: si la nave tiene dos cartas, suelen ser dos instancias distintas"
     aCard1 := MercenaryCard new.
     aCard2 := MercenaryCard new.
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
     
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -218,27 +247,33 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
     aGame playCard: aCard1 by: aSpaceship targeting: aSpaceship2.
     aGame playCard: aCard2 by: aSpaceship targeting: aSpaceship3.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 2.
-    self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship2).
-    self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries includes: aSpaceship3).
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries includes: (aGame spaceshipMatchWith: id2)).
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries includes: (aGame spaceshipMatchWith: id3)).
 
     aGame playTurn. aGame playTurn. aGame playTurn.
     aGame playTurn. aGame playTurn. aGame playTurn.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 10.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 12.
-    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 10.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 10.
+    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 12.
+    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 10.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnSameTile [ 
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -251,23 +286,30 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
 
     aGame playTurn. aGame playTurn. aGame playTurn.
-    aGame playTurn. aGame playTurn. aGame playTurn. 
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 6.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 6.
+    aGame playTurn. aGame playTurn. aGame playTurn.
+
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 6.
+    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 6.
     
-    self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 3.
+    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 3.
+    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercenaryHasHighestDice [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard id1 id2 id3 |
     
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -281,25 +323,31 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
     aGame playTurn. aGame playTurn. aGame playTurn.
 	"Batallan, spaceship3 saca un 5 mientras que una de las otras dos saca un 7"
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 19.
-    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 4.
+    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 19.
+    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
     
-    self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 3.
-    self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 2.
-    self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 3.
+    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
+    self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
+    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aSecondCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard aSecondCard id1 id2 id3 |
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
     aSecondCard := AccelerationCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -312,21 +360,27 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
     aGame playCard: aSecondCard by: aSpaceship targeting: aSpaceship.
     
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
     
     aGame playTurn. aGame playTurn. aGame playTurn.
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
-	 self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 10.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 10.
+
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseAShield [
-    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+    | aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard id1 id2 id3 |
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
-    aSpaceship := Spaceship with: (OrderedCollection with: aCard)and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -339,7 +393,8 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
     aGame playCard: aCard by: aSpaceship targeting: aSpaceship2.
     aGame playTurn. aGame playTurn. aGame playTurn.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
-    self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
-    self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
+    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+
 ]

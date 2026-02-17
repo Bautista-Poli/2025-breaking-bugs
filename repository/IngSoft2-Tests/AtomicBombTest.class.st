@@ -8,32 +8,39 @@ Class {
 { #category : 'tests' }
 AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1PositionAndLoseAShield [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
+	| aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 id3 aSpaceship aSpaceship2 aSpaceship3 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-	aSpaceship2 := Spaceship with: 'nave2'.
-	aSpaceship3 := Spaceship with: 'nave3'.
+	
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	id3 := 'nave3'.
+	
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
+	aSpaceship3 := Spaceship with: id3.
+	
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (AtomicBombEffect new) at: 4.
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 andLapsToWin: 1 and: aTileCollection .
+	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
-					addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship3;
 		         addBoard: aBoard;
 		         addDice: (SequentialFixedDice onFaces: #(4 5 6));
 		         build.
 		
 	aGame playTurn. aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 5.
-	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 6.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 6.
 	
-	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
-	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 2.
+	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
+	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
+	self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
+
 	
 ]

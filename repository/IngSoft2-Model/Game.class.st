@@ -198,9 +198,9 @@ Game >> skipTurn [
 ]
 
 { #category : 'getter' }
-Game >> spaceshipMatching: aSpaceship [
+Game >> spaceshipMatchWith: anId [
 
-	^ (spaceships detect: [ :each | each = aSpaceship ]) deepCopy.
+	^ (spaceships detect: [ :each | each matches: anId ]) deepCopy.
 ]
 
 { #category : 'behavior' }

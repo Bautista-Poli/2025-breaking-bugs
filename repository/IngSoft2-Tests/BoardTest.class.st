@@ -79,10 +79,11 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame anId|
 	"board con laps 2"
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	anId := 'nave1'.
+	aSpaceship := Spaceship with: anId.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -90,58 +91,65 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
+	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 1.
 	
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 	
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame anId |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	anId := 'nave1'.
+	aSpaceship := Spaceship with: anId.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-					addSpaceship: (Spaceship with: 'nave2');
+		         addSpaceship: (Spaceship with: 'nave2');
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-					addDice: (FixedDice onFace: 22); "Si es 20 da error"
+		         addDice: (FixedDice onFace: 22); "Si es 20 da error"
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
+	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 1.
+
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 	
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame anId |
 	"ESTA MAL ESTE TEST"
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	anId := 'nave1'.
+	aSpaceship := Spaceship with: anId.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-					addDice: (FixedDice onFace: 40);
+		         addDice: (FixedDice onFace: 40);
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 2.
+	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 2.
+
+
 ]
 
 { #category : 'tests' }
 BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	
-	| aGameBuilder aSpaceship aGame  |
+	| aGameBuilder aSpaceship aGame anId |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	anId := 'nave1'.
+	aSpaceship := Spaceship with: anId.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9 andLapsToWin: 2);
-					addDice: (FixedDice onFace: 25);
+		         addDice: (FixedDice onFace: 25);
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: anId) getPosition equals: 5.
+
 ]
 
 { #category : 'tests' }

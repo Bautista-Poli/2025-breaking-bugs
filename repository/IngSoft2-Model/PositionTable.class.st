@@ -27,13 +27,15 @@ PositionTable >> instanceWith: aCollectionOfSpaceships [
 ]
 
 { #category : 'behavior' }
-PositionTable >> isShip: aSpaceship atLap: aLap andSquare: aSquare [
+PositionTable >> isShipWithId: anId atLap: aLap andSquare: aSquare [
     | foundShip |
-    foundShip := spaceships detect: [ :each | each = aSpaceship ] ifNone: [ ^ false ].
+    foundShip := spaceships 
+        detect: [ :each | each matches: anId ] 
+        ifNone: [ ^ false ].
     ^ foundShip isAtLap: aLap andAtSquare: aSquare.
 ]
 
 { #category : 'behavior' }
-PositionTable >> isWinner: aSpaceship [
-    ^ self getRanking first = aSpaceship
+PositionTable >> isWinner: anId [
+    ^ (self getRanking first) matches: anId.
 ]

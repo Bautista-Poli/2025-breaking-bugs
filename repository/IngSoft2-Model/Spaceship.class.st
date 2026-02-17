@@ -199,6 +199,11 @@ Spaceship >> makeSpaceshipOwnedBy: aSpaceship [
 ]
 
 { #category : 'testing' }
+Spaceship >> matches: anId [ 
+	^ id = anId.
+]
+
+{ #category : 'testing' }
 Spaceship >> moveBackBy: positions on: aBoard [
     | boardSize tentativePosition lapsChange |
     

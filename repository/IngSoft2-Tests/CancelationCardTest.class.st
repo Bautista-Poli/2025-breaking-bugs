@@ -7,14 +7,17 @@ Class {
 
 { #category : 'tests' }
 CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAtNormalSpeedAgain [
-	| aGame aSpaceship aSpaceship2 aGameBuilder aAccelCard aCancelationCard |
+	| aGame aSpaceship aSpaceship2 aGameBuilder aAccelCard aCancelationCard id1 id2 |
 	
 	aGameBuilder := GameBuilder new.
 	aAccelCard := AccelerationCard new.
 	aCancelationCard := CancelationCard new.
 	
-	aSpaceship := Spaceship with: (OrderedCollection with: aAccelCard with: aCancelationCard)and: 'nave1'.
-	aSpaceship2 := Spaceship with: 'nave2'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	
+	aSpaceship := Spaceship with: (OrderedCollection with: aAccelCard with: aCancelationCard) and: id1.
+	aSpaceship2 := Spaceship with: id2.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -23,17 +26,18 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 		addDice: (SequentialFixedDice onFaces: #(6 4 6 4));
 		build.
 
-
 	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
 	aGame playTurn. aGame playTurn.
 	
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 7.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 5.
-	aGame play: aCancelationCard by: aSpaceship affecting: aAccelCard targeting: nil.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 7.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 5.
 
+	aGame play: aCancelationCard by: aSpaceship affecting: aAccelCard targeting: nil.
 	aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 9.
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 13.
+
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 9.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 13.
+
 	
 	
 	
@@ -41,19 +45,22 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 
 { #category : 'tests' }
 CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverted [
-    | aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 position2 aCancelationCard aPermanentCard |
+    | aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 position2 aCancelationCard aPermanentCard id1 id2 id3 |
+
     position1 := 6.
     position2 := 4.
     aGameBuilder := GameBuilder new.
     aCancelationCard := CancelationCard new.
     aPermanentCard := MercenaryCard new.
-    
-    aSpaceship := Spaceship with: (OrderedCollection
-                                    with: aPermanentCard
-                                    with: aCancelationCard) and: 'nave1'.
-    aSpaceship2 := Spaceship with: 'nave2'.
-    aSpaceship3 := Spaceship with: 'nave3'.
-    
+
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    id3 := 'nave3'.
+
+    aSpaceship := Spaceship with: (OrderedCollection with: aPermanentCard with: aCancelationCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
+
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
         addSpaceship: aSpaceship2;
@@ -64,38 +71,39 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 
 	aGame playCard: aPermanentCard by: aSpaceship targeting: aSpaceship2.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 
 	aGame play: aCancelationCard by: aSpaceship affecting: aPermanentCard targeting: aSpaceship2.
 
-    self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 0.
-    self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 0.
+
 ]
 
 { #category : 'tests' }
 CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPermanentCardIsCanceled [
-	| aGame aSpaceship aGameBuilder aSpeedCard aAccelCard aCancelCard aRedoCard |
-	
+	| aGame aSpaceship aGameBuilder aSpeedCard aAccelCard aCancelCard aRedoCard id |
+
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
 	aAccelCard := AccelerationCard new.
 	aCancelCard := CancelationCard new.
 	aRedoCard := RedoCard new.
-	
-	"Nave 1 arranca con todo el mazo necesario"
-	aSpaceship := Spaceship with: (OrderedCollection 
-		with: aSpeedCard 
-		with: aAccelCard 
-		with: aCancelCard 
-		with: aRedoCard) and: 'nave1'.
-	
+
+	id := 'nave1'.
+
+	aSpaceship := Spaceship with: (OrderedCollection
+		with: aSpeedCard
+		with: aAccelCard
+		with: aCancelCard
+		with: aRedoCard) and: id.
+
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
 		addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
 		addDice: (FixedDice onFace: 5);
 		build.
-
 
 	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
 	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
@@ -105,25 +113,26 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 	self assert: aGame activePermanentCards size equals: 1.
 	self assert: (aGame activePermanentCards includes: aAccelCard).
 
-	
 	aGame play: aRedoCard by: aSpaceship affecting: aAccelCard targeting: aSpaceship.
 	self assert: aGame activePermanentCards isEmpty.
-	self assert: (aGame spaceshipMatching: aSpaceship) getCards isEmpty.
-	
+	self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
+
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 5.
+
 ]
 
 { #category : 'tests' }
 CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpeedAgain [
-	| aGame aSpaceship aGameBuilder aSpeedCard aCancelationCard |
-	
+	| aGame aSpaceship aGameBuilder aSpeedCard aCancelationCard id |
+
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
 	aCancelationCard := CancelationCard new.
-	
-	aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aCancelationCard) and: 'nave1'.
-	
+
+	id := 'nave1'.
+	aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aCancelationCard) and: id.
+
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
 		addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
@@ -132,13 +141,14 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 
 	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 7.
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 7.
 
 	aGame play: aCancelationCard by: aSpaceship affecting: aSpeedCard targeting: nil.
 	aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 13. "7+6"
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 13.
 	self assert: aGame activePermanentCards isEmpty.
+
 ]
 
 { #category : 'tests' }

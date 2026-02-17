@@ -8,115 +8,145 @@ Class {
 { #category : 'tests' }
 MoonWalkTest >> testMoonWalkCannotMoveSpaceshipToNegativeLaps [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-   aSpaceship2 := Spaceship with: 'nave2'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
 	finishLine := 10.
+
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalkEffect for: 20) at: 6.
 	aTileCollection := aTileBuilder build.
+
 	aBoard := Board
 		          withSize: finishLine
 		          andWormholeFrom: 5
 		          to: 9
-					 andLapsToWin: 3
+		          andLapsToWin: 3
 		          and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 15 6 ));
+		         addDice: (SequentialFixedDice onFaces: #(15 6));
 		         build.
+
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 0.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatchWith: id1) getLapsCompleted equals: 0.
+
 ]
 
 { #category : 'tests' }
 MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 
-	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 id3 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-   aSpaceship2 := Spaceship with: 'nave2'.
-   aSpaceship3 := Spaceship with: 'nave3'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	id3 := 'nave3'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
+	aSpaceship3 := Spaceship with: id3.
 	finishLine := 20.
+
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalkEffect for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
+
 	aBoard := Board
 		          withSize: finishLine
 		          andWormholeFrom: 8
 		          to: 15
 		          and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 2 4 ));
+		         addDice: (SequentialFixedDice onFaces: #(2 4));
 		         build.
+
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 4
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 4.
+
 ]
 
 { #category : 'tests' }
 MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPreviousLap [
 
-	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 id3 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-   aSpaceship2 := Spaceship with: 'nave2'.
-   aSpaceship3 := Spaceship with: 'nave3'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	id3 := 'nave3'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
+	aSpaceship3 := Spaceship with: id3.
 	finishLine := 20.
+
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalkEffect for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 andLapsToWin:2 and: aTileCollection.
+
+	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 andLapsToWin: 2 and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 25 24 ));
+		         addDice: (SequentialFixedDice onFaces: #(25 24));
 		         build.
+
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 4.
-	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 0.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getLapsCompleted equals: 1.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 19.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 4.
+	self assert: (aGame spaceshipMatchWith: id1) getLapsCompleted equals: 0.
+	self assert: (aGame spaceshipMatchWith: id2) getLapsCompleted equals: 1.
+
 	
 ]
 
 { #category : 'tests' }
 MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-   aSpaceship2 := Spaceship with: 'nave2'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
 	finishLine := 20.
+
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalkEffect for: 2) at: 6.
 	aTileCollection := aTileBuilder build.
+
 	aBoard := Board
 		          withSize: finishLine
 		          andWormholeFrom: 5
 		          to: 15
-					 andLapsToWin: 2
+		          andLapsToWin: 2
 		          and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 2 9 4 4 ));
+		         addDice: (SequentialFixedDice onFaces: #(2 9 4 4));
 		         build.
+
 	aGame playTurn. aGame playTurn.
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 6.
-	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 11.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 6.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 11.
+
 ]

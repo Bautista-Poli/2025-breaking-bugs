@@ -43,10 +43,12 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 
-	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder |
+	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder id1 id2 |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
-   aSpaceship2 := Spaceship with: 'nave2'.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -58,9 +60,10 @@ PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
 
-	self assert: (aPositionTable isShip: aSpaceship atLap: 1 andSquare: 20).
+	self assert: (aPositionTable isShipWithId: id1 atLap: 1 andSquare: 20).
 	"Chequear esto"
-	self assert: (aPositionTable isShip: aSpaceship2 atLap: 0 andSquare: 0)
+	self assert: (aPositionTable isShipWithId: id2 atLap: 0 andSquare: 0).
+
 ]
 
 { #category : 'tests' }
@@ -106,9 +109,10 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 
-	| aGame aSpaceship aPositionTable aGameBuilder |
+	| aGame aSpaceship aPositionTable aGameBuilder id |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -118,17 +122,19 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
-	self assert: (aPositionTable isWinner: aSpaceship).
+	self assert: (aPositionTable isWinner: id).
+
 
 ]
 
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheFinishLine [
 
-	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder |
+	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder id2|
 	aGameBuilder := GameBuilder new.
+	id2 := 'nave2'.
 	aSpaceship := Spaceship with: 'nave1'.
-	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship2 := Spaceship with: id2.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -139,6 +145,6 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheF
 
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
-	self deny: (aPositionTable isWinner: aSpaceship2).
+	self deny: (aPositionTable isWinner: id2).
 
 ]
