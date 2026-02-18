@@ -82,7 +82,7 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 		         addSpaceship: aSpaceship2; 
 		         addSpaceship: aSpaceship3;
 		         addSpaceship: aSpaceship4;  
-		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 15 andLapsToWin: 2);
+		         addBoard: (Board withSize: 40 andWormholeFrom: 4 to: 15);
 		         addDice: (SequentialFixedDice onFaces: #(22 4 10 5 20 10 7 1));
 		         build.
 

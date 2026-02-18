@@ -17,11 +17,10 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 4.
 	aTileCollection := aTileBuilder build.
-
+	"andWormholeFrom: 5 to: 15"
 	aBoard := Board
 		          withSize: finishLine
-		          andWormholeFrom: 5
-		          to: 15
+					 andLapsToWin: 1
 		          and: aTileCollection.
 
 	aGame := aGameBuilder

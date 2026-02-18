@@ -23,8 +23,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	aTileBuilder := TilesBuilder with: 60.
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
 	aTileCollection := aTileBuilder build.
-	
-	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 andLapsToWin: 2 and: aTileCollection.
+	"andWormholeFrom: 40 to: 45"
+	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -72,11 +72,10 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
 	aTileCollection := aTileBuilder build.
-
+	"andWormholeFrom: 40 to: 45"
 	aBoard := Board
 		          withSize: 60
-		          andWormholeFrom: 40
-		          to: 45
+		          
 		          andLapsToWin: 2
 		          and: aTileCollection.
 
@@ -123,8 +122,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	
 	aTileBuilder with: (ObtainCardEffect with: aRedoCard) at: position.
 	aTileCollection := aTileBuilder build.
+	"andWormholeFrom: 40 to: 45 "
 	
-	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 andLapsToWin: 2 and: aTileCollection.
+	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -168,11 +168,10 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
 	aTileCollection := aTileBuilder build.
-
+	"andWormholeFrom: 40 to: 45"
 	aBoard := Board
 		          withSize: 60
-		          andWormholeFrom: 40
-		          to: 45
+		          
 		          andLapsToWin: 2
 		          and: aTileCollection.
 
@@ -216,8 +215,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: 3.
 	aTileCollection := aTileBuilder build.
-	
-	aBoard := Board withSize: 60 andWormholeFrom: 40 to: 45 and: aTileCollection.
+	"andWormholeFrom: 40 to: 45"
+	aBoard := Board withSize: 60 andLapsToWin: 1 and: aTileCollection.
 	
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship;
@@ -267,8 +266,8 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (ObtainCardEffect new) at: 4.
 	aTileCollection := aTileBuilder build.
-
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
+	"andWormholeFrom: 9 to: 15"
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;

@@ -29,24 +29,6 @@ GameBuilderTest >> testCannotBuildAGameWithTwoSpaceshipsHavingTheSameId [
 ]
 
 { #category : 'tests' }
-GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
-
-	| aBoard aSpaceship aGameBuilder aDice aGame |
-	aBoard := Board withSize: 9 andWormholeFrom: 2 to: 5.
-	aSpaceship := Spaceship with: 'nave1'.
-	aGameBuilder := GameBuilder new.
-	aDice := Dice new.
-	aGameBuilder addSpaceship: aSpaceship.
-	aGameBuilder addBoard: aBoard.
-	aGameBuilder addDice: aDice.
-	aGame := aGameBuilder build.
-	aGame playTurn. 
-	
-
-	
-]
-
-{ #category : 'tests' }
 GameBuilderTest >> testWhenTryingToBuildAGameWithoutABoardBuildFails [
 
 	| aSpaceship aGameBuilder aDice |

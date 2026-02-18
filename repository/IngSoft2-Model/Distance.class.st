@@ -19,11 +19,6 @@ Distance >> calculatePositionIn: aPosition [
 ]
 
 { #category : 'as yet unclassified' }
-Distance >> checkIfEquals: anotherDistance [
-    ^ value = anotherDistance.
-]
-
-{ #category : 'as yet unclassified' }
 Distance >> lessThan: aValue [ 
 	^ value < aValue.
 ]

@@ -34,6 +34,7 @@ BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 
 	aGame playTurn.
 	aGame playTurn.
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 9.
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
 	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
 	aGame playTurn.

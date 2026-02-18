@@ -40,8 +40,8 @@ GameTest >> testAllTheEffectsOnGame [
 		with: HyperSpaceJumpEffect new at: 16.
 
 	tileCollection := tileBuilder build.
-
-	board := Board withSize: finishLine andWormholeFrom: 4 to: 15 and: tileCollection.
+	"ndWormholeFrom: 4 to: 15"
+	board := Board withSize: finishLine andLapsToWin: 1 and: tileCollection.
 
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
@@ -106,10 +106,12 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 		with: AtomicBombEffect new at: 3;
 		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
 		with: (MoonWalkEffect for: 1) at: 19;
-		with: HyperSpaceJumpEffect new at: 16.
+		with: HyperSpaceJumpEffect new at: 16;
+		with: (WormholeEffect targeting: 4) at: 15;
+		with: (WormholeEffect targeting: 15) at: 4.
 
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 4 to: 15 and: aTileCollection.
+	aBoard := Board withSize: finishLine andLapsToWin: 1  and: aTileCollection.
 		
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship1;
@@ -198,13 +200,14 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		with: AtomicBombEffect new at: 3;
 		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
 		with: (MoonWalkEffect for: 1) at: 19;
-		with: HyperSpaceJumpEffect new at: 16.
+		with: HyperSpaceJumpEffect new at: 16;
+		with: (WormholeEffect targeting: 15) at: 4;
+		with: (WormholeEffect targeting: 4) at: 15.
 
 	aTileCollection := aTileBuilder build.
+	"andWormholeFrom: 4 to: 15"
 	aBoard := Board
 		          withSize: finishLine
-		          andWormholeFrom: 4
-		          to: 15
 		          andLapsToWin: 2
 		          and: aTileCollection.
 		
@@ -411,11 +414,12 @@ GameTest >> testWhenGameCreatedItDoesntFinish [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
+GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameDoesntEnds [
 
-		| aGame aSpaceship aGameBuilder |
+		| aGame aSpaceship aGameBuilder id|
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 20);
@@ -423,7 +427,9 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 		         build.
 
 	aGame playTurn.
-
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 20.
+	self deny: aGame hasFinished.
+	aGame playTurn.
 	self assert: aGame hasFinished
 ]
 

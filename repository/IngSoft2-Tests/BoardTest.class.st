@@ -14,66 +14,33 @@ BoardTest >> should: test raise: aErrorClass withMessageError: aMessage [
 ]
 
 { #category : 'tests' }
-BoardTest >> testBoardCreationFailsWhenWormholeEntryValueIsHigherThanExitValue [
-
-	| aSize |
-	aSize := 20.
-
-	self
-		should: [ Board withSize: aSize andWormholeFrom: 15 to: 12 ]
-		raise: Error
-		withMessageError: 'Wormhole entry position value has to be lower than the exit position value'
-]
-
-{ #category : 'tests' }
-BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
-
-	| aBoard aSize |
-	aSize := 20.
-	aBoard := Board withSize: aSize andWormholeFrom: 4 to: 9.
-	self assert: (aBoard checkSize: aSize).
-	self assert: (aBoard hasWormholeFrom: 4 to: 9)
-]
-
-{ #category : 'tests' }
 BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
+    | aBoard aGame aSpaceship dice tileBuilder aGameBuilder id1 |
 
-	| aBoard aSize |
-	aSize := 60.
-	aBoard := Board withSizeInLightYears: aSize andWormholeFrom: 12 to: 27 andLapsToWin: 1.
-	self assert: (aBoard checkSize: aSize ).
-	self assert: (aBoard hasWormholeFrom: 12 to: 27)
-]
+    tileBuilder := TilesBuilder withLighyears: (LightYear with: 60). 
+    
+    tileBuilder with: (WormholeEffect targeting:  4) at:  15.
+	 tileBuilder with: (WormholeEffect targeting:  15) at:  4.
+    
+    
+	 aBoard := Board withDistance: (LightYear with: 60) andLapsToWin: 2 and: (tileBuilder build).
+    
+    id1 := 'nave'.
+    aSpaceship := Spaceship with: id1.
+    
+    dice := FixedDice onFace: 4. 
+    
+    aGameBuilder := GameBuilder new. 
+    aGame := aGameBuilder
+        addSpaceship: aSpaceship;
+        addBoard: aBoard;
+        addDice: dice;
+        build. 
 
-{ #category : 'tests' }
-BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
-	
-	| game aSpaceship1  board gameBuilder finishLine tileBuilder tileCollection |
-	"board con laps 2"
-	gameBuilder := GameBuilder new.
-	aSpaceship1 := Spaceship with: 'nave1'. 
-	finishLine := 75.
+    aGame playTurn. 
 
-	tileBuilder := TilesBuilder withInLightYears: finishLine.
-	tileBuilder
-		with: AtomicBombEffect new at: 9;
-		with: BlackHoleEffect new at: 27;
-		with: (HyperJumpEffect withDescendingParsecsFrom: 90 step: 30) at: 30;
-		with: (MoonWalkEffect for: 6) at: 57;
-		with: HyperSpaceJumpEffect new at: 48.
-
-	tileCollection := tileBuilder build.
-
-	board := Board withSizeInLightYears: finishLine andWormholeFrom: 12 to: 45 andLapsToWin: 1 and: tileCollection.
-
-	game := gameBuilder
-		addSpaceship: aSpaceship1; 
-		addBoard: board;
-		addDice: (SequentialFixedDice onFaces: #(9 27 15 12 30 33 42 12));
-		build.
-		
-	self assert: (board checkSize: finishLine).
-	self assert: (board hasWormholeFrom: 12 to: 45).
+    self assert: (aBoard checkSize: (Parsec with: 20)).
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 15.
 ]
 
 { #category : 'tests' }
@@ -137,13 +104,17 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 { #category : 'tests' }
 BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	
-	| aGameBuilder aSpaceship aGame anId |
+	| aGameBuilder aSpaceship aGame anId builder tiles|
 	aGameBuilder := GameBuilder new.
 	anId := 'nave1'.
 	aSpaceship := Spaceship with: anId.
+	 builder := TilesBuilder with: 20.
+    builder with: (WormholeEffect targeting: 9) at: 4.
+    builder with: (WormholeEffect targeting: 4) at: 9.
+ 	tiles := builder build.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9 andLapsToWin: 2);
+		         addBoard: (Board withSize: 20 andLapsToWin: 2 and: tiles);
 		         addDice: (FixedDice onFace: 25);
 		         build.
 
@@ -158,7 +129,7 @@ BoardTest >> testWhenCreatingABoardWithSize20ThenSizeIs20 [
 	| aBoard aSize |
 	aSize := 20.
 	aBoard := Board withSize: aSize andWormholeFrom: 4 to: 9.
-	self assert: (aBoard checkSize: aSize)
+	self assert: (aBoard checkSize: (Parsec with: aSize))
 ]
 
 { #category : 'tests' }

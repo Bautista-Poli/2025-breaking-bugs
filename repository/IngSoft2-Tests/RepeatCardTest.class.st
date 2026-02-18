@@ -18,7 +18,8 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
     aTileBuilder := TilesBuilder with: finishLine.
     aTileBuilder with: BlackHoleEffect new at: 4.
     aTileCollection := aTileBuilder build.
-    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+	"andWormholeFrom: 80 to: 89"
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship;
@@ -56,7 +57,8 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
                         at: 4.
     aTileCollection := aTileBuilder build.
-    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+	 "andWormholeFrom: 80 to: 89"
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship1;
@@ -98,10 +100,10 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 		                with: HyperSpaceJumpEffect new
 		                at: 4.
 	aTileCollection := aTileBuilder build.
+	"andWormholeFrom: 80 to: 89"
 	aBoard := Board
 		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
+					 andLapsToWin: 1
 		          and: aTileCollection.
 
 	aGame := aGameBuilder
@@ -144,7 +146,8 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
                         with: (MoonWalkEffect for: 3)
                         at: 9.
     aTileCollection := aTileBuilder build.
-    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 85 and: aTileCollection.
+	"andWormholeFrom: 80 to: 89"
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship1;
@@ -188,10 +191,10 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 		                with: AtomicBombEffect new
 		                at: 6.
 	aTileCollection := aTileBuilder build.
+	"andWormholeFrom: 80 to: 89"
 	aBoard := Board
 		          withSize: finishLine
-		          andWormholeFrom: 80
-		          to: 89
+					 andLapsToWin: 1
 		          and: aTileCollection.
 
 	aGame := aGameBuilder
@@ -298,7 +301,8 @@ RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNoth
     finishLine := 90.
     aTileBuilder := TilesBuilder with: finishLine.
     aTileCollection := aTileBuilder build.
-    aBoard := Board withSize: finishLine andWormholeFrom: 80 to: 89 and: aTileCollection.
+	"andWormholeFrom: 80 to: 89"
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship;
