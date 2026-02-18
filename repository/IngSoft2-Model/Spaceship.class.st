@@ -222,22 +222,7 @@ Spaceship >> moveBackBy: positions on: aBoard [
 
 { #category : 'getter' }
 Spaceship >> moveBy: positionsToAdvance on: aBoard [
-	| tentativePosition aBoardSize lapsCompleted positionInBoard finalPosition |
-
-	tentativePosition := position + positionsToAdvance.
-	tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
-
-	aBoardSize := aBoard getSize.
-	lapsCompleted := aBoardSize calculateLapsIn: tentativePosition.
-	positionInBoard := aBoardSize calculatePositionIn: tentativePosition.
-
-	self incrementLapsBy: lapsCompleted.
-
-	finalPosition := (aBoard hasSpaceshipFinished: self)
-		ifTrue: [ aBoardSize asParsec ]
-		ifFalse: [ positionInBoard ].
-
-	self moveToPosition: finalPosition.
+    aBoard move: self by: positionsToAdvance.
 
 ]
 

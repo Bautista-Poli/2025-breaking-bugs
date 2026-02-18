@@ -199,3 +199,22 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom:
 	lapsToWin := aLapsToWin.
 	
 ]
+
+{ #category : 'testing' }
+Board >> move: aSpaceship by: positionsToAdvance [
+    | tentativePosition lapsCompleted positionInBoard |
+    
+    tentativePosition := aSpaceship getPosition + positionsToAdvance.
+    tentativePosition := self correctPositionAfterWormholeIfNeeded: tentativePosition.
+
+    lapsCompleted := aSize calculateLapsIn: tentativePosition. 
+    positionInBoard := aSize calculatePositionIn: tentativePosition. 
+
+
+    aSpaceship incrementLapsBy: lapsCompleted. 
+    
+    (self hasSpaceshipFinished: aSpaceship)
+        ifTrue: [ aSpaceship moveToPosition: aSize asParsec ] 
+        ifFalse: [ aSpaceship moveToPosition: positionInBoard ].
+	
+]
