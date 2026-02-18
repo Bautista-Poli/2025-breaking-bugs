@@ -16,6 +16,19 @@ GameBuilderTest >> should: anErrorBlock raise: anErrorClass withMessageText: err
 ]
 
 { #category : 'tests' }
+GameBuilderTest >> testCannotBuildAGameWithTwoSpaceshipsHavingTheSameId [
+	| aGameBuilder |
+	aGameBuilder := GameBuilder new.
+	
+	aGameBuilder addSpaceship: (Spaceship with: 'nave').
+
+	self 
+		should: [ aGameBuilder addSpaceship: (Spaceship with: 'nave'). ]
+		raise: Error
+		withMessageText: 'Cannot add a spaceship with a duplicate ID'
+]
+
+{ #category : 'tests' }
 GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
 
 	| aBoard aSpaceship aGameBuilder aDice aGame |

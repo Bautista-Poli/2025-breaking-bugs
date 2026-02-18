@@ -127,6 +127,12 @@ Spaceship >> hasReached: lapsToWin [
 	^ laps >= lapsToWin
 ]
 
+{ #category : 'adding' }
+Spaceship >> hasSameIdAs: anotherSpaceship [
+
+	^ anotherSpaceship matches: id
+]
+
 { #category : 'behavior' }
 Spaceship >> incrementLapsBy: lapsIncremented [
 

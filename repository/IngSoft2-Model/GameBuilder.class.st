@@ -29,7 +29,7 @@ GameBuilder >> addDice: aDice [
 
 { #category : 'adding' }
 GameBuilder >> addSpaceship: aSpaceship [
-
+	self verifySpaceshipIdIsNotDuplicate: aSpaceship.
 	spaceships add: aSpaceship
 ]
 
@@ -68,4 +68,11 @@ GameBuilder >> verifyAtLeastOneSpaceshipHasBeenAdded [
 
 	spaceships isEmpty ifTrue: [
 		Error signal: 'Cannot build a game without spaceships' ]
+]
+
+{ #category : 'as yet unclassified' }
+GameBuilder >> verifySpaceshipIdIsNotDuplicate: aSpaceship [
+
+	(spaceships anySatisfy: [ :each | aSpaceship hasSameIdAs: each ]) ifTrue: [ 
+		Error signal: 'Cannot add a spaceship with a duplicate ID' ]
 ]
