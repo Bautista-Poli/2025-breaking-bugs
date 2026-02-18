@@ -26,13 +26,13 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 		addDice: (SequentialFixedDice onFaces: #(6 4 6 4));
 		build.
 
-	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
+	aGame playCard: aAccelCard by: id1 targeting: nil.
 	aGame playTurn. aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 7.
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 5.
 
-	aGame play: aCancelationCard by: aSpaceship affecting: aAccelCard targeting: nil.
+	aGame play: aCancelationCard by: id1 affecting: aAccelCard targeting: nil.
 	aGame playTurn. aGame playTurn.
 
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 9.
@@ -69,12 +69,12 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
 
-	aGame playCard: aPermanentCard by: aSpaceship targeting: aSpaceship2.
+	aGame playCard: aPermanentCard by: id1 targeting: id2.
 
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 
-	aGame play: aCancelationCard by: aSpaceship affecting: aPermanentCard targeting: aSpaceship2.
+	aGame play: aCancelationCard by: id1 affecting: aPermanentCard targeting: id2.
 
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 0.
@@ -105,15 +105,15 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 		addDice: (FixedDice onFace: 5);
 		build.
 
-	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
-	aGame playCard: aAccelCard by: aSpaceship targeting: nil.
+	aGame playCard: aSpeedCard by: id targeting: id.
+	aGame playCard: aAccelCard by: id targeting: nil.
 	self assert: aGame activePermanentCards size equals: 2.
 
-	aGame play: aCancelCard by: aSpaceship affecting: aSpeedCard targeting: nil.
+	aGame play: aCancelCard by: id affecting: aSpeedCard targeting: nil.
 	self assert: aGame activePermanentCards size equals: 1.
 	self assert: (aGame activePermanentCards includes: aAccelCard).
 
-	aGame play: aRedoCard by: aSpaceship affecting: aAccelCard targeting: aSpaceship.
+	aGame play: aRedoCard by: id affecting: aAccelCard targeting: id.
 	self assert: aGame activePermanentCards isEmpty.
 	self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
 
@@ -139,11 +139,11 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 		addDice: (FixedDice onFace: 6);
 		build.
 
-	aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
+	aGame playCard: aSpeedCard by: id targeting: id.
 	aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 7.
 
-	aGame play: aCancelationCard by: aSpaceship affecting: aSpeedCard targeting: nil.
+	aGame play: aCancelationCard by: id affecting: aSpeedCard targeting: nil.
 	aGame playTurn.
 
 	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 13.

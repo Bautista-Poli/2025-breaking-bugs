@@ -37,15 +37,6 @@ Spaceship class >> with: cardsCollection and: anId [
 ]
 
 { #category : 'adding' }
-Spaceship >> = anotherSpaceship [
-	| boolean |
-	anotherSpaceship ifNil: [ ^ false ].
-	boolean := (id = anotherSpaceship getId).
-	^ boolean.
-	
-]
-
-{ #category : 'adding' }
 Spaceship >> addNewCard: aCard [ 
     cards add: aCard.
 	
@@ -90,12 +81,6 @@ Spaceship >> fire: aSpaceship [
 Spaceship >> getCards [
 
 	^ cards
-]
-
-{ #category : 'getter' }
-Spaceship >> getId [
-
-	^ id.
 ]
 
 { #category : 'getter' }

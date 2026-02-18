@@ -25,10 +25,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
-    aGame playCard: anotherSpeedCard by: aSpaceship targeting: aSpaceship.
-    aGame play: aCancellationCard by: aSpaceship affecting: aSpeedCard targeting: nil.
-    aGame play: aRedoCard by: aSpaceship affecting: anotherSpeedCard targeting: nil.
+    aGame playCard: aSpeedCard by: id targeting: id.
+    aGame playCard: anotherSpeedCard by: id targeting: id.
+    aGame play: aCancellationCard by: id affecting: aSpeedCard targeting: nil.
+    aGame play: aRedoCard by: id affecting: anotherSpeedCard targeting: nil.
 
     aGame playTurn.
 
@@ -61,12 +61,12 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: aMercenaryCard by: aSpaceship targeting: aSpaceship2.
-    aGame playCard: aRedoCard by: aSpaceship targeting: aSpaceship3.
+    aGame playCard: aMercenaryCard by: id1 targeting: id2.
+    aGame playCard: aRedoCard by: id1 targeting: id3.
 
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
-    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries includes: (aGame spaceshipMatchWith: id2)).
-    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries includes: (aGame spaceshipMatchWith: id3)).
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id2 ]).
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id3 ]).
 
 ]
 
@@ -88,13 +88,13 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
+    aGame playCard: aSpeedCard by: id targeting: id.
     aGame playTurn.
 
-    aGame playCard: aRedoCard by: aSpaceship targeting: aSpaceship.
+    aGame playCard: aRedoCard by: id targeting: id.
     aGame playTurn.
 
-    aGame playCard: anotherRedoCard by: aSpaceship targeting: aSpaceship.
+    aGame playCard: anotherRedoCard by: id targeting: id.
     aGame playTurn.
 
     aGame playTurn.
@@ -140,11 +140,11 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
     self assert: (game spaceshipMatchWith: id2) getPosition equals: 14.
     self assert: (game spaceshipMatchWith: id3) getPosition equals: 9.
 
-    game playCard: repeatCard by: spaceship1 targeting: spaceship2.
+    game playCard: repeatCard by: id1 targeting: id2.
 
     self assert: (game spaceshipMatchWith: id2) getPosition equals: 29.
 
-    game playCard: redoCard by: spaceship1 targeting: spaceship2.
+    game playCard: redoCard by: id1 targeting: id2.
 
     self assert: (game spaceshipMatchWith: id1) getPosition equals: 19.
     self assert: (game spaceshipMatchWith: id2) getPosition equals: 39.
@@ -169,10 +169,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: aSpeedCard by: aSpaceship targeting: aSpaceship.
+    aGame playCard: aSpeedCard by: id targeting: id.
     aGame playTurn.
 
-    aGame playCard: aRedoCard by: aSpaceship targeting: aSpaceship.
+    aGame playCard: aRedoCard by: id targeting: id.
     aGame playTurn.
     aGame playTurn.
 
@@ -203,9 +203,9 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
 
-    aGame playCard: anAccelerationCard by: aSpaceship targeting: nil.
+    aGame playCard: anAccelerationCard by: id1 targeting: nil.
     aGame playTurn. aGame playTurn.
-    aGame playCard: aRedoCard by: aSpaceship targeting: nil.
+    aGame playCard: aRedoCard by: id1 targeting: nil.
     aGame playTurn. aGame playTurn.
     aGame playTurn. aGame playTurn.
 
@@ -230,7 +230,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
                  addDice: (FixedDice onFace: position1);
                  build.
 
-    aGame playCard: aRedoCard by: aSpaceship targeting: nil.
+    aGame playCard: aRedoCard by: id targeting: nil.
 
     self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
     self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.

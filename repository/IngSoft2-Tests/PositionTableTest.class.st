@@ -69,7 +69,7 @@ PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [  
 
-	| aGame aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aSpaceship4 expectedRanking aPosicionTable aRankingPosition |
+	| aGame aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aSpaceship4 expectedIds aPosicionTable aRankingPosition |
 
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship with: 'nave1'.
@@ -95,11 +95,9 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 	aPosicionTable := aGame getPositionTable.
 	aRankingPosition := aPosicionTable getRanking.
 
-	expectedRanking := { aSpaceship. aSpaceship2. aSpaceship3. aSpaceship4 }.
-
-	self assert: aRankingPosition size equals: expectedRanking size.
-	1 to: aRankingPosition size do: [ :i |
-		self assert: (aRankingPosition at: i) equals: (expectedRanking at: i) ].
+	expectedIds := { 'nave1'. 'nave2'. 'nave3'. 'nave4' }.
+	aRankingPosition with: expectedIds do: [ :ship :expectedId |
+    self assert: (ship matches: expectedId) ].
 
 
 

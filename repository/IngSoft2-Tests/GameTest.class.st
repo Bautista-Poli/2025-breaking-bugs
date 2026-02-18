@@ -136,7 +136,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aAccelerationCard by: aSpaceship3 targeting: nil.
+	aGame playCard: aAccelerationCard by: id3 targeting: nil.
 	aGame playTurn.
 	aGame playTurn.
 
@@ -146,12 +146,12 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatchWith: id4) getPosition equals: 12.
 	
 	
-	aGame play: aCancellationCard by: aSpaceship2 affecting: aAccelerationCard targeting: nil.
+	aGame play: aCancellationCard by: id2 affecting: aAccelerationCard targeting: nil.
 	
 	self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
 
-	aGame playCard: aSpeedCard by: aSpaceship1 targeting: aSpaceship1.
+	aGame playCard: aSpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 29.

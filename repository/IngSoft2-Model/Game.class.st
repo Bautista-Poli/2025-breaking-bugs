@@ -120,7 +120,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 
 { #category : 'behavior' }
 Game >> isCurrentTurnOf: aSpaceship [
-    ^ (spaceships at: turnIndex) = aSpaceship
+    ^ (spaceships at: turnIndex) == aSpaceship
 ]
 
 { #category : 'accessing' }
@@ -135,19 +135,20 @@ Game >> lastTileEffectApplied [
 ]
 
 { #category : 'behavior' }
-Game >> play: aCard by: aSpaceship affecting: aTargetCard targeting: aTargetShip [
+Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetShipId [
 
-	| spaceshipInGame aSpaceshipTarget |
-	spaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
-	aSpaceshipTarget := aTargetShip ifNotNil: [
-		                    spaceships detect: [ :each | each = aTargetShip ] ].
-	
-	spaceshipInGame use: aCard targeting: aTargetCard affecting: aSpaceshipTarget in: self.
+    | spaceshipInGame aSpaceshipTarget |
+    spaceshipInGame := spaceships detect: [ :each | each matches: aSpaceshipId ].
+    
+    aSpaceshipTarget := aTargetShipId ifNotNil: [
+        spaceships detect: [ :each | each matches: aTargetShipId ] ].
+    
+    spaceshipInGame use: aCard targeting: aTargetCard affecting: aSpaceshipTarget in: self.
 ]
 
 { #category : 'behavior' }
-Game >> playCard: aCard by: aSpaceship targeting: aTargetSpaceship [
-    self play: aCard by: aSpaceship affecting: (NoEffectCard new)  targeting: aTargetSpaceship
+Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
+    self play: aCard by: aSpaceshipId affecting: (NoEffectCard new)  targeting: aTargetSpaceship
 ]
 
 { #category : 'behavior' }

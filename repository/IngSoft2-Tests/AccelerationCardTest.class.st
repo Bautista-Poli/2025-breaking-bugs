@@ -26,7 +26,7 @@ AccelerationCardTest >> testIsValidIfAccelerationCardIncreasesMovementOfAllSpace
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
     
-    game playCard: accelerationCard by: spaceship1 targeting: nil.
+    game playCard: accelerationCard by: id1 targeting: nil.
 
     self assert: ((game spaceshipMatchWith: id1) getCards size) equals: 0.
     self assert: (game activePermanentCards includes: accelerationCard).
