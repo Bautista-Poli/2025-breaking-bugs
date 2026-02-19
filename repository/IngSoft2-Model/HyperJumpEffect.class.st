@@ -3,7 +3,7 @@ Class {
 	#superclass : 'Effect',
 	#instVars : [
 		'currentIndex',
-		'amountOfParcecsToAdvance'
+		'distanceToAdvance'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -11,50 +11,41 @@ Class {
 
 { #category : 'as yet unclassified' }
 HyperJumpEffect class >> withDescendingLightYearsFrom: maxLightYears step: stepSize [
-
-	| parsecList current currentInParcecs stepSizeInParcecs |
+	| distances current |
 	current := maxLightYears.
-	parsecList := OrderedCollection new.
-	currentInParcecs := current // 3.
-	stepSizeInParcecs := stepSize // 3.
-	
-	[ currentInParcecs > 0 ] whileTrue: [
-		
-		parsecList add: currentInParcecs.
-		currentInParcecs := currentInParcecs - stepSizeInParcecs ].
+	distances := OrderedCollection new.
 
-	^ self new initializeWithParcecs: parsecList asArray
+	[ current > 0 ] whileTrue: [
+		distances add: (LightYear with: current).
+		current := current - stepSize ].
+
+	^ self new initializeWith: distances asArray
 ]
 
 { #category : 'as yet unclassified' }
 HyperJumpEffect class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
-
-	| parsecList current |
+	| distances current |
 	current := maxParsecs.
-	parsecList := OrderedCollection new.
+	distances := OrderedCollection new.
 
 	[ current > 0 ] whileTrue: [
-		parsecList add: current.
+		distances add: (Parsec with: current).
 		current := current - stepSize ].
 
-	^ self new initializeWithParcecs: parsecList asArray
+	^ self new initializeWith: distances asArray.
 ]
 
 { #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 
-	| parsecsToAdvance sizeOfTileInParsecs |
-	sizeOfTileInParsecs := 2.
+	| nextDistance tilesToAdvance |
 
-	amountOfParcecsToAdvance size = currentIndex ifTrue: [
-		currentIndex := 0 ].
-	currentIndex := currentIndex + 1.
+	nextDistance := self nextDistanceToAdvance.
+	tilesToAdvance := (aGame board) tilesToMoveForDistance: nextDistance.
 
-	parsecsToAdvance := amountOfParcecsToAdvance at: currentIndex.
-	(aGame board) move: aSpaceship by: (parsecsToAdvance // sizeOfTileInParsecs).
+	(aGame board) move: aSpaceship by: tilesToAdvance.
 	aGame checkForBattleInvolving: aSpaceship.
-
-	aGame registerAppliedEffect: self
+	aGame registerAppliedEffect: self.
 ]
 
 { #category : 'initialization' }
@@ -64,8 +55,14 @@ HyperJumpEffect >> countYourself: aCounter [
 ]
 
 { #category : 'initialization' }
-HyperJumpEffect >> initializeWithParcecs: aParcecsArray [
+HyperJumpEffect >> initializeWith: aDistanceArray [
 
-	amountOfParcecsToAdvance := aParcecsArray.
+	distanceToAdvance := aDistanceArray.
 	currentIndex := 0
+]
+
+{ #category : 'initialization' }
+HyperJumpEffect >> nextDistanceToAdvance [
+	currentIndex := (currentIndex \\ distanceToAdvance size) + 1.
+	^ distanceToAdvance at: currentIndex
 ]

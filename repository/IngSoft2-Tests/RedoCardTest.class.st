@@ -123,7 +123,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
                         at: 4) build.
 	 "andWormholeFrom: 40 to: 45"
-    board := Board withSize: 90 andLapsToWin: 1 and: titleBuilder.
+    board := Board withSize: 180 andLapsToWin: 1 and: titleBuilder.
 
     dice := FixedDice onFace: 4.
     gameBuilder := GameBuilder new.

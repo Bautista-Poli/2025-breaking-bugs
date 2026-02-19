@@ -22,7 +22,7 @@ HyperJumpTest >> testWhenHyperJumpMovesASpaceshipOntoAnotherSpaceshipThenTheyBat
 	aTileBuilder with: (HyperJumpEffect withDescendingLightYearsFrom: 90 step: 30) at: 4.
 	aTileCollection := aTileBuilder build.
 
-	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		addSpaceship: aSpaceship1;
@@ -54,7 +54,7 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItDoesNotGoBelow
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
 	aTileCollection := aTileBuilder build.
 
-	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -62,9 +62,7 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItDoesNotGoBelow
 		         addDice: (FixedDice onFace: 18);
 		         build.
 
-	self
-		shouldnt: [ aGame playTurn ]
-		raise: Error.
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
 
 ]
 
@@ -115,7 +113,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	aTileBuilder with: (HyperJumpEffect withDescendingLightYearsFrom: 90 step: 30) at: 4.
 	aTileCollection := aTileBuilder build.
 	"andWormholeFrom: 5 to: 15"
-	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -152,7 +150,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 4.
 	aTileCollection := aTileBuilder build.
 	"andWormholeFrom: 5 to: 15"
-	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;

@@ -132,12 +132,6 @@ Spaceship >> hasSameIdAs: anotherSpaceship [
 	^ anotherSpaceship matches: id
 ]
 
-{ #category : 'behavior' }
-Spaceship >> incrementLapsBy: lapsIncremented [
-
-	laps := lapsIncremented
-]
-
 { #category : 'initialization' }
 Spaceship >> initializeWith: aCollectionOfCards and: anId [
 
@@ -217,6 +211,12 @@ Spaceship >> numberOfMercenaries [
 Spaceship >> rechargeShields [
 
 	shieldStatus rechargeShieldsFor: self
+]
+
+{ #category : 'behavior' }
+Spaceship >> setLapsTo: lapsIncremented [
+
+	laps := lapsIncremented
 ]
 
 { #category : 'as yet unclassified' }

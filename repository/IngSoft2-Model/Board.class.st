@@ -103,10 +103,18 @@ Board >> move: aSpaceship by: positionsToAdvance [
     newLap := newAbsolutePosition // aSize asParsec.
     newPosition := newAbsolutePosition \\ aSize asParsec.
 
-    aSpaceship incrementLapsBy: newLap.
+    aSpaceship setLapsTo: newLap.
     
     (self hasSpaceshipFinished: aSpaceship)
         ifTrue: [ aSpaceship moveToPosition: aSize asParsec ]
         ifFalse: [ aSpaceship moveToPosition: newPosition ].
+	
+]
+
+{ #category : 'testing' }
+Board >> tilesToMoveForDistance: aDistance [
+	| aDistribution |
+	aDistribution := (aSize asParsec / tiles size) ceiling.
+	^ aDistance asParsec // aDistribution.
 	
 ]

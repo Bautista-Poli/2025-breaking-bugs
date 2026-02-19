@@ -58,7 +58,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
                         at: 4.
     aTileCollection := aTileBuilder build.
 	 "andWormholeFrom: 80 to: 89"
-    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+    aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship1;
