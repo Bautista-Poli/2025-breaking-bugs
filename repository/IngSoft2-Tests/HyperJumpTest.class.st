@@ -20,6 +20,7 @@ HyperJumpTest >> testWhenHyperJumpMovesASpaceshipOntoAnotherSpaceshipThenTheyBat
 	finishLine := 60.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingLightYearsFrom: 90 step: 30) at: 4.
+	aTileBuilder addWormholeFrom: 20 to: 25.
 	aTileCollection := aTileBuilder build.
 
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
@@ -52,6 +53,7 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItDoesNotGoBelow
 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
+	aTileBuilder addWormholeFrom: 14 to: 16.
 	aTileCollection := aTileBuilder build.
 
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
@@ -76,6 +78,7 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItFinishesTheGam
 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
+	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder build.
 
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
@@ -87,8 +90,7 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItFinishesTheGam
 		         build.
 
 	aGame playTurn.
-
-	"De nuevo, ajustá según tu convención de ganar:"
+	
 	self assert: (aGame spaceshipMatchWith: id) getPosition equals: finishLine.
 
 
@@ -111,8 +113,9 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingLightYearsFrom: 90 step: 30) at: 4.
+	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 5 to: 15"
+	
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
@@ -148,8 +151,9 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 4.
+	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 5 to: 15"
+	
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder

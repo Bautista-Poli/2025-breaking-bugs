@@ -11,7 +11,8 @@ Class {
 		'moonwalkPercentage',
 		'hyperJumpPercentage',
 		'atomicBombPercentage',
-		'cardTitlePercentage'
+		'cardTitlePercentage',
+		'wormholeCount'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -33,7 +34,7 @@ TilesBuilder >> addWormholeFrom: entryPosition to: exitPosition [
 	self validateAreNotNegative: entryPosition and: exitPosition.
 	self validate: entryPosition notEqualTo: exitPosition.
 	self validate: entryPosition and: exitPosition within: size.
-
+	wormholeCount := wormholeCount + 2.
 	self with: (WormholeEffect targeting: exitPosition) at: entryPosition.
 	self with: (WormholeEffect targeting: entryPosition) at: exitPosition.
 
@@ -41,7 +42,7 @@ TilesBuilder >> addWormholeFrom: entryPosition to: exitPosition [
 
 { #category : 'behavior' }
 TilesBuilder >> build [
-
+	self validateWormholesPresence.
 	^ aTileCollection
 ]
 
@@ -73,6 +74,7 @@ effectsCollection := (1 to: size asParsec ) collect: [ :i |
 { #category : 'initialize' }
 TilesBuilder >> initializeWith: aSize [
 	size := aSize.
+	wormholeCount :=0.
 	numberOfPositionsToGoBack := 4.
 	aTileCollection := (1 to: size asParsec +1) collect: [ :i |
 		                   Tile with: NoEffect new ].
@@ -126,6 +128,13 @@ TilesBuilder >> validateAreNotNegative: wormholeEntry and: wormholeExit [
 	(wormholeEntry <= 0 or: [ wormholeExit <= 0 ])
 		ifTrue: [ Error signal: 'The wormhole cannot have negative entry or exit' ]
 
+]
+
+{ #category : 'behavior' }
+TilesBuilder >> validateWormholesPresence [
+	(wormholeCount = 2) ifFalse: [ 
+		Error signal: 'A game must have exactly two wormhole effects' 
+	].
 ]
 
 { #category : 'behavior' }

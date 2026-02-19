@@ -106,7 +106,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOnTarget [
-    | gameBuilder board titleBuilder dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game id1 id2 id3 |
+    | gameBuilder board titleBuilder tile dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game id1 id2 id3 |
 
     repeatCard := RepeatCard new.
     redoCard := RedoCard new.
@@ -121,9 +121,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
 
     titleBuilder := ((TilesBuilder with: 90)
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
-                        at: 4) build.
-	 "andWormholeFrom: 40 to: 45"
-    board := Board withSize: 180 andLapsToWin: 1 and: titleBuilder.
+                        at: 4). 
+	 tile :=  titleBuilder addWormholeFrom: 40 to: 49; build.
+
+    board := Board withSize: 180 andLapsToWin: 1 and: tile.
 
     dice := FixedDice onFace: 4.
     gameBuilder := GameBuilder new.

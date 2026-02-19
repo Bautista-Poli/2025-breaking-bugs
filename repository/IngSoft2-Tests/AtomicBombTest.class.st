@@ -22,8 +22,9 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (AtomicBombEffect new) at: 4.
+	aTileBuilder addWormholeFrom: 8 to: 15.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 8 to: 15"
+	
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder

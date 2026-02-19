@@ -38,9 +38,10 @@ GameTest >> testAllTheEffectsOnGame [
 		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
 		with: (MoonWalkEffect for: 2) at: 19;
 		with: HyperSpaceJumpEffect new at: 16.
-
+		
+	tileBuilder addWormholeFrom: 4 to: 15.
 	tileCollection := tileBuilder build.
-	"ndWormholeFrom: 4 to: 15"
+	
 	board := Board withSize: finishLine andLapsToWin: 1 and: tileCollection.
 
 	aGame := aGameBuilder
@@ -106,9 +107,8 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 		with: AtomicBombEffect new at: 3;
 		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
 		with: (MoonWalkEffect for: 1) at: 19;
-		with: HyperSpaceJumpEffect new at: 16;
-		with: (WormholeEffect targeting: 4) at: 15;
-		with: (WormholeEffect targeting: 15) at: 4.
+		with: HyperSpaceJumpEffect new at: 16.
+	aTileBuilder addWormholeFrom: 4 to: 15.
 
 	aTileCollection := aTileBuilder build.
 	aBoard := Board withSize: finishLine andLapsToWin: 1  and: aTileCollection.
@@ -203,9 +203,9 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		with: HyperSpaceJumpEffect new at: 16;
 		with: (WormholeEffect targeting: 15) at: 4;
 		with: (WormholeEffect targeting: 4) at: 15.
-
+	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 4 to: 15"
+	
 	aBoard := Board
 		          withSize: finishLine
 		          andLapsToWin: 2

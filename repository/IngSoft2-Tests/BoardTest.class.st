@@ -19,8 +19,7 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
 
     tileBuilder := TilesBuilder withLighyears: (LightYear with: 60). 
     
-    tileBuilder with: (WormholeEffect targeting:  4) at:  15.
-	 tileBuilder with: (WormholeEffect targeting:  15) at:  4.
+    tileBuilder addWormholeFrom: 4 to: 15.
     
     
 	 aBoard := Board withDistance: (LightYear with: 60) andLapsToWin: 2 and: (tileBuilder build).
@@ -109,8 +108,7 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	anId := 'nave1'.
 	aSpaceship := Spaceship with: anId.
 	 builder := TilesBuilder with: 20.
-    builder with: (WormholeEffect targeting: 9) at: 4.
-    builder with: (WormholeEffect targeting: 4) at: 9.
+    builder addWormholeFrom: 4 to: 9.
  	tiles := builder build.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;

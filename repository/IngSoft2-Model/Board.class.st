@@ -59,12 +59,6 @@ Board >> createPositionTable: spaceships [
 ]
 
 { #category : 'initialization' }
-Board >> getSize [
-
-	^ aSize.
-]
-
-{ #category : 'initialization' }
 Board >> handleLandingOf: aSpaceship in: aGame [
     | tile |
     tile := tiles at: (aSpaceship getPosition + 1).

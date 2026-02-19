@@ -17,8 +17,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
     finishLine := 90.
     aTileBuilder := TilesBuilder with: finishLine.
     aTileBuilder with: BlackHoleEffect new at: 4.
+	 aTileBuilder addWormholeFrom: 80 to: 89.
     aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 80 to: 89"
+
     aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
@@ -56,8 +57,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
     aTileBuilder := (TilesBuilder with: finishLine)
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
                         at: 4.
+	 aTileBuilder addWormholeFrom: 80 to: 89.
     aTileCollection := aTileBuilder build.
-	 "andWormholeFrom: 80 to: 89"
+
     aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
@@ -99,8 +101,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 	aTileBuilder := (TilesBuilder with: finishLine)
 		                with: HyperSpaceJumpEffect new
 		                at: 4.
+	aTileBuilder addWormholeFrom: 80 to: 89.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 80 to: 89"
+
 	aBoard := Board
 		          withSize: finishLine
 					 andLapsToWin: 1
@@ -145,8 +148,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
     aTileBuilder := (TilesBuilder with: finishLine)
                         with: (MoonWalkEffect for: 3)
                         at: 9.
+	 aTileBuilder addWormholeFrom: 80 to: 89.
     aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 80 to: 89"
+
     aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder
@@ -190,8 +194,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 	aTileBuilder := (TilesBuilder with: finishLine)
 		                with: AtomicBombEffect new
 		                at: 6.
+	aTileBuilder addWormholeFrom: 80 to: 89.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 80 to: 89"
+
 	aBoard := Board
 		          withSize: finishLine
 					 andLapsToWin: 1
@@ -300,8 +305,9 @@ RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNoth
 
     finishLine := 90.
     aTileBuilder := TilesBuilder with: finishLine.
+	 aTileBuilder addWormholeFrom: 80 to: 89.
     aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 80 to: 89"
+
     aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
     aGame := aGameBuilder

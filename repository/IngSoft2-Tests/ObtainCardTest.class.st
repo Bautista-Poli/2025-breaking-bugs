@@ -22,8 +22,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	position2 := 4.
 	aTileBuilder := TilesBuilder with: 60.
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
+	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 40 to: 45"
+
 	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 	
 	aGame := aGameBuilder
@@ -71,8 +72,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 	aCard := MercenaryCard new.
 
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
+	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 40 to: 45"
+
 	aBoard := Board
 		          withSize: 60
 		          
@@ -121,8 +123,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	aTileBuilder := TilesBuilder with: 60.
 	
 	aTileBuilder with: (ObtainCardEffect with: aRedoCard) at: position.
+	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 40 to: 45 "
 	
 	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 	
@@ -167,8 +169,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 	aCard := SpeedCard new.
 
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
+	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 40 to: 45"
+
 	aBoard := Board
 		          withSize: 60
 		          
@@ -214,8 +217,9 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	aCard := AccelerationCard new.
 	
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: 3.
+	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 40 to: 45"
+	
 	aBoard := Board withSize: 60 andLapsToWin: 1 and: aTileCollection.
 	
 	aGame := aGameBuilder
@@ -265,8 +269,9 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (ObtainCardEffect new) at: 4.
+	aTileBuilder addWormholeFrom: 9 to: 15.
 	aTileCollection := aTileBuilder build.
-	"andWormholeFrom: 9 to: 15"
+
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder

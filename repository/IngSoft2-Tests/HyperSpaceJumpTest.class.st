@@ -15,6 +15,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItDoes
 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 17.
+	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
 
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
@@ -41,6 +42,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItFini
 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 17.
+	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
 
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
@@ -71,6 +73,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 4.
+	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
 	"andWormholeFrom: 5 to: 15"
 	aBoard := Board
