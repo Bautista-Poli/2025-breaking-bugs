@@ -43,9 +43,7 @@ HyperJumpEffect class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
 { #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 
-	"Necesito ya cambiar esto"
-
-	| parsecsToAdvance newPosition sizeOfTileInParsecs |
+	| parsecsToAdvance sizeOfTileInParsecs |
 	sizeOfTileInParsecs := 2.
 
 	amountOfParcecsToAdvance size = currentIndex ifTrue: [
@@ -53,10 +51,7 @@ HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 	currentIndex := currentIndex + 1.
 
 	parsecsToAdvance := amountOfParcecsToAdvance at: currentIndex.
-
-	newPosition := aSpaceship getPosition
-	               + (parsecsToAdvance // sizeOfTileInParsecs).
-	aSpaceship moveToPosition: newPosition.
+	(aGame board) move: aSpaceship by: (parsecsToAdvance // sizeOfTileInParsecs).
 	aGame checkForBattleInvolving: aSpaceship.
 
 	aGame registerAppliedEffect: self

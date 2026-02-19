@@ -6,6 +6,31 @@ Class {
 }
 
 { #category : 'tests' }
+BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleInFirstPositionsThenItDoesNotGoBelowStart [
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship with: 'nave1'.
+	finishLine := 19.
+
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (BlackHoleEffect new) at: 2.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 2 ));
+		         build.
+
+	aGame playTurn.
+
+	self assert: (aGame spaceshipMatchWith: 'nave1') getPosition equals: 0.
+
+]
+
+{ #category : 'tests' }
 BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTriggeringBattle [
 
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |

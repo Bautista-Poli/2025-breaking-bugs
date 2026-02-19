@@ -6,6 +6,61 @@ Class {
 }
 
 { #category : 'tests' }
+HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItDoesNotGoBelowStart [
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |
+	aGameBuilder := GameBuilder new.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
+	finishLine := 19.
+
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: HyperSpaceJumpEffect new at: 17.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         addDice: (FixedDice onFace: 17);
+		         build.
+
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
+
+
+	
+]
+
+{ #category : 'tests' }
+HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItFinishesTheGame [
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |
+	aGameBuilder := GameBuilder new.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
+	finishLine := 19.
+
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: HyperSpaceJumpEffect new at: 17.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         addDice: (FixedDice onFace: 17);
+		         build.
+
+	aGame playTurn.
+
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: finishLine.
+
+
+
+	
+]
+
+{ #category : 'tests' }
 HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward4PositionsAndLoosesAShield [
 
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |

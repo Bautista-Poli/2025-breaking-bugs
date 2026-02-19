@@ -43,6 +43,60 @@ HyperJumpTest >> testWhenHyperJumpMovesASpaceshipOntoAnotherSpaceshipThenTheyBat
 ]
 
 { #category : 'tests' }
+HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItDoesNotGoBelowStart [
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |
+	aGameBuilder := GameBuilder new.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
+	finishLine := 20.
+
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         addDice: (FixedDice onFace: 18);
+		         build.
+
+	self
+		shouldnt: [ aGame playTurn ]
+		raise: Error.
+
+]
+
+{ #category : 'tests' }
+HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItFinishesTheGame [
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |
+	aGameBuilder := GameBuilder new.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
+	finishLine := 20.
+
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         addDice: (FixedDice onFace: 18);
+		         build.
+
+	aGame playTurn.
+
+	"De nuevo, ajustá según tu convención de ganar:"
+	self assert: (aGame spaceshipMatchWith: id) getPosition equals: finishLine.
+
+
+]
+
+{ #category : 'tests' }
 HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAnAmountInLightYears [
 
 	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection id1 id2 id3 |

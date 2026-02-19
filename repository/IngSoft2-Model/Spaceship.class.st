@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'position',
 		'laps',
-		'turnsPenalize',
 		'cards',
 		'mercenaries',
 		'id',
@@ -212,16 +211,6 @@ Spaceship >> moveToPosition: aPosition [
 Spaceship >> numberOfMercenaries [
 
 	^ mercenaries size
-]
-
-{ #category : 'behavior' }
-Spaceship >> penalize [
-
-	turnsPenalize := turnsPenalize + 1.
-	turnsPenalize ~= 2 ifTrue: [ ^ self ].
-
-	self rechargeShields.
-	turnsPenalize := 0
 ]
 
 { #category : 'behavior' }
