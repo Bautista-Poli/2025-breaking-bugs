@@ -92,18 +92,21 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andLapsToWin: aL
 
 { #category : 'testing' }
 Board >> move: aSpaceship by: positionsToAdvance [
-    | tentativePosition lapsCompleted positionInBoard |
+    | absolutePosition newAbsolutePosition newLap newPosition |
     
-    tentativePosition := aSpaceship getPosition + positionsToAdvance.
+    absolutePosition := (aSpaceship getLapsCompleted * aSize asParsec) + aSpaceship getPosition.
+    
+    newAbsolutePosition := absolutePosition + positionsToAdvance.
+    
+    newAbsolutePosition := newAbsolutePosition max: 0.
+    
+    newLap := newAbsolutePosition // aSize asParsec.
+    newPosition := newAbsolutePosition \\ aSize asParsec.
 
-    lapsCompleted := aSize calculateLapsIn: tentativePosition. 
-    positionInBoard := aSize calculatePositionIn: tentativePosition. 
-
-
-    aSpaceship incrementLapsBy: lapsCompleted. 
+    aSpaceship incrementLapsBy: newLap.
     
     (self hasSpaceshipFinished: aSpaceship)
-        ifTrue: [ aSpaceship moveToPosition: aSize asParsec ] 
-        ifFalse: [ aSpaceship moveToPosition: positionInBoard ].
+        ifTrue: [ aSpaceship moveToPosition: aSize asParsec ]
+        ifFalse: [ aSpaceship moveToPosition: newPosition ].
 	
 ]

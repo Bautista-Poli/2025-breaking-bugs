@@ -160,7 +160,7 @@ Game >> playTurn [
 
     (spaceshipToPlay canPlay) ifTrue: [
         positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
-        spaceshipToPlay moveBy: positionsToAdvance on: board.
+        board move: spaceshipToPlay by: positionsToAdvance.
         board handleLandingOf: spaceshipToPlay in: self.
     ].
 

@@ -136,7 +136,7 @@ Spaceship >> hasSameIdAs: anotherSpaceship [
 { #category : 'behavior' }
 Spaceship >> incrementLapsBy: lapsIncremented [
 
-	laps := laps + lapsIncremented
+	laps := lapsIncremented
 ]
 
 { #category : 'initialization' }
@@ -192,32 +192,6 @@ Spaceship >> makeSpaceshipOwnedBy: aSpaceship [
 { #category : 'testing' }
 Spaceship >> matches: anId [ 
 	^ id = anId.
-]
-
-{ #category : 'testing' }
-Spaceship >> moveBackBy: positions on: aBoard [
-    | boardSize tentativePosition lapsChange |
-    
-    boardSize := aBoard getSize asParsec.
-    tentativePosition := position - positions.
-    lapsChange := 0.
-    
-
-    [ tentativePosition < 0 and: [ laps + lapsChange > 0 ] ] whileTrue: [
-        lapsChange := lapsChange - 1.
-        tentativePosition := tentativePosition + boardSize.
-    ].
-    
-    "Si llegamos antes del inicio, resetear a 0,0"
-    (tentativePosition < 0 or: [ laps + lapsChange < 0 ])
-        ifTrue: [ 
-            self moveToPosition: 0.
-            self incrementLapsBy: (0 - laps). "Resetear laps a 0"
-        ]
-        ifFalse: [
-            self moveToPosition: tentativePosition.
-            self incrementLapsBy: lapsChange.
-        ].
 ]
 
 { #category : 'getter' }

@@ -69,7 +69,7 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 		         build.
 
 	aGame playTurn. aGame playTurn.
-
+	self assert: (aGame spaceshipMatchWith: id1) getLapsCompleted equals: 0.
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 4.
 
