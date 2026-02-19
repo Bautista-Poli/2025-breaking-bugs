@@ -78,6 +78,40 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 ]
 
 { #category : 'tests' }
+MoonWalkTest >> testWhenMoonWalkMovesOtherShipOntoOccupiedTileThenTheyBattle [
+	| aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection ship1 ship2 id1 id2 |
+	aGameBuilder := GameBuilder new.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	ship1 := Spaceship with: id1.
+	ship2 := Spaceship with: id2.
+
+	finishLine := 19.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (MoonWalkEffect for: 4) at: 3.
+	aTileBuilder addWormholeFrom: 5 to: 15.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		addSpaceship: ship1;
+		addSpaceship: ship2;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: #(7 3 1 6));
+		build.
+
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 3.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id1) getShields) equals: 3.
+	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 2.
+	
+]
+
+{ #category : 'tests' }
 MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPreviousLap [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 id3 |

@@ -6,6 +6,41 @@ Class {
 }
 
 { #category : 'tests' }
+HyperSpaceJumpTest >> testWhenHyperSpaceJumpMovesShipOntoOccupiedTileThenTheyBattle [
+	| aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection ship1 ship2 id1 id2 |
+	aGameBuilder := GameBuilder new.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	ship1 := Spaceship with: id1.
+	ship2 := Spaceship with: id2.
+
+	finishLine := 19.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: HyperSpaceJumpEffect new at: 1.
+	aTileBuilder addWormholeFrom: 10 to: 15.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		addSpaceship: ship1;
+		addSpaceship: ship2;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: #(5 1 2 9));
+		build.
+
+	aGame playTurn. aGame playTurn.
+	
+	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 5.
+	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 1.
+	
+
+
+	
+]
+
+{ #category : 'tests' }
 HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItDoesNotGoBelowStart [
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id |
 	aGameBuilder := GameBuilder new.

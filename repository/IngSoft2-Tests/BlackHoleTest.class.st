@@ -6,6 +6,40 @@ Class {
 }
 
 { #category : 'tests' }
+BlackHoleTest >> testWhenBlackHoleMovesShipOntoOccupiedTileThenTheyBattle [
+	| aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection ship1 ship2 id1 id2 |
+	aGameBuilder := GameBuilder new.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	ship1 := Spaceship with: id1.
+	ship2 := Spaceship with: id2.
+
+	finishLine := 19.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: BlackHoleEffect new at: 5.
+	aTileBuilder addWormholeFrom: 10 to: 15.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+
+	aGame := aGameBuilder
+		addSpaceship: ship1;
+		addSpaceship: ship2;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: #(1 5 1 6));
+		build.
+
+	aGame playTurn.aGame playTurn.
+	self assert: ((aGame spaceshipMatchWith: id1) isAtPosition: 1).
+	self assert: ((aGame spaceshipMatchWith: id2) isAtPosition: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) getShields) equals: 3.
+	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 2.
+	
+
+
+]
+
+{ #category : 'tests' }
 BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleInFirstPositionsThenItDoesNotGoBelowStart [
 	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
@@ -59,9 +93,10 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 { #category : 'tests' }
 BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard aTileCollection aTileBuilder |
+	| aSpaceship aGameBuilder finishLine aGame id1 aBoard aTileCollection aTileBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	id1 := 'nave1'.
+	aSpaceship := Spaceship with: id1.
 	
 	finishLine := 19.
 	aTileBuilder := TilesBuilder with: finishLine.
@@ -77,6 +112,6 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 		         build.
 	aGame playTurn.
 	
-	self assert: (aSpaceship isAtPosition:0).
+	self assert: ((aGame spaceshipMatchWith: id1) isAtPosition: 0).
 
 ]

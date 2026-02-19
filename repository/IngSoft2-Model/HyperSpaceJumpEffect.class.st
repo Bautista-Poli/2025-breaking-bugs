@@ -12,7 +12,8 @@ HyperSpaceJumpEffect >> applyTo: aSpaceship in: aGame [
 	actualPosition := aSpaceship getPosition.
 	(aGame board) move: aSpaceship by: 4.
 	aSpaceship lowerAShield.
-	aGame registerAppliedEffect: self
+	aGame registerAppliedEffect: self.
+	aGame checkForBattleInvolving: aSpaceship.
 ]
 
 { #category : 'operations' }

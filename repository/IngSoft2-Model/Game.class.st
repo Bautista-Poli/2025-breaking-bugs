@@ -193,7 +193,6 @@ Game >> skipTurn [
     spaceshipToPlay := spaceships at: turnIndex.
     spaceshipToPlay rechargeShields.
     turnIndex := turnIndex \\ spaceships size + 1.
-    spaceshipToPlay handleEndOfCycle.
 
 
 ]

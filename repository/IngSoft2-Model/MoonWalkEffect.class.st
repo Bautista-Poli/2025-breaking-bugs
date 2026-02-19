@@ -21,6 +21,7 @@ MoonWalkEffect >> applyTo: aSpaceship in: aGame [
 	].
 
 	aGame registerAppliedEffect: self.
+	aGame checkForBattleInvolving: aSpaceship.
 ]
 
 { #category : 'operations' }
