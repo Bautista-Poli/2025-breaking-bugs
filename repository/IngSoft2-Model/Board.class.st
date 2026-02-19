@@ -10,36 +10,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'validation' }
-Board class >> validate: wormholeEntry and: wormholeExit within: aBoardDistance [
-	
-	((aBoardDistance lessThan: wormholeEntry) or: [ aBoardDistance lessThan: wormholeExit ]) ifTrue: [
-        Error signal: 'The wormhole cannot be outside of the board' ]
-]
-
-{ #category : 'validation' }
-Board class >> validate: wormholeEntry isLowerThan: wormholeExit [
-
-	wormholeEntry >= wormholeExit ifTrue: [
-		Error signal:
-			'Wormhole entry position value has to be lower than the exit position value' ]
-]
-
-{ #category : 'validation' }
-Board class >> validate: wormholeEntry notEqualTo: wormholeExit [
-
-	wormholeEntry = wormholeExit ifTrue: [
-		Error signal:
-			'The entry and the exit of the wormhole cannot be at the same position' ]
-]
-
-{ #category : 'validation' }
-Board class >> validateAreNotNegative: wormholeEntry and: wormholeExit [
-
-	(wormholeEntry <= 0 or: wormholeExit <= 0) ifTrue: [
-		Error signal: 'The wormhole cannot have negative entry or exit' ]
-]
-
 { #category : 'as yet unclassified' }
 Board class >> withDistance: aSizeDistance andLapsToWin: aLapsToWin and: tiles [
     
