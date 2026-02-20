@@ -9,7 +9,7 @@ Class {
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
-		'turnIndex'
+		'turnManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -66,17 +66,6 @@ Game >> checkIfGameHasAlreadyFinished [
 ]
 
 { #category : 'behavior' }
-Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
-
-	|spaceshipSearch|
-    spaceshipSearch := (spaceships select: [ :s | s ~= spaceship ]).
-    spaceshipSearch := spaceshipSearch detect: [ :s | s = aTargetSpaceship ]  ifNone: [ ^ nil].
-	 spaceshipSearch hasOwner  ifTrue: [ ^ nil ].
-	 ^ spaceshipSearch.
-    
-]
-
-{ #category : 'behavior' }
 Game >> getAllDiceValuesFrom: diceCollection [
 
 	^ diceCollection
@@ -114,13 +103,13 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
-	turnIndex := 1.
+	turnManager := TurnManager with: spaceships.
 
 ]
 
 { #category : 'behavior' }
 Game >> isCurrentTurnOf: aSpaceship [
-    ^ (spaceships at: turnIndex) == aSpaceship
+    ^ turnManager isCurrentTurnOf: aSpaceship.
 ]
 
 { #category : 'accessing' }
@@ -152,19 +141,19 @@ Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
 ]
 
 { #category : 'behavior' }
-Game >> playTurn [
+Game >> playTurn [ 
     | spaceshipToPlay positionsToAdvance |
+    self checkIfGameHasAlreadyFinished. 
 
-    self checkIfGameHasAlreadyFinished.
-    spaceshipToPlay := spaceships at: turnIndex.
+    spaceshipToPlay := turnManager currentSpaceship.
 
     (spaceshipToPlay canPlay) ifTrue: [
-        positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
-        board move: spaceshipToPlay by: positionsToAdvance.
-        board handleLandingOf: spaceshipToPlay in: self.
+        positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay. 
+        board move: spaceshipToPlay by: positionsToAdvance. 
+        board handleLandingOf: spaceshipToPlay in: self. 
     ].
 
-    turnIndex := turnIndex \\ spaceships size + 1.
+    turnManager nextTurn.
     spaceshipToPlay handleEndOfCycle.
 ]
 
@@ -190,9 +179,8 @@ Game >> skipTurn [
     | spaceshipToPlay |
 
     self checkIfGameHasAlreadyFinished.
-    spaceshipToPlay := spaceships at: turnIndex.
-    spaceshipToPlay rechargeShields.
-    turnIndex := turnIndex \\ spaceships size + 1.
+    turnManager currentSpaceship rechargeShields.
+    turnManager nextTurn.
 
 
 ]
