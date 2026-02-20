@@ -1,31 +1,18 @@
 Class {
 	#name : 'Card',
 	#superclass : 'Object',
-	#instVars : [
-		'id'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-Card >> = anotherCard [
-^ (anotherCard compareID: id).
+{ #category : 'testing' }
+Card class >> canBePlayedBy: aSpaceship in: aGame [
+    ^ true
 ]
 
 { #category : 'behavior' }
 Card >> applyBonusTo: aRollValue for: aSpaceship [
     ^ aRollValue
-]
-
-{ #category : 'behavior' }
-Card >> canBePlayedBy: aSpaceship in: aGame [
-    ^ true
-]
-
-{ #category : 'comparing' }
-Card >> compareID: anId [ 
-	^ id = anId.
 ]
 
 { #category : 'behavior' }

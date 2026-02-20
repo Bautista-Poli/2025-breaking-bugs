@@ -35,7 +35,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 		build.
 
 	aGame playTurn.
-	aGame playCard: aSpeedCard by: id2 targeting: id2.
+	aGame playCard: SpeedCard by: id2 targeting: id2.
 	aGame playTurn.
 
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
@@ -43,7 +43,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position.
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: position2 + 1.
 
-	aGame play: aCard by: id1 affecting: aSpeedCard targeting: nil.
+	aGame play: CancelationCard by: id1 affecting: SpeedCard targeting: nil.
 
 	aGame playTurn.
 	aGame playTurn.
@@ -77,7 +77,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	aBoard := Board
 		          withSize: 60
-		          
 		          andLapsToWin: 2
 		          and: aTileCollection.
 
@@ -96,7 +95,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
 
-	aGame playCard: aCard by: id1 targeting: id2.
+	aGame playCard: MercenaryCard by: id1 targeting: id2.
 
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
@@ -136,13 +135,13 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 		addDice: (FixedDice onFace: position);
 		build.
 		
-	aGame playCard: aMercenaryCard by: id1 targeting: id2.
+	aGame playCard: MercenaryCard by: id1 targeting: id2.
 	aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
 
-	aGame playCard: aRedoCard by: id1 targeting: id3.
+	aGame playCard: RedoCard by: id1 targeting: id3.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
@@ -189,7 +188,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 	aGame playTurn. aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
 
-	aGame playCard: aCard by: id1 targeting: id1.
+	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 13.
 
@@ -238,7 +237,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 4.
 	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 6.
 
-	aGame playCard: aCard by: id1 targeting: nil.
+	aGame playCard: AccelerationCard by: id1 targeting: nil.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.

@@ -63,12 +63,14 @@ Spaceship >> changeShieldStatusTo: aNewShieldStatus [
 ]
 
 { #category : 'behavior' }
-Spaceship >> extractCardIfAvailable: aCard [ 
-	| foundCard |
-	"REVISAR"
-    foundCard := cards detect: [ :each | each class = aCard class  ] ifNone: [ NoEffectCard new ].
-    cards remove: foundCard ifAbsent: [].
-    ^ foundCard
+Spaceship >> extractCardIfAvailable: aCard [
+    | cardToPlay |
+    cardToPlay := cards 
+        detect: [ :each | each class = aCard ] 
+        ifNone: [ Error signal: 'Cant use a card that is not on the deck' ].
+    
+    cards remove: cardToPlay.
+    ^ cardToPlay
 ]
 
 { #category : 'behavior' }
@@ -220,13 +222,21 @@ Spaceship >> setLapsTo: lapsIncremented [
 ]
 
 { #category : 'as yet unclassified' }
-Spaceship >> use: aCard targeting: aTargetCard affecting: aTargetShip in: aGame [
+Spaceship >> use: aCardClass targeting: aTargetCard affecting: aTargetShip in: aGame [
     | cardToPlay |
-    self validateIfCardIsInDeck: aCard.
-    aCard canBePlayedBy: self in: aGame.
+    self validateHasCardOfType: aCardClass.
+    aCardClass canBePlayedBy: self in: aGame.
         
-    cardToPlay := self extractCardIfAvailable: aCard.
+    cardToPlay := self extractCardIfAvailable: aCardClass.
     cardToPlay playBy: self in: aGame targeting: aTargetCard affecting: aTargetShip.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> validateHasCardOfType: aCardClass [
+    (cards anySatisfy: [ :c | c class = aCardClass ]) ifFalse: [
+        Error signal: 'Cant use a card that is not on the deck'
+    ].
+
 ]
 
 { #category : 'behavior' }

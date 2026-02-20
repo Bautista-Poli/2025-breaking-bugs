@@ -6,6 +6,16 @@ Class {
 }
 
 { #category : 'tests' }
+SpeedCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
+]
+
+{ #category : 'tests' }
 SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 	| aGame aSpaceship aGameBuilder positions aCard aSpaceship2 id1 id2 |
 	
@@ -26,12 +36,12 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 		addDice: (SequentialFixedDice onFaces: #(6 4 6 4));
 		build.
 	
-	aGame playCard: (aGame spaceshipMatchWith: id1) getCards first by: id1 targeting: id1.
+	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
 
-	aGame playCard: (aGame spaceshipMatchWith: id1) getCards first by: id1 targeting: id1.
+	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
@@ -59,10 +69,10 @@ SpeedCardTest >> testIsValidIfCardUsageIsOnlyRemovedFromOwnersHand [
         build.
         
     self assert: (aGame spaceshipMatchWith: id) getCards size equals: 2.
-    aGame playCard: aCard by: id targeting: id.
+    aGame playCard: SpeedCard by: id targeting: id.
     self assert: (aGame spaceshipMatchWith: id) getCards size equals: 1.
     aGame playTurn.
-    aGame playCard: (aGame spaceshipMatchWith: id) getCards first by: id targeting: id.
+    aGame playCard: SpeedCard by: id targeting: id.
     aGame playTurn.
     self assert: (aGame spaceshipMatchWith: id) getPosition equals: 15.
     self assert: (aGame spaceshipMatchWith: id) getCards size equals: 0.
@@ -93,14 +103,14 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
     
-    aGame playCard: aCard1 by: id1 targeting: id1.
+    aGame playCard: SpeedCard by: id1 targeting: id1.
     aGame playTurn. aGame playTurn.
     
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
     self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
     
 	aGame playTurn.
-    aGame playCard: aCard2 by: id2 targeting: id2.
+    aGame playCard: SpeedCard by: id2 targeting: id2.
     aGame playTurn.
     
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
@@ -130,11 +140,43 @@ SpeedCardTest >> testIsValidIfSpeedCardIncrementsPositionDynamically [
         addDice: (FixedDice onFace: position);
         build.
         
-    aGame playCard: aCard by: id targeting: id.
+    aGame playCard: SpeedCard by: id targeting: id.
     aGame playTurn.
 
     self assert: (aGame spaceshipMatchWith: id) getPosition equals: 7.
     self assert: (aGame spaceshipMatchWith: id) getCards size equals: 0.
+
+]
+
+{ #category : 'tests' }
+SpeedCardTest >> testShowsErrorIfSpeedCardWantsToBePlayedOutsideOwnersTurn [
+	| aGameBuilder aSpaceship1 aSpaceship2 aGame aCard id1 id2 |
+	aGameBuilder := GameBuilder new.
+	aCard := SpeedCard new.
+
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aCard) and: id1.
+	aSpaceship2 := Spaceship with: id2.
+
+	aGame := aGameBuilder
+		addSpaceship: aSpaceship1;
+		addSpaceship: aSpaceship2;
+		addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
+		addDice: (SequentialFixedDice onFaces: #(1));
+		build.
+
+	aGame playTurn.
+
+	self
+		should: [ aGame playCard: SpeedCard by: id1 targeting: id1 ]
+		raise: Error
+		withMessageText: 'Card cannot be played at this turn'.
+
+	"Chequeo extra: la carta sigue en la mano"
+	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+
 
 ]
 
@@ -156,8 +198,8 @@ SpeedCardTest >> testSpaceshipUsesTwoSpeedCardsAndBonusesAccumulateImmediately [
 		addDice: (FixedDice onFace: positions);
 		build.
 		
-	aGame playCard: aCard1 by: id targeting: id.
-	aGame playCard: aCard2 by: id targeting: id.
+	aGame playCard: SpeedCard by: id targeting: id.
+	aGame playCard: SpeedCard by: id targeting: id.
 	aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 8.
@@ -186,8 +228,8 @@ SpeedCardTest >> testSpeedAndAccelerationBonusesAccumulateForTargetSpaceship [
         addDice: (FixedDice onFace: 5);
         build.
 
-    aGame playCard: aSpeedCard by: id1 targeting: id1.
-    aGame playCard: aAccelerationCard by: id1 targeting: nil.
+    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame playCard: AccelerationCard by: id1 targeting: nil.
     
     aGame playTurn. aGame playTurn.
     self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 7.

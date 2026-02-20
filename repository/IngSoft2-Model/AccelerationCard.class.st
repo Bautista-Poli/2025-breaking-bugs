@@ -5,19 +5,14 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'behavior' }
-AccelerationCard >> applyBonusTo: aRollValue for: aSpaceship [
-    ^ aRollValue + 1.
-]
-
-{ #category : 'behavior' }
-AccelerationCard >> canBePlayedBy: aSpaceship in: aGame [
+{ #category : 'testing' }
+AccelerationCard class >> canBePlayedBy: aSpaceship in: aGame [
     (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
 ]
 
-{ #category : 'initialization' }
-AccelerationCard >> initialize [
-id := 'AccelerationCard-' , (0 to: 9999) atRandom asString.
+{ #category : 'behavior' }
+AccelerationCard >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aRollValue + 1.
 ]
 
 { #category : 'behavior' }

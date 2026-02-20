@@ -95,7 +95,7 @@ Game >> getPositionTable [
 Game >> getRealCard: aTargetCard [
 	"ROMPE INMUTABILIDAD"
      ^ activePermanentCards 
-        detect: [ :each | each = aTargetCard ] 
+        detect: [ :each | each class = aTargetCard ] 
         ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
 ]
 

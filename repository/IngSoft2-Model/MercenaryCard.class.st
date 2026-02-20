@@ -9,14 +9,14 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'behavior' }
-MercenaryCard >> canBePlayedBy: aSpaceship in: aGame [
+{ #category : 'testing' }
+MercenaryCard class >> canBePlayedBy: aSpaceship in: aGame [
     (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
 ]
 
-{ #category : 'initialization' }
-MercenaryCard >> initialize [
-id := 'MercenaryCard-' , (0 to: 9999) atRandom asString.
+{ #category : 'behavior' }
+MercenaryCard >> canBePlayedBy: aSpaceship in: aGame [
+    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
 ]
 
 { #category : 'behavior' }

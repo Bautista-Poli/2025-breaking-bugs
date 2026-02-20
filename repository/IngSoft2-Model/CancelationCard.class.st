@@ -5,11 +5,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-CancelationCard >> initialize [
-id := 'CancelationCard-' , (0 to: 9999) atRandom asString.
-]
-
 { #category : 'as yet unclassified' }
 CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecting: aTargetSpaceship [
 	| realCardToCancel |
@@ -17,4 +12,9 @@ CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecti
 	realCardToCancel undoEffect: aGame.
 	aGame removeActivePermanentCard: realCardToCancel.
 	aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
+CancelationCard >> undoEffect: aGame [
+
 ]

@@ -5,18 +5,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-NoEffectCard >> = anotherCard [
-
-^ false.
-]
-
-{ #category : 'comparing' }
-NoEffectCard >> compareID: anId [ 
-
-^ false.
-]
-
 { #category : 'behavior' }
 NoEffectCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
     ^ self

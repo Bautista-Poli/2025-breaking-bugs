@@ -5,14 +5,14 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-RedoCard >> initialize [
-	id := 'RedoCard-' , (0 to: 9999) atRandom asString.
-]
-
 { #category : 'behavior' }
 RedoCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
     | cardToRedo |
     cardToRedo := aGame lastCardThrown.
     cardToRedo playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship.
+]
+
+{ #category : 'behavior' }
+RedoCard >> undoEffect: aGame [
+
 ]

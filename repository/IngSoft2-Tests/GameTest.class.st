@@ -78,11 +78,11 @@ GameTest >> testAllTheEffectsOnGame [
 
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable aSpeedCard aCancellationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 id1 id2 id3 id4 |
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable aSpeedCard aCancelationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 id1 id2 id3 id4 |
 
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
-	aCancellationCard := CancelationCard new.
+	aCancelationCard := CancelationCard new.
 	aAccelerationCard := AccelerationCard new.
 	aMercenaryCard := MercenaryCard new.
 	aSpeedCard2 := SpeedCard new.
@@ -96,7 +96,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	id4 := 'nave4'.
 
 	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with: aMercenaryCard2) and: id1.
-	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancellationCard with: aSpeedCard2) and: id2.
+	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancelationCard with: aSpeedCard2) and: id2.
 	aSpaceship3 := Spaceship with: (OrderedCollection with: aAccelerationCard with: aCancellationCard2) and: id3.
 	aSpaceship4 := Spaceship with: (OrderedCollection with: aMercenaryCard with: aAccelerationCard2) and: id4.
 
@@ -138,7 +138,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aAccelerationCard by: id3 targeting: nil.
+	aGame playCard: AccelerationCard by: id3 targeting: nil.
 	aGame playTurn.
 	aGame playTurn.
 
@@ -148,12 +148,12 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatchWith: id4) getPosition equals: 12.
 	
 	
-	aGame play: aCancellationCard by: id2 affecting: aAccelerationCard targeting: nil.
+	aGame play: CancelationCard by: id2 affecting: AccelerationCard targeting: nil.
 	
 	self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
 
-	aGame playCard: aSpeedCard by: id1 targeting: id1.
+	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 29.

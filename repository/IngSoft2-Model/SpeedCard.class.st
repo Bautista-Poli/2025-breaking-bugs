@@ -8,22 +8,16 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'testing' }
+SpeedCard class >> canBePlayedBy: aSpaceship in: aGame [
+    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this turn' ].
+]
+
 { #category : 'behavior' }
 SpeedCard >> applyBonusTo: aRollValue for: aSpaceship [
     ^ (aSpaceship = spaceshipAffected)
         ifTrue: [ aRollValue + 1 ]
         ifFalse: [ aRollValue ]
-]
-
-{ #category : 'behavior' }
-SpeedCard >> canBePlayedBy: aSpaceship in: aGame [
-    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
-]
-
-{ #category : 'initialization' }
-SpeedCard >> initialize [
-id := 'Card-' , (0 to: 9999) atRandom asString.
-
 ]
 
 { #category : 'behavior' }

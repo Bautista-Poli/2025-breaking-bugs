@@ -6,12 +6,6 @@ Class {
 }
 
 { #category : 'initialization' }
-RepeatCard >> initialize [
-
-	id := 'RepeatCard-' , (0 to: 9999) atRandom asString
-]
-
-{ #category : 'initialization' }
 RepeatCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
     | lastEffect |
     
@@ -19,4 +13,9 @@ RepeatCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTa
     lastEffect applyTo: aTargetSpaceship in: aGame.
     
     aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
+RepeatCard >> undoEffect: aGame [
+
 ]

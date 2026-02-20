@@ -53,7 +53,7 @@ MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyA
         addDice: (SequentialFixedDice onFaces: #(4 2 6));
         build.
 
-    aGame playCard: aCard1 by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
 
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
     self assert: (aGame spaceshipMatchWith: id2) hasOwner.
@@ -87,11 +87,11 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWi
 		         addDice: (SequentialFixedDice onFaces: #(4 2 6));
 		         build.
 
-	aGame playCard: aCard1 by: id1 targeting: id2.
+	aGame playCard: MercenaryCard by: id1 targeting: id2.
 	self assert: id1 hasMercenaryWithId: id2 in: aGame.
 
 	self
-		should: [ aGame playCard: aCard2 by: id1 targeting: id2 ]
+		should: [ aGame playCard: MercenaryCard by: id1 targeting: id2 ]
 		raise: Error
 		withMessageText: 'A mercenary cannot hire other spaceships'.
 
@@ -123,11 +123,11 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipHiresAnotherTheStateChangesOnlyFor
         addDice: (FixedDice onFace: 8);
         build.
         
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
 	aGame playTurn.
 
 	self
-		should: [ aGame playCard: aCard2 by: id2 targeting: id1 ]
+		should: [ aGame playCard: MercenaryCard by: id2 targeting: id1 ]
 		raise: Error
 		withMessageText: 'A mercenary cannot hire other spaceships'.
 
@@ -189,7 +189,7 @@ MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
         addDice: (SequentialFixedDice onFaces: #(4 19 5));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
 
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
@@ -223,7 +223,7 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
         addDice: (SequentialFixedDice onFaces: #(4 2 4 "|Batallan|" "Tira la nave 3 ->"6 "Tira la nave 1 y su mercenaria ->"2 7));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
 
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
 
@@ -260,8 +260,8 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
         addDice: (SequentialFixedDice onFaces: #(4 2 6 6 10 4));
         build.
 
-    aGame playCard: aCard1 by: id1 targeting: id2.
-    aGame playCard: aCard2 by: id1 targeting: id3.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id3.
 
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
@@ -300,7 +300,7 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
         addDice: (SequentialFixedDice onFaces: #(4 2 3 2 4 10));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
 
     aGame playTurn. aGame playTurn. aGame playTurn.
     aGame playTurn. aGame playTurn. aGame playTurn.
@@ -338,7 +338,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
         addDice: (SequentialFixedDice onFaces: #(4 19 4 5 1 7));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
     aGame playTurn. aGame playTurn. aGame playTurn.
 	"Batallan, spaceship3 saca un 5 mientras que una de las otras dos saca un 7"
 
@@ -376,8 +376,8 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
         addDice: (SequentialFixedDice onFaces: #(4 19 9));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
-    aGame playCard: aSecondCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
+    aGame playCard: AccelerationCard by: id1 targeting: id2.
     
     self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
     
@@ -409,7 +409,7 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
         addDice: (SequentialFixedDice onFaces: #(4 19 4 10 1 1));
         build.
 
-    aGame playCard: aCard by: id1 targeting: id2.
+    aGame playCard: MercenaryCard by: id1 targeting: id2.
     aGame playTurn. aGame playTurn. aGame playTurn.
 
     self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
