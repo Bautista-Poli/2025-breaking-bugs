@@ -147,26 +147,14 @@ Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
 
 { #category : 'behavior' }
 Game >> playTurn [ 
-    | spaceshipToPlay positionsToAdvance |
+    | spaceshipToPlay roll |
     self checkIfGameHasAlreadyFinished. 
 
     spaceshipToPlay := turnManager currentSpaceship.
 	 
 	(spaceshipToPlay canPlay) ifTrue: [
-		positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
-	(spaceshipToPlay isInJail) ifTrue: [
-				(self isMaxRoll: positionsToAdvance) ifTrue: [ 
-							spaceshipToPlay releaseFromJail.
-				]
-		].
-
-    
-        (spaceshipToPlay isInJail) ifFalse: [
-        	board move: spaceshipToPlay by: positionsToAdvance. 
-        	board handleLandingOf: spaceshipToPlay in: self. 
-		 ]. 
-	
-		
+		roll := self calculateTotalRollFor: spaceshipToPlay.
+		spaceshipToPlay handleRoll: roll in: self.
     ].
 
     turnManager nextTurn.

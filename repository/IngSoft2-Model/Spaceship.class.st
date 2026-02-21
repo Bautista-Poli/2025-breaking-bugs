@@ -112,6 +112,11 @@ Spaceship >> handleEndOfCycle [
 	shieldStatus handleEndOfCycleFor: self
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> handleRoll: aRoll in: aGame [ 
+	jailStatus handleRoll: aRoll for: self in: aGame.
+]
+
 { #category : 'testing' }
 Spaceship >> hasHimAsMercenary: aSpaceship [ 
 	^ mercenaries includes: aSpaceship.

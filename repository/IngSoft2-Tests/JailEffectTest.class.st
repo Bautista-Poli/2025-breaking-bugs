@@ -6,6 +6,40 @@ Class {
 }
 
 { #category : 'tests' }
+JailEffectTest >> testWhenFreedomCardIsPlayedItReleasesTheSpaceshipFromJailOutsideOwnTurn [
+    | aGame aSpaceship aSpaceship2 aGameBuilder aBoard aTileBuilder aTileCollection id1 id2 |
+    aGameBuilder := GameBuilder new.
+    id1 := 'nave1'.
+    id2 := 'nave2'.
+    aSpaceship := Spaceship with: (OrderedCollection with: FreedomCard new) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    
+    aTileBuilder := TilesBuilder with: 20.
+    aTileBuilder with: JailEffect new at: 3.
+    aTileBuilder addWormholeFrom: 5 to: 10.
+    aTileCollection := aTileBuilder build.
+    
+    aBoard := Board withSize: 20 andLapsToWin: 1 and: aTileCollection.
+    aGame := aGameBuilder
+        addSpaceship: aSpaceship;
+        addSpaceship: aSpaceship2;
+        addBoard: aBoard;
+        addDice: (SequentialFixedDice onFaces: #(3 4));
+        build.
+    
+    aGame playTurn.
+    self assert: (aGame spaceshipMatchWith: id1) isInJail.
+    
+    aGame playCard: FreedomCard by: id1 targeting: id1.
+    self deny: (aGame spaceshipMatchWith: id1) isInJail.
+    
+    aGame playTurn.
+    aGame playTurn.
+    self deny: (aGame spaceshipMatchWith: id1) isInJail.
+    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 6.
+]
+
+{ #category : 'tests' }
 JailEffectTest >> testWhenSpaceshipInJailRollsMaximumItIsReleasedAndDoesNotMove [
     | aGame aSpaceship aGameBuilder aBoard aTileBuilder aTileCollection id |
     aGameBuilder := GameBuilder new.
