@@ -132,10 +132,10 @@ Game >> lastTileEffectApplied [
 Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetShipId [
 
     | spaceshipInGame aSpaceshipTarget |
-    spaceshipInGame := spaceships detect: [ :each | each matches: aSpaceshipId ].
+    spaceshipInGame := spaceships detect: [ :each | each matchesId: aSpaceshipId ].
     
     aSpaceshipTarget := aTargetShipId ifNotNil: [
-        spaceships detect: [ :each | each matches: aTargetShipId ] ].
+        spaceships detect: [ :each | each matchesId: aTargetShipId ] ].
     
     spaceshipInGame use: aCard targeting: aTargetCard affecting: aSpaceshipTarget in: self.
 ]
@@ -191,7 +191,7 @@ Game >> skipTurn [
 { #category : 'getter' }
 Game >> spaceshipMatchWith: anId [
 
-	^ (spaceships detect: [ :each | each matches: anId ]) deepCopy.
+	^ (spaceships detect: [ :each | each matchesId: anId ]) deepCopy.
 ]
 
 { #category : 'behavior' }

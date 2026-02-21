@@ -65,8 +65,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
     aGame playCard: RedoCard by: id1 targeting: id3.
 
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
-    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id2 ]).
-    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id3 ]).
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
+    self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id3 ]).
 
 ]
 

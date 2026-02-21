@@ -9,8 +9,7 @@ Class {
 AtomicBombEffect >> applyTo: aSpaceship in: aGame [
 
 	aGame spaceshipsDo: [ :ship |
-		ship moveToPosition: 0.
-		ship lowerAShield
+		ship applyPenality
 	].
 
 	aGame registerAppliedEffect: self.

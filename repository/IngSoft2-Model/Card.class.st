@@ -17,8 +17,7 @@ Card >> applyBonusTo: aRollValue for: aSpaceship [
 
 { #category : 'behavior' }
 Card >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
-    aTargetSpaceship releaseFromJail.
-    aGame registerLastCardPlayed: self.
+    self subclassResponsibility
 ]
 
 { #category : 'behavior' }

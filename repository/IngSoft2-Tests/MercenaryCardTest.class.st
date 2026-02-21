@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 MercenaryCardTest >> assert: aSpaceshipId hasMercenaryWithId: aMercenaryId in: aGame [
 	self assert: ((aGame spaceshipMatchWith: aSpaceshipId) getMercenaries
-		anySatisfy: [ :each | each matches: aMercenaryId ]).
+		anySatisfy: [ :each | each matchesId: aMercenaryId ]).
 
 ]
 

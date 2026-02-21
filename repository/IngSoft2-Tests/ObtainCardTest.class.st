@@ -99,7 +99,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
-	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id2 ]).
+	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
 ]
 
 { #category : 'tests' }
@@ -145,7 +145,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
-	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matches: id2 ]).
+	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
 
 
 ]

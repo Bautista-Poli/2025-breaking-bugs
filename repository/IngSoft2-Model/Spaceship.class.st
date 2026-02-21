@@ -42,6 +42,12 @@ Spaceship >> addNewCard: aCard [
 	
 ]
 
+{ #category : 'initialization' }
+Spaceship >> applyPenality [
+	position := 0.
+	shieldStatus lowerShieldFor: self
+]
+
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
 
@@ -136,7 +142,7 @@ Spaceship >> hasReached: lapsToWin [
 { #category : 'adding' }
 Spaceship >> hasSameIdAs: anotherSpaceship [
 
-	^ anotherSpaceship matches: id
+	^ anotherSpaceship matchesId: id
 ]
 
 { #category : 'initialization' }
@@ -152,12 +158,9 @@ Spaceship >> initializeWith: aCollectionOfCards and: anId [
 	jailStatus := FreeFromJail new.
 ]
 
-{ #category : 'adding' }
-Spaceship >> isAheadOf: anotherSpaceship [
-    (laps = anotherSpaceship getLapsCompleted)
-        ifTrue: [ ^ position > anotherSpaceship getPosition ]
-        ifFalse: [ ^ laps > anotherSpaceship getLapsCompleted ]
-	
+{ #category : 'testing' }
+Spaceship >> isAheadOf: aSpaceship inBoard: aBoardSize [ 
+	^ aSpaceship isBehind: position+(laps*aBoardSize asParsec) in: aBoardSize.
 ]
 
 { #category : 'adding' }
@@ -169,6 +172,11 @@ Spaceship >> isAtLap: aLap andAtSquare: aSquare [
 Spaceship >> isAtPosition: aPosition [
 
 	^ position = aPosition
+]
+
+{ #category : 'testing' }
+Spaceship >> isBehind: anotherPosition in: aBoardSize [ 
+	^ position+(laps*aBoardSize asParsec) < anotherPosition
 ]
 
 { #category : 'testing' }
@@ -189,14 +197,8 @@ Spaceship >> makeHimOwnerOf: aMercenarySpaceship [
 
 ]
 
-{ #category : 'behavior' }
-Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
-	owner := true.
-
-]
-
 { #category : 'testing' }
-Spaceship >> matches: anId [ 
+Spaceship >> matchesId: anId [ 
 	^ id = anId.
 ]
 
@@ -206,12 +208,6 @@ Spaceship >> moveToPosition: aPosition [
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition.
-]
-
-{ #category : 'getter' }
-Spaceship >> numberOfMercenaries [
-
-	^ mercenaries size
 ]
 
 { #category : 'behavior' }
@@ -228,6 +224,17 @@ Spaceship >> releaseFromJail [
 { #category : 'behavior' }
 Spaceship >> releaseFromOwner [ 
     owner := false.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> rollBestValueUsing: dicesCollection [ 
+    | best roll |
+    best := dicesCollection inject: 0 into: [ :sum :aDie | sum + aDie roll ].
+    mercenaries size timesRepeat: [
+        roll := dicesCollection inject: 0 into: [ :sum :aDie | sum + aDie roll ].
+        best := roll max: best.
+    ].
+    ^ best
 ]
 
 { #category : 'as yet unclassified' }

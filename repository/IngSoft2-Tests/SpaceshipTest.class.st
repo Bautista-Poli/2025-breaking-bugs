@@ -16,35 +16,43 @@ SpaceshipTest >> should: anErrorBlock raise: anErrorClass withMessageText: error
 ]
 
 { #category : 'tests' }
+SpaceshipTest >> testSpaceshipMovesWhatItGotFromTheDice [
+    | aGame id aBoard diceNum |
+    id := 'nave1'.
+	 diceNum := 3.
+    aBoard := Board  withSize: 20 andWormholeFrom: 10 to: 12.
+    aGame := GameBuilder new
+        addSpaceship: (Spaceship with: id);
+        addBoard: aBoard;
+        addDice: (FixedDice onFace: diceNum);
+        build.
+    aGame playTurn.
+    self assert: (aGame spaceshipMatchWith: id) getPosition equals: diceNum.
+]
+
+{ #category : 'tests' }
 SpaceshipTest >> testWhenCreatingASpaceshipThenItIsAtTheInitialPosition [
 
 	| aSpaceship |
 	aSpaceship := Spaceship with: 'nave1'.
 
-	self assert: (aSpaceship isAtPosition: 0)
+	self assert: aSpaceship getPosition equals: 0
 ]
 
 { #category : 'tests' }
-SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
-
-	| aSpaceship finalPosition |
-	aSpaceship := Spaceship with: 'nave1'.
-	finalPosition := 3.
-
-	aSpaceship moveToPosition: finalPosition.
-
-	self assert: (aSpaceship isAtPosition: finalPosition)
-]
-
-{ #category : 'tests' }
-SpaceshipTest >> testWhenTryingToMoveToANegativePositionTheSpaceshipIsNotAllowed [
-
-	| aSpaceship finalPosition |
-	aSpaceship := Spaceship with: 'nave1'.
-	finalPosition := -1.
-
-	self
-		should: [ aSpaceship moveToPosition: finalPosition ]
-		raise: Error
-		withMessageText: 'The spaceship cannot move to a negative position'
+SpaceshipTest >> testWhenSpaceshipMovesAndGoesNegativeItStaysAtZero [
+    | aGame id aBoard aTileBuilder aTileCollection |
+    id := 'nave1'.
+    aTileBuilder := TilesBuilder with: 20.
+    aTileBuilder with: BlackHoleEffect new at: 2.
+    aTileBuilder addWormholeFrom: 5 to: 10.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: 20 andLapsToWin: 1 and: aTileCollection.
+    aGame := GameBuilder new
+        addSpaceship: (Spaceship with: id);
+        addBoard: aBoard;
+        addDice: (FixedDice onFace: 2);
+        build.
+    aGame playTurn.
+    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
 ]

@@ -36,12 +36,7 @@ Battle >> getAllDiceValuesFrom: diceCollection [
 { #category : 'initialization' }
 Battle >> getAllValuesIncludingMercenariesOf: aSpaceship [
 
-	| spaceshipMercenaryDiceValue spaceShipDiceValue |
-	spaceShipDiceValue := self getAllDiceValuesFrom: dice.
-	aSpaceship numberOfMercenaries timesRepeat: [
-		spaceshipMercenaryDiceValue := self getAllDiceValuesFrom: dice.
-		spaceShipDiceValue := spaceshipMercenaryDiceValue max: spaceShipDiceValue ].
-	^ spaceShipDiceValue
+	^ aSpaceship rollBestValueUsing: dice
 ]
 
 { #category : 'initialization' }
@@ -70,7 +65,6 @@ Battle >> resolveBattleBetween: aSpaceship and: opponent [
 	oponentDiceValue := self getAllValuesIncludingMercenariesOf: opponent. 
 	
 	spaceshipDiceValue > oponentDiceValue ifTrue: [ loser :=  opponent].
-	loser lowerAShield. 
-	loser moveToPosition: 0.
+	loser applyPenality. 
 	loser getMercenaries do: [:mercenary | mercenary lowerAShield ].
 ]

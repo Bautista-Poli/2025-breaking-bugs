@@ -41,6 +41,46 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 ]
 
 { #category : 'tests' }
+PositionTableTest >> testRankingPrioritizesHigherLapOverHigherSquare [
+	| aGame aGameBuilder aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 finishLine aTileBuilder aBoard ranking  expectedIds|
+
+	aGameBuilder := GameBuilder new.
+
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
+	aSpaceship4 := Spaceship with: 'nave4'.
+
+	finishLine := 30.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder addWormholeFrom: 4 to: 15.
+	aBoard := Board withSize: finishLine andLapsToWin: 3 and: aTileBuilder build.
+
+	aGame := aGameBuilder
+		addSpaceship: aSpaceship1;
+		addSpaceship: aSpaceship2;
+		addSpaceship: aSpaceship3;
+		addSpaceship: aSpaceship4;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: #(43 29 90 ));
+		build.
+
+	aGame playTurn.  
+	aGame playTurn.  
+	aGame playTurn.  
+	ranking := (aGame getPositionTable) getRanking.
+
+	expectedIds := { 'nave3'. 'nave1'. 'nave2'. 'nave4' }.
+	ranking with: expectedIds do: [ :ship :expectedId |
+    self assert: (ship matchesId: expectedId) ].
+
+
+
+
+	
+]
+
+{ #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 
 	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder id1 id2 |
@@ -97,7 +137,7 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 
 	expectedIds := { 'nave1'. 'nave2'. 'nave3'. 'nave4' }.
 	aRankingPosition with: expectedIds do: [ :ship :expectedId |
-    self assert: (ship matches: expectedId) ].
+    self assert: (ship matchesId: expectedId) ].
 
 
 

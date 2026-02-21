@@ -55,7 +55,7 @@ Board >> checkSize: aDistanceToCompare [
 
 { #category : 'behavior' }
 Board >> createPositionTable: spaceships [
-	^ PositionTable with: spaceships.
+	^ PositionTable with: spaceships boardSize: aSize.
 ]
 
 { #category : 'initialization' }
