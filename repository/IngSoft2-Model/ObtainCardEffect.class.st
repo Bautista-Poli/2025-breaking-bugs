@@ -21,6 +21,7 @@ ObtainCardEffect class >> with: aSpecificCard [
 { #category : 'operations' }
 ObtainCardEffect >> applyTo: aSpaceship in: aGame [
     aSpaceship addNewCard: (cardSupplier value).
+	 aGame registerAppliedEffect: self
 	
 ]
 

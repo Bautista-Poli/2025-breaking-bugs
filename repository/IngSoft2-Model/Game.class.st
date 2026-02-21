@@ -112,6 +112,11 @@ Game >> isCurrentTurnOf: aSpaceship [
     ^ turnManager isCurrentTurnOf: aSpaceship.
 ]
 
+{ #category : 'behavior' }
+Game >> isMaxRoll: aRoll [
+    ^ aRoll = (dice inject: 0 into: [ :sum :aDie | sum + aDie maxValue ])
+]
+
 { #category : 'accessing' }
 Game >> lastCardThrown [
     ^ cardsThrown
@@ -146,11 +151,22 @@ Game >> playTurn [
     self checkIfGameHasAlreadyFinished. 
 
     spaceshipToPlay := turnManager currentSpaceship.
+	 
+	(spaceshipToPlay canPlay) ifTrue: [
+		positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay.
+	(spaceshipToPlay isInJail) ifTrue: [
+				(self isMaxRoll: positionsToAdvance) ifTrue: [ 
+							spaceshipToPlay releaseFromJail.
+				]
+		].
 
-    (spaceshipToPlay canPlay) ifTrue: [
-        positionsToAdvance := self calculateTotalRollFor: spaceshipToPlay. 
-        board move: spaceshipToPlay by: positionsToAdvance. 
-        board handleLandingOf: spaceshipToPlay in: self. 
+    
+        (spaceshipToPlay isInJail) ifFalse: [
+        	board move: spaceshipToPlay by: positionsToAdvance. 
+        	board handleLandingOf: spaceshipToPlay in: self. 
+		 ]. 
+	
+		
     ].
 
     turnManager nextTurn.
@@ -176,7 +192,6 @@ Game >> removeActivePermanentCard: aCard [
 
 { #category : 'behavior' }
 Game >> skipTurn [
-    | spaceshipToPlay |
 
     self checkIfGameHasAlreadyFinished.
     turnManager currentSpaceship rechargeShields.
@@ -189,6 +204,12 @@ Game >> skipTurn [
 Game >> spaceshipMatchWith: anId [
 
 	^ (spaceships detect: [ :each | each matches: anId ]) deepCopy.
+]
+
+{ #category : 'behavior' }
+Game >> spaceshipsDo: aBlock [
+	spaceships do: aBlock
+
 ]
 
 { #category : 'behavior' }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'SequentialFixedDice',
-	#superclass : 'Object',
+	#superclass : 'Dice',
 	#instVars : [
 		'faceNumberCollection',
 		'currentIndex'
@@ -24,10 +24,25 @@ SequentialFixedDice class >> faceNumberIsPositive: aFaceNumber [
 ]
 
 { #category : 'creation' }
+SequentialFixedDice class >> on: sides andFixedNumbers: fixedFaces [
+
+	self faceNumberArePositive: fixedFaces.
+	^ self new initializeOn: sides andFixedNumber: fixedFaces.
+]
+
+{ #category : 'creation' }
 SequentialFixedDice class >> onFaces: aFaceNumberCollection [
 
 	self faceNumberArePositive: aFaceNumberCollection.
-	^ self new initializeOnFace: aFaceNumberCollection.
+	^ self new initializeOn: 100 andFixedNumber: aFaceNumberCollection.
+]
+
+{ #category : 'initialization' }
+SequentialFixedDice >> initializeOn: sides andFixedNumber: fixedFaces [
+
+	aNumberOfSides := sides.
+	faceNumberCollection := fixedFaces.
+	currentIndex := 0.
 ]
 
 { #category : 'initialization' }

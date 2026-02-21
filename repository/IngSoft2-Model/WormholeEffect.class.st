@@ -17,9 +17,8 @@ WormholeEffect class >> targeting: exitPosition [
 { #category : 'operations' }
 WormholeEffect >> applyTo: aSpaceship in: aGame [ 
 
-    aSpaceship moveToPosition: targetPosition.
+    (aGame board) move: aSpaceship by: (targetPosition - aSpaceship getPosition).
 	 aGame checkForBattleInvolving: aSpaceship.
-    aGame registerAppliedEffect: self.
 ]
 
 { #category : 'initialization' }

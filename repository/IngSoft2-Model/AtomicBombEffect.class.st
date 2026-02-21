@@ -8,7 +8,7 @@ Class {
 { #category : 'operations' }
 AtomicBombEffect >> applyTo: aSpaceship in: aGame [
 
-	aGame spaceshipsExcept: nil do: [ :ship |
+	aGame spaceshipsDo: [ :ship |
 		ship moveToPosition: 0.
 		ship lowerAShield
 	].

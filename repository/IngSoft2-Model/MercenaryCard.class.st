@@ -15,11 +15,6 @@ MercenaryCard class >> canBePlayedBy: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-MercenaryCard >> canBePlayedBy: aSpaceship in: aGame [
-    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
-]
-
-{ #category : 'behavior' }
 MercenaryCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
 	ownerSpaceship := aSpaceship.
    affectedSpaceship := aTargetSpaceship.
@@ -34,4 +29,5 @@ MercenaryCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: 
 MercenaryCard >> undoEffect: aGame [ 
 
 	ownerSpaceship fire: affectedSpaceship.
+	affectedSpaceship releaseFromOwner.
 ]

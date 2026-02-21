@@ -37,6 +37,11 @@ Dice >> initializeWithSides: numberOfSides [
 	aNumberOfSides := numberOfSides
 ]
 
+{ #category : 'initialization' }
+Dice >> maxValue [
+	^ aNumberOfSides.
+]
+
 { #category : 'roll' }
 Dice >> roll [
 

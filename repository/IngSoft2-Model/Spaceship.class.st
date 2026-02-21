@@ -8,7 +8,8 @@ Class {
 		'mercenaries',
 		'id',
 		'owner',
-		'shieldStatus'
+		'shieldStatus',
+		'jailStatus'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -43,7 +44,6 @@ Spaceship >> addNewCard: aCard [
 
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
-	"NUEVO"
 
 	self hasOwner ifTrue: [
 		Error signal: 'A mercenary cannot hire other spaceships' ].
@@ -144,6 +144,7 @@ Spaceship >> initializeWith: aCollectionOfCards and: anId [
 	mercenaries := OrderedCollection new.
 	owner := false.
 	id:= anId.
+	jailStatus := FreeFromJail new.
 ]
 
 { #category : 'adding' }
@@ -163,6 +164,11 @@ Spaceship >> isAtLap: aLap andAtSquare: aSquare [
 Spaceship >> isAtPosition: aPosition [
 
 	^ position = aPosition
+]
+
+{ #category : 'testing' }
+Spaceship >> isInJail [
+	^ jailStatus isInJail
 ]
 
 { #category : 'behavior' }
@@ -189,12 +195,6 @@ Spaceship >> matches: anId [
 	^ id = anId.
 ]
 
-{ #category : 'getter' }
-Spaceship >> moveBy: positionsToAdvance on: aBoard [
-    aBoard move: self by: positionsToAdvance.
-
-]
-
 { #category : 'move' }
 Spaceship >> moveToPosition: aPosition [
 
@@ -213,6 +213,21 @@ Spaceship >> numberOfMercenaries [
 Spaceship >> rechargeShields [
 
 	shieldStatus rechargeShieldsFor: self
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> releaseFromJail [
+	jailStatus := FreeFromJail new.
+]
+
+{ #category : 'behavior' }
+Spaceship >> releaseFromOwner [ 
+    owner := false.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> sendToJail [
+    jailStatus := InJail new.
 ]
 
 { #category : 'behavior' }
@@ -237,11 +252,4 @@ Spaceship >> validateHasCardOfType: aCardClass [
         Error signal: 'Cant use a card that is not on the deck'
     ].
 
-]
-
-{ #category : 'behavior' }
-Spaceship >> validateIfCardIsInDeck: aCard [
-    (cards includes: aCard) ifFalse: [ 
-        Error signal: 'Cant use a card that is not on the deck' 
-    ].
 ]

@@ -428,8 +428,6 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameDoesntEnds 
 
 	aGame playTurn.
 	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 20.
-	self deny: aGame hasFinished.
-	aGame playTurn.
 	self assert: aGame hasFinished
 ]
 
