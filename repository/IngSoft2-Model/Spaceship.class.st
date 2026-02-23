@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'laps',
 		'cards',
 		'mercenaries',
 		'id',
@@ -44,7 +43,7 @@ Spaceship >> addNewCard: aCard [
 
 { #category : 'initialization' }
 Spaceship >> applyPenality [
-	position := 0.
+	position returnToStart.
 	shieldStatus lowerShieldFor: self
 ]
 
@@ -93,7 +92,7 @@ Spaceship >> getCards [
 { #category : 'getter' }
 Spaceship >> getLapsCompleted [
 
-	^ laps
+	^ position lap
 ]
 
 { #category : 'getter' }
@@ -104,7 +103,7 @@ Spaceship >> getMercenaries [
 { #category : 'testing' }
 Spaceship >> getPosition [
 
-	^ position
+	^ position square.
 ]
 
 { #category : 'getter' }
@@ -136,7 +135,7 @@ Spaceship >> hasOwner [
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
-	^ laps >= lapsToWin
+	^ position lap >= lapsToWin
 ]
 
 { #category : 'adding' }
@@ -148,8 +147,7 @@ Spaceship >> hasSameIdAs: anotherSpaceship [
 { #category : 'initialization' }
 Spaceship >> initializeWith: aCollectionOfCards and: anId [
 
-	position := 0.
-	laps := 0.
+	position := Position start.
 	shieldStatus := ShieldsActive withCount: 3.
 	cards := aCollectionOfCards.
 	mercenaries := OrderedCollection new.
@@ -160,12 +158,12 @@ Spaceship >> initializeWith: aCollectionOfCards and: anId [
 
 { #category : 'testing' }
 Spaceship >> isAheadOf: aSpaceship inBoard: aBoardSize [ 
-	^ aSpaceship isBehind: position+(laps*aBoardSize asParsec) in: aBoardSize.
+	^ aSpaceship isBehind: position square +(position lap*aBoardSize asParsec) in: aBoardSize.
 ]
 
 { #category : 'adding' }
 Spaceship >> isAtLap: aLap andAtSquare: aSquare [
-    ^ (laps = aLap) and: [ position = aSquare ]
+    ^ (position lap = aLap) and: [ position square = aSquare ]
 ]
 
 { #category : 'testing' }
@@ -176,7 +174,7 @@ Spaceship >> isAtPosition: aPosition [
 
 { #category : 'testing' }
 Spaceship >> isBehind: anotherPosition in: aBoardSize [ 
-	^ position+(laps*aBoardSize asParsec) < anotherPosition
+	^ position square +(position lap*aBoardSize asParsec) < anotherPosition
 ]
 
 { #category : 'testing' }
@@ -202,12 +200,14 @@ Spaceship >> matchesId: anId [
 	^ id = anId.
 ]
 
-{ #category : 'move' }
-Spaceship >> moveToPosition: aPosition [
+{ #category : 'path commands' }
+Spaceship >> moveTo: aPosition [ 
+	position := aPosition
+]
 
-	aPosition negative ifTrue: [
-		Error signal: 'The spaceship cannot move to a negative position' ].
-	position := aPosition.
+{ #category : 'accessing' }
+Spaceship >> position [
+	^ position
 ]
 
 { #category : 'behavior' }
@@ -245,7 +245,7 @@ Spaceship >> sendToJail [
 { #category : 'behavior' }
 Spaceship >> setLapsTo: lapsIncremented [
 
-	laps := lapsIncremented
+	position setLapsTo: lapsIncremented.
 ]
 
 { #category : 'as yet unclassified' }

@@ -24,3 +24,18 @@ Position >> initializeAt: aSquare lap: aLap [
     square := aSquare.
     laps := aLap.
 ]
+
+{ #category : 'as yet unclassified' }
+Position >> lap [
+	^ laps.
+]
+
+{ #category : 'as yet unclassified' }
+Position >> returnToStart [
+	square := 0.
+]
+
+{ #category : 'accessing' }
+Position >> square [
+	^ square
+]

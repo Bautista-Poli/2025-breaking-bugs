@@ -61,7 +61,7 @@ Board >> createPositionTable: spaceships [
 { #category : 'initialization' }
 Board >> handleLandingOf: aSpaceship in: aGame [
     | tile |
-    tile := tiles at: (aSpaceship getPosition + 1).
+    tile := tiles at: (aSpaceship position square + 1).
     tile handleArrivalOf: aSpaceship in: aGame.
 ]
 
@@ -86,22 +86,23 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andLapsToWin: aL
 
 { #category : 'testing' }
 Board >> move: aSpaceship by: positionsToAdvance [
-    | absolutePosition newAbsolutePosition newLap newPosition |
+    | boardSize absolute newLap newSquare newPosition |
+    boardSize := aSize asParsec.
     
-    absolutePosition := (aSpaceship getLapsCompleted * aSize asParsec) + aSpaceship getPosition.
+    absolute := (aSpaceship position lap * boardSize)
+                + aSpaceship position square
+                + positionsToAdvance.
     
-    newAbsolutePosition := absolutePosition + positionsToAdvance.
+    absolute := absolute max: 0.
     
-    newAbsolutePosition := newAbsolutePosition max: 0.
-    
-    newLap := newAbsolutePosition // aSize asParsec.
-    newPosition := newAbsolutePosition \\ aSize asParsec.
+    newLap    := absolute // boardSize.
+    newSquare := absolute \\ boardSize.
+    newPosition := Position at: newSquare lap: newLap.
 
-    aSpaceship setLapsTo: newLap.
-    
-    (self hasSpaceshipFinished: aSpaceship)
-        ifTrue: [ aSpaceship moveToPosition: aSize asParsec ]
-        ifFalse: [ aSpaceship moveToPosition: newPosition ].
+    (newPosition lap >= lapsToWin)
+    ifTrue:  [ aSpaceship moveTo: (Position at: boardSize lap: newPosition lap) ]
+    ifFalse: [ aSpaceship moveTo: newPosition ].
+
 	
 ]
 
