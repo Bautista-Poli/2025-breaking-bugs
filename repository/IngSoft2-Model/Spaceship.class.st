@@ -226,6 +226,11 @@ Spaceship >> matchesId: anId [
 	^ id = anId.
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> penalizeMercenaries [
+	mercenaries do: [ :mercenary | mercenary lowerAShield ]
+]
+
 { #category : 'accessing' }
 Spaceship >> position [
 	^ position

@@ -44,7 +44,7 @@ Game >> calculateTotalRollFor: aSpaceship [
 
 { #category : 'accessing' }
 Game >> checkForBattleInvolving: aSpaceship [
-	battle checkForBattleIfNeededWith: aSpaceship.
+	(Battle new) checkIfNeededFor: aSpaceship against: spaceships using: dice.
 ]
 
 { #category : 'testing' }
@@ -98,7 +98,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	spaceships := aCollectionOfSpacehips deepCopy.
 	board := aBoard.
 	dice := aCollectionOfDice.
-	battle := Battle with: spaceships and: dice.
+	battle := Battle new.
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
