@@ -13,13 +13,11 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	aSpeedCard := SpeedCard new.
 	aCard := CancelationCard new.
 	
-	id1 := 'nave1'.
-	id2 := 'nave2'.
+	id1 := 'nave1'. id2 := 'nave2'.
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: (OrderedCollection with: aSpeedCard with: aSpeedCard) and: id2.
 	
-	position := 6.
-	position2 := 4.
+	position := 6. position2 := 4.
 	aTileBuilder := TilesBuilder with: 60.
 	aTileBuilder with: (ObtainCardEffect with: aCard) at: position.
 	aTileBuilder addWormholeFrom: 40 to: 49.
@@ -38,20 +36,18 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	aGame playCard: SpeedCard by: id2 targeting: id2.
 	aGame playTurn.
 
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
-	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: position2 + 1.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
+	self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 1).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: position and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: (position2 + 1) and: 0).
 
 	aGame play: CancelationCard by: id1 affecting: SpeedCard targeting: nil.
 
-	aGame playTurn.
-	aGame playTurn.
+	aGame playTurn. aGame playTurn.
 	
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: (position * 2).
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: (position2 * 2) + 1.
-
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: (position * 2) and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: ((position2 * 2) + 1) and: 0).
 ]
 
 { #category : 'tests' }
@@ -59,9 +55,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard id1 id2 id3 |
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
+	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
@@ -75,31 +69,26 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
 
-	aBoard := Board
-		          withSize: 60
-		          andLapsToWin: 2
-		          and: aTileCollection.
+	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: { position. 15 });
-		         build.
+		addSpaceship: aSpaceship;
+		addSpaceship: aSpaceship2;
+		addSpaceship: aSpaceship3;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: { position. 15 });
+		build.
 
-	aGame playTurn.
-	aGame playTurn.
-	aGame playTurn.
+	3 timesRepeat: [ aGame playTurn ].
 
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: position and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
 
 	aGame playCard: MercenaryCard by: id1 targeting: id2.
 
-	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
-	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
+	self assert: ((aGame spaceshipMatchWith: id1) hasMercenariesAmount: 1).
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
+	self assert: ((aGame spaceshipMatchWith: id1) hasMercenaryWithId: id2 in: aGame).
 ]
 
 { #category : 'tests' }
@@ -155,9 +144,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard id1 id2 id3 |
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
+	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
@@ -171,28 +158,24 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 	aTileBuilder addWormholeFrom: 40 to: 49.
 	aTileCollection := aTileBuilder build.
 
-	aBoard := Board
-		          withSize: 60
-		          
-		          andLapsToWin: 2
-		          and: aTileCollection.
+	aBoard := Board withSize: 60 andLapsToWin: 2 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: position);
-		         build.
+		addSpaceship: aSpaceship;
+		addSpaceship: aSpaceship2;
+		addSpaceship: aSpaceship3;
+		addBoard: aBoard;
+		addDice: (FixedDice onFace: position);
+		build.
 
-	aGame playTurn. aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
+	3 timesRepeat: [ aGame playTurn ].
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
 
 	aGame playCard: SpeedCard by: id1 targeting: id1.
-	aGame playTurn. aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 13.
-
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
+	3 timesRepeat: [ aGame playTurn ].
+	
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 13 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
 
 
 
@@ -203,9 +186,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position aGame aBoard aTileBuilder aTileCollection aCard id1 id2 id3 |
 	
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
+	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
@@ -229,25 +210,19 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 		addDice: (SequentialFixedDice onFaces: { position. 4. 6 });
 		build.
 
-	aGame playTurn.
-	aGame playTurn.
-	aGame playTurn.
+	3 timesRepeat: [ aGame playTurn ].
 
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 4.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 6.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: position and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 4 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 6 and: 0).
 
 	aGame playCard: AccelerationCard by: id1 targeting: nil.
-	aGame playTurn.
-	aGame playTurn.
-	aGame playTurn.
+	3 timesRepeat: [ aGame playTurn ].
 
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
-	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: position * 2 + 1.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 9.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 13.
-
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: (position * 2 + 1) and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 9 and: 0). 
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 13 and: 0).
 
 
 ]
@@ -255,15 +230,11 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 { #category : 'tests' }
 ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 
-	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 id3 |
+	| aSpaceship aSpaceship2  aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection id1 id2 |
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
-
+	id1 := 'nave1'. id2 := 'nave2'.
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
-	aSpaceship3 := Spaceship with: id3.
 
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
@@ -274,17 +245,16 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSpaceship2;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
-		         build.
+		addSpaceship: aSpaceship;
+		addSpaceship: aSpaceship2;
+		addBoard: aBoard;
+		addDice: (FixedDice onFace: 4);
+		build.
 
 	aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 4.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 3.
-
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 4 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
 
 
 

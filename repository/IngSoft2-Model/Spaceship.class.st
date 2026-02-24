@@ -41,6 +41,11 @@ Spaceship >> addNewCard: aCard [
 	
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> advancedBy: positionsToAdvance withBoardSize: aSize and: lapsToWin [
+	position := position advancedBy: positionsToAdvance boardSize: aSize and: lapsToWin.
+]
+
 { #category : 'initialization' }
 Spaceship >> applyPenality [
 	position returnToStart.
@@ -90,20 +95,8 @@ Spaceship >> getCards [
 ]
 
 { #category : 'getter' }
-Spaceship >> getLapsCompleted [
-
-	^ position lap
-]
-
-{ #category : 'getter' }
 Spaceship >> getMercenaries [
 	^ mercenaries.
-]
-
-{ #category : 'testing' }
-Spaceship >> getPosition [
-
-	^ position square.
 ]
 
 { #category : 'getter' }
@@ -123,8 +116,23 @@ Spaceship >> handleRoll: aRoll in: aGame [
 ]
 
 { #category : 'testing' }
+Spaceship >> hasCardsAmount: aNumberOfCards [ 
+	^ cards size = aNumberOfCards
+]
+
+{ #category : 'testing' }
 Spaceship >> hasHimAsMercenary: aSpaceship [ 
 	^ mercenaries includes: aSpaceship.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasMercenariesAmount: anAmountOfMercenaries [ 
+	^ mercenaries size = anAmountOfMercenaries.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasMercenaryWithId: anID in: aGame [ 
+	^ mercenaries anySatisfy: [ :each | each matchesId: anID].
 ]
 
 { #category : 'testing' }
@@ -142,6 +150,11 @@ Spaceship >> hasReached: lapsToWin [
 Spaceship >> hasSameIdAs: anotherSpaceship [
 
 	^ anotherSpaceship matchesId: id
+]
+
+{ #category : 'testing' }
+Spaceship >> hasShields: anNumberOfShields [ 
+	^ shieldStatus hasAmount: anNumberOfShields
 ]
 
 { #category : 'initialization' }
@@ -162,14 +175,13 @@ Spaceship >> isAheadOf: aSpaceship inBoard: aBoardSize [
 ]
 
 { #category : 'adding' }
-Spaceship >> isAtLap: aLap andAtSquare: aSquare [
-    ^ (position lap = aLap) and: [ position square = aSquare ]
+Spaceship >> isAt: aSquare and: aLap [
+    ^ position isAt: aSquare and: aLap.
 ]
 
 { #category : 'testing' }
-Spaceship >> isAtPosition: aPosition [
-
-	^ position = aPosition
+Spaceship >> isAtSamePositionAs: aSpaceship [ 
+	^ aSpaceship isInPosition: position.
 ]
 
 { #category : 'testing' }
@@ -180,6 +192,11 @@ Spaceship >> isBehind: anotherPosition in: aBoardSize [
 { #category : 'testing' }
 Spaceship >> isInJail [
 	^ jailStatus isInJail
+]
+
+{ #category : 'testing' }
+Spaceship >> isInPosition: aPosition [ 
+	^ position isEqualAs: aPosition.
 ]
 
 { #category : 'behavior' }
@@ -198,11 +215,6 @@ Spaceship >> makeHimOwnerOf: aMercenarySpaceship [
 { #category : 'testing' }
 Spaceship >> matchesId: anId [ 
 	^ id = anId.
-]
-
-{ #category : 'path commands' }
-Spaceship >> moveTo: aPosition [ 
-	position := aPosition
 ]
 
 { #category : 'accessing' }
@@ -240,12 +252,6 @@ Spaceship >> rollBestValueUsing: dicesCollection [
 { #category : 'as yet unclassified' }
 Spaceship >> sendToJail [
     jailStatus := InJail new.
-]
-
-{ #category : 'behavior' }
-Spaceship >> setLapsTo: lapsIncremented [
-
-	position setLapsTo: lapsIncremented.
 ]
 
 { #category : 'as yet unclassified' }

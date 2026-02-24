@@ -88,19 +88,19 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: SpeedCard by: id targeting: id.
+    aGame playCard: SpeedCard by: id targeting: id. "Speed +1"
+    aGame playTurn. "6 + 1 = 7"
+
+    aGame playCard: RedoCard by: id targeting: id. 
     aGame playTurn.
 
-    aGame playCard: RedoCard by: id targeting: id.
-    aGame playTurn.
-
-    aGame playCard: RedoCard by: id targeting: id.
-    aGame playTurn.
+    aGame playCard: RedoCard by: id targeting: id. 
+    aGame playTurn. 
 
     aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 33.
-    self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
-
+    
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 33 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 ]
 
@@ -110,10 +110,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
 
     repeatCard := RepeatCard new.
     redoCard := RedoCard new.
-
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     spaceship1 := Spaceship with: (OrderedCollection with: repeatCard with: redoCard) and: id1.
     spaceship2 := Spaceship with: id2.
@@ -122,10 +119,9 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
     titleBuilder := ((TilesBuilder with: 90)
                         with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
                         at: 4). 
-	 tile :=  titleBuilder addWormholeFrom: 40 to: 49; build.
+     tile :=  titleBuilder addWormholeFrom: 40 to: 49; build.
 
     board := Board withSize: 180 andLapsToWin: 1 and: tile.
-
     dice := FixedDice onFace: 4.
     gameBuilder := GameBuilder new.
     game := gameBuilder
@@ -136,21 +132,19 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
                 addDice: dice;
                 build.
 
-    game playTurn. game playTurn. game playTurn.
+    3 timesRepeat: [ game playTurn ].
 
-    self assert: (game spaceshipMatchWith: id1) getPosition equals: 19.
-    self assert: (game spaceshipMatchWith: id2) getPosition equals: 14.
-    self assert: (game spaceshipMatchWith: id3) getPosition equals: 9.
+    self assert: ((game spaceshipMatchWith: id1) isAt: 19 and: 0).
+    self assert: ((game spaceshipMatchWith: id2) isAt: 14 and: 0).
+    self assert: ((game spaceshipMatchWith: id3) isAt: 9 and: 0).
 
-    game playCard: RepeatCard by: id1 targeting: id2.
-
-    self assert: (game spaceshipMatchWith: id2) getPosition equals: 29.
+    game playCard: RepeatCard by: id1 targeting: id2. 
+    self assert: ((game spaceshipMatchWith: id2) isAt: 29 and: 0).
 
     game playCard: RedoCard by: id1 targeting: id2.
-
-    self assert: (game spaceshipMatchWith: id1) getPosition equals: 19.
-    self assert: (game spaceshipMatchWith: id2) getPosition equals: 39.
-    self assert: (game spaceshipMatchWith: id3) getPosition equals: 9.
+    self assert: ((game spaceshipMatchWith: id1) isAt: 19 and: 0).
+    self assert: ((game spaceshipMatchWith: id2) isAt: 39 and: 0).
+    self assert: ((game spaceshipMatchWith: id3) isAt: 9 and: 0).
 
 ]
 
@@ -172,28 +166,26 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
         build.
 
     aGame playCard: SpeedCard by: id targeting: id.
-    aGame playTurn.
+    aGame playTurn. 
 
     aGame playCard: RedoCard by: id targeting: id.
-    aGame playTurn.
-    aGame playTurn.
+    aGame playTurn. 
+    aGame playTurn. 
 
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 23.
-    self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 23 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpaceshipsDoubleItsSpeed [
     | aGame aSpaceship aSpaceship2 aGameBuilder position1 position2 anAccelerationCard aRedoCard id1 id2 |
-    position1 := 6.
-    position2 := 4.
+    position1 := 6. position2 := 4.
     aGameBuilder := GameBuilder new.
     anAccelerationCard := AccelerationCard new.
     aRedoCard := RedoCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
+    id1 := 'nave1'. id2 := 'nave2'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: anAccelerationCard with: aRedoCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -206,14 +198,18 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
         build.
 
     aGame playCard: AccelerationCard by: id1 targeting: nil.
-    aGame playTurn. aGame playTurn.
-    aGame playCard: RedoCard by: id1 targeting: nil.
-    aGame playTurn. aGame playTurn.
-    aGame playTurn. aGame playTurn.
+    aGame playTurn. "6+1 = 7"
+    aGame playTurn. "4+1 = 5"
+    
+    aGame playCard: RedoCard by: id1 targeting: nil. "Ahora hay +2 de aceleración global"
+    
+    aGame playTurn. "7 + (6+2) = 15"
+    aGame playTurn. "5 + (4+2) = 11"
+    aGame playTurn. "15 + (6+2) = 23"
+    aGame playTurn. "11 + (4+2) = 17"
 
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 23.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 17.
-
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 23 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 17 and: 0).
 ]
 
 { #category : 'tests' }
@@ -234,7 +230,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
 
     aGame playCard: RedoCard by: id targeting: nil.
 
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
-    self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 ]

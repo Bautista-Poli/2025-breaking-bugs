@@ -48,10 +48,10 @@ Battle >> initializeWith: aCollectionOfSpacehips and: aCollectionOfDice [
 
 { #category : 'behavior' }
 Battle >> isBattleOpponent: other for: aSpaceship [
-	other == aSpaceship ifTrue: [ ^ false ].
-	other getPosition = aSpaceship getPosition ifFalse: [ ^ false ].
-	(other hasHimAsMercenary: aSpaceship) ifTrue: [ ^ false ].
-	^ true
+    other == aSpaceship ifTrue: [ ^ false ].
+    (other isAtSamePositionAs: aSpaceship) ifFalse: [ ^ false ].
+    (other hasHimAsMercenary: aSpaceship) ifTrue: [ ^ false ].
+    ^ true
 
 ]
 

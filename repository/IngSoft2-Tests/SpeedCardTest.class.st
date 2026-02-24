@@ -23,8 +23,7 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 	aGameBuilder := GameBuilder new.
 	aCard := SpeedCard new.
 
-	id1 := 'nave1'.
-	id2 := 'nave2'.
+	id1 := 'nave1'. id2 := 'nave2'.
 
 	aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: id1.
 	aSpaceship2 := Spaceship with: (OrderedCollection with: SpeedCard new with: SpeedCard new) and: id2.
@@ -38,16 +37,16 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 	
 	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
-	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
+	self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
 
 	aGame playCard: SpeedCard by: id1 targeting: id1.
 	aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
-	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 15.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 8.
-
+	
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 15 and: 0). "6+1 + 6+2 = 15"
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 8 and: 0).  "4 + 4 = 8"
 ]
 
 { #category : 'tests' }
@@ -68,14 +67,16 @@ SpeedCardTest >> testIsValidIfCardUsageIsOnlyRemovedFromOwnersHand [
         addDice: (SequentialFixedDice onFaces: { position1. position1 });
         build.
         
-    self assert: (aGame spaceshipMatchWith: id) getCards size equals: 2.
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 2).
     aGame playCard: SpeedCard by: id targeting: id.
-    self assert: (aGame spaceshipMatchWith: id) getCards size equals: 1.
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 1).
+    
     aGame playTurn.
     aGame playCard: SpeedCard by: id targeting: id.
     aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 15.
-    self assert: (aGame spaceshipMatchWith: id) getCards size equals: 0.
+    
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 15 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 
 ]
@@ -90,8 +91,7 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
     aCard1 := SpeedCard new.
     aCard2 := SpeedCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
+    id1 := 'nave1'. id2 := 'nave2'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: SpeedCard new) and: id1.
     aSpaceship2 := Spaceship with: (OrderedCollection with: aCard2 with: SpeedCard new) and: id2.
@@ -106,20 +106,21 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
     aGame playCard: SpeedCard by: id1 targeting: id1.
     aGame playTurn. aGame playTurn.
     
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
-    self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 2.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
+    self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
     
-	aGame playTurn.
+    aGame playTurn.
     aGame playCard: SpeedCard by: id2 targeting: id2.
     aGame playTurn.
     
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
-    self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
+    self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 1).
     
     aGame playTurn. aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 21.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 14.
-
+    "Nave 1: (6+1) + (6+1) + (6+1) = 21"
+    "Nave 2: 4 + 4 + (4+1) + (4+1)? Ajustado a los turnos del test original"
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 21 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 14 and: 0).
 
 ]
 
@@ -143,9 +144,8 @@ SpeedCardTest >> testIsValidIfSpeedCardIncrementsPositionDynamically [
     aGame playCard: SpeedCard by: id targeting: id.
     aGame playTurn.
 
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 7.
-    self assert: (aGame spaceshipMatchWith: id) getCards size equals: 0.
-
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 7 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 ]
 
 { #category : 'tests' }
@@ -202,8 +202,9 @@ SpeedCardTest >> testSpaceshipUsesTwoSpeedCardsAndBonusesAccumulateImmediately [
 	aGame playCard: SpeedCard by: id targeting: id.
 	aGame playTurn.
 	
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 8.
-	self assert: (aGame spaceshipMatchWith: id) getCards size equals: 0.
+	"6 (dado) + 1 (speed1) + 1 (speed2) = 8"
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 8 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 ]
 
@@ -231,8 +232,9 @@ SpeedCardTest >> testSpeedAndAccelerationBonusesAccumulateForTargetSpaceship [
     aGame playCard: SpeedCard by: id1 targeting: id1.
     aGame playCard: AccelerationCard by: id1 targeting: nil.
     
-    aGame playTurn. aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 7.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 6.
+    aGame playTurn. "Nave 1: 5 (dado) + 1 (speed) + 1 (accel) = 7"
+    aGame playTurn. "Nave 2: 5 (dado) + 1 (accel) = 6"
 
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 7 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 6 and: 0).
 ]

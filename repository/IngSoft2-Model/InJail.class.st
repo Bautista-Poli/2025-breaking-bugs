@@ -9,8 +9,6 @@ Class {
 InJail >> handleRoll: aRoll for: aSpaceship in: aGame [ 
 	(aGame isMaxRoll: aRoll) ifFalse: [ ^self ].
 	aSpaceship releaseFromJail.
-   (aGame board) move: aSpaceship by: aRoll.
-   aGame board handleLandingOf: aSpaceship in: aGame.
 ]
 
 { #category : 'testing' }

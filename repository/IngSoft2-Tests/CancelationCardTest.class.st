@@ -27,16 +27,18 @@ CancelationCardTest >> testWhenAccelerationCardIsCanceledThenAllSpaceshipsMoveAt
 		build.
 
 	aGame playCard: AccelerationCard by: id1 targeting: nil.
-	aGame playTurn. aGame playTurn.
+	aGame playTurn. "Nave 1: 6+1=7"
+	aGame playTurn. "Nave 2: 4+1=5"
 	
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 7.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 5.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 7 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 5 and: 0).
 
 	aGame play: CancelationCard by: id1 affecting: AccelerationCard targeting: nil.
-	aGame playTurn. aGame playTurn.
+	aGame playTurn. "Nave 1: 7+6=13"
+	aGame playTurn. "Nave 2: 5+4=9"
 
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 9.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 13.
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 9 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 13 and: 0).
 
 	
 	
@@ -115,10 +117,12 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 
 	aGame play: RedoCard by: id affecting: AccelerationCard targeting: id.
 	self assert: aGame activePermanentCards isEmpty.
+	
+	"Asumiendo que hasCards: o similar reemplaza getCards isEmpty"
 	self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 5.
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 5 and: 0).
 
 ]
 
@@ -140,15 +144,14 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 		build.
 
 	aGame playCard: SpeedCard by: id targeting: id.
-	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 7.
+	aGame playTurn. "6 + 1 (Speed) = 7"
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 7 and: 0).
 
 	aGame play: CancelationCard by: id affecting: SpeedCard targeting: nil.
-	aGame playTurn.
+	aGame playTurn. "7 + 6 = 13"
 
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 13.
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 13 and: 0).
 	self assert: aGame activePermanentCards isEmpty.
-
 ]
 
 { #category : 'tests' }

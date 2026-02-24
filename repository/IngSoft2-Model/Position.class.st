@@ -19,10 +19,31 @@ Position class >> start [
     ^ self at: 0 lap: 0
 ]
 
+{ #category : 'as yet unclassified' }
+Position >> advancedBy: delta boardSize: boardSize and: lapsToWin [
+    | absolute newLap newSquare |
+    absolute := (laps * boardSize) + square + delta.
+    absolute := absolute max: 0.
+    newLap   := absolute // boardSize.
+    newSquare := absolute \\ boardSize.
+
+	^ self class at: newSquare lap: newLap.
+]
+
 { #category : 'accessing' }
 Position >> initializeAt: aSquare lap: aLap [
     square := aSquare.
     laps := aLap.
+]
+
+{ #category : 'accessing' }
+Position >> isAt: aSquare and: aLap [ 
+	^ (aSquare == square) and: (aLap == laps).
+]
+
+{ #category : 'testing' }
+Position >> isEqualAs: aPosition [ 
+	^ aPosition isAt: square and: laps.
 ]
 
 { #category : 'as yet unclassified' }

@@ -36,7 +36,7 @@ JailEffectTest >> testWhenFreedomCardIsPlayedItReleasesTheSpaceshipFromJailOutsi
     aGame playTurn.
     aGame playTurn.
     self deny: (aGame spaceshipMatchWith: id1) isInJail.
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 6.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 6 and: 0).
 ]
 
 { #category : 'tests' }
@@ -55,17 +55,20 @@ JailEffectTest >> testWhenSpaceshipInJailRollsMaximumItIsReleasedAndDoesNotMove 
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
         addBoard: aBoard;
-        addDice: (SequentialFixedDice on: 6 andFixedNumbers: #(3 6 4)) ;
-		  addDice: (SequentialFixedDice on: 6 andFixedNumbers: #(3 6 4)) ;
+        addDice: (SequentialFixedDice on: 6 andFixedNumbers: #(3 6 4));
+		  addDice: (SequentialFixedDice on: 6 andFixedNumbers: #(3 6 4));
         build.
     
-    aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 6.
+    aGame playTurn. "Mueve 3 + 3 = 6 -> Cae en Jail"
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 6 and: 0).
     self assert: (aGame spaceshipMatchWith: id) isInJail.
     
     aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 18.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 6 and: 0). 
     self deny: (aGame spaceshipMatchWith: id) isInJail.
+
+	aGame playTurn.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 14 and: 0).
 ]
 
 { #category : 'tests' }
@@ -84,13 +87,13 @@ JailEffectTest >> testWhenSpaceshipLandsOnJailItCannotMoveOnNextTurn [
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
         addBoard: aBoard;
-        addDice: (FixedDice on: 6 andFixedNumber: 3) ;
+        addDice: (FixedDice on: 6 andFixedNumber: 3);
         build.
     
     aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 3.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 3 and: 0).
     self assert: (aGame spaceshipMatchWith: id) isInJail.
     
     aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id) getPosition equals: 3.
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 3 and: 0).
 ]

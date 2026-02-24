@@ -207,9 +207,7 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -220,19 +218,18 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHasASpaceshipTha
         addSpaceship: aSpaceship2;
         addSpaceship: aSpaceship3;
         addBoard: (Board withSize: 90 andWormholeFrom: 49 to: 67);
-        addDice: (SequentialFixedDice onFaces: #(4 2 4 "|Batallan|" "Tira la nave 3 ->"6 "Tira la nave 1 y su mercenaria ->"2 7));
+        addDice: (SequentialFixedDice onFaces: #(4 2 4 6 2 7));
         build.
 
     aGame playCard: MercenaryCard by: id1 targeting: id2.
 
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
 
-    aGame playTurn. aGame playTurn. aGame playTurn.
+    3 timesRepeat: [ aGame playTurn ].
 
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 4.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 2.
-    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
-
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 4 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 2 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 0 and: 0).
 
 ]
 
@@ -244,9 +241,7 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
     aCard1 := MercenaryCard new.
     aCard2 := MercenaryCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard1 with: aCard2) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -263,17 +258,16 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
     aGame playCard: MercenaryCard by: id1 targeting: id2.
     aGame playCard: MercenaryCard by: id1 targeting: id3.
 
-    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
+    "Refactorizado para evitar getter de tamaño si es posible"
+    self assert: ((aGame spaceshipMatchWith: id1) hasMercenariesAmount: 2).
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
     self assert: id1 hasMercenaryWithId: id3 in: aGame.
 
-    aGame playTurn. aGame playTurn. aGame playTurn.
-    aGame playTurn. aGame playTurn. aGame playTurn.
+    6 timesRepeat: [ aGame playTurn ].
 
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 10.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 12.
-    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 10.
-
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 10 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 12 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 10 and: 0).
 
 ]
 
@@ -284,9 +278,7 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard with: SpeedCard new) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -302,14 +294,13 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
 
     aGame playCard: MercenaryCard by: id1 targeting: id2.
 
-    aGame playTurn. aGame playTurn. aGame playTurn.
-    aGame playTurn. aGame playTurn. aGame playTurn.
+    6 timesRepeat: [ aGame playTurn ].
 
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 6.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 6.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 6 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 6 and: 0).
 
-    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 3.
-    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
+    self assert: ((aGame spaceshipMatchWith: id1) hasShields: 3).
+    self assert: ((aGame spaceshipMatchWith: id2) hasShields: 3).
 
 
 
@@ -322,9 +313,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -339,18 +328,15 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
         build.
 
     aGame playCard: MercenaryCard by: id1 targeting: id2.
-    aGame playTurn. aGame playTurn. aGame playTurn.
-	"Batallan, spaceship3 saca un 5 mientras que una de las otras dos saca un 7"
+    3 timesRepeat: [ aGame playTurn ].
 
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 4.
-    self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 19.
-    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 4 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 19 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 0 and: 0).
     
-    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 3.
-    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
-    self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
-    self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 0.
-
+    self assert: ((aGame spaceshipMatchWith: id1) hasShields: 3).
+    self assert: ((aGame spaceshipMatchWith: id2) hasShields: 3).
+    self assert: ((aGame spaceshipMatchWith: id3) hasShields: 2).
 ]
 
 { #category : 'tests' }
@@ -360,9 +346,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     aCard := MercenaryCard new.
     aSecondCard := AccelerationCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard with: aSecondCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -379,11 +363,12 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     aGame playCard: MercenaryCard by: id1 targeting: id2.
     aGame playCard: AccelerationCard by: id1 targeting: id2.
     
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getCards isEmpty.
     
-    aGame playTurn. aGame playTurn. aGame playTurn.
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 5.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 10.
+    3 timesRepeat: [ aGame playTurn ].
+
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 10 and: 0).
 
 ]
 
@@ -393,9 +378,7 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
     aGameBuilder := GameBuilder new.
     aCard := MercenaryCard new.
 
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
+    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -410,10 +393,10 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
         build.
 
     aGame playCard: MercenaryCard by: id1 targeting: id2.
-    aGame playTurn. aGame playTurn. aGame playTurn.
+    3 timesRepeat: [ aGame playTurn ].
 
-    self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
-    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+    self assert: ((aGame spaceshipMatchWith: id1) hasShields: 2).
+    self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
 
 ]

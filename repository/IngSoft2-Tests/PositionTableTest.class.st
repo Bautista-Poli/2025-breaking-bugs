@@ -100,7 +100,7 @@ PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
 
-	self assert: (aPositionTable isShipWithId: id1 atLap: 1 andSquare: 20).
+	self assert: (aPositionTable isShipWithId: id1 atLap: 1 andSquare: 0).
 	"Chequear esto"
 	self assert: (aPositionTable isShipWithId: id2 atLap: 0 andSquare: 0).
 

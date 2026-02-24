@@ -22,6 +22,11 @@ ShieldsActive >> canPlay [
 ShieldsActive >> handleEndOfCycleFor: aSpaceship [
 ]
 
+{ #category : 'testing' }
+ShieldsActive >> hasAmount: aNumberOfShields [ 
+	^ countOfShields = aNumberOfShields
+]
+
 { #category : 'initialization' }
 ShieldsActive >> initializeWithCount: aNumberOfShields [
     countOfShields := aNumberOfShields.

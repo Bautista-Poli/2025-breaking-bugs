@@ -39,7 +39,7 @@ PositionTable >> isShipWithId: anId atLap: aLap andSquare: aSquare [
     foundShip := spaceships 
         detect: [ :each | each matchesId: anId ] 
         ifNone: [ ^ false ].
-    ^ foundShip isAtLap: aLap andAtSquare: aSquare.
+    ^ foundShip isAt: aSquare and: aLap.
 ]
 
 { #category : 'behavior' }

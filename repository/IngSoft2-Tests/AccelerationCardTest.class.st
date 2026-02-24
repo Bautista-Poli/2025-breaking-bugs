@@ -33,8 +33,8 @@ AccelerationCardTest >> testIsValidIfAccelerationCardIncreasesMovementOfAllSpace
 
     game playTurn. game playTurn.
     
-    self assert: (game spaceshipMatchWith: id1) getPosition equals: position1 + 1.
-    self assert: (game spaceshipMatchWith: id2) getPosition equals: position2 + 1.
+    self assert: ((game spaceshipMatchWith: id1) isAt: position1+1 and: 0).
+    self assert: ((game spaceshipMatchWith: id2) isAt: position2+1 and: 0).
 
 	
 	

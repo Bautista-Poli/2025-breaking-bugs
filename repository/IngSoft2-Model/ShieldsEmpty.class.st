@@ -23,6 +23,11 @@ ShieldsEmpty >> handleEndOfCycleFor: aSpaceship [
 
 ]
 
+{ #category : 'testing' }
+ShieldsEmpty >> hasAmount: aNumberOfShields [ 
+	^ aNumberOfShields=0.
+]
+
 { #category : 'initialization' }
 ShieldsEmpty >> initialize [
     turnsRemaining := 3.

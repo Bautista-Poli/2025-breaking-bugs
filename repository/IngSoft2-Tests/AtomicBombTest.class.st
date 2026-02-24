@@ -36,9 +36,9 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 		         build.
 		
 	aGame playTurn. aGame playTurn. aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 5.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 6.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 5 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 6 and: 0).
 	
 	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
 	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
