@@ -67,12 +67,7 @@ Board >> handleLandingOf: aSpaceship in: aGame [
 
 { #category : 'testing' }
 Board >> hasAnySpaceshipFinished: aCollectionOfSpaceships [
-    ^ aCollectionOfSpaceships anySatisfy: [ :each | self hasSpaceshipFinished: each ].
-]
-
-{ #category : 'testing' }
-Board >> hasSpaceshipFinished: aSpaceship [ 
-	^ aSpaceship hasReached: lapsToWin
+    ^ aCollectionOfSpaceships anySatisfy: [ :each | each hasReached: lapsToWin ].
 ]
 
 { #category : 'initialization' }

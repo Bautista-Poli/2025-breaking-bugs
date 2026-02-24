@@ -152,7 +152,7 @@ Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
 { #category : 'behavior' }
 Game >> playTurn [
 
-	| spaceshipToPlay roll |
+	| spaceshipToPlay |
 	self checkIfGameHasAlreadyFinished.
 
 	spaceshipToPlay := turnManager currentSpaceship.

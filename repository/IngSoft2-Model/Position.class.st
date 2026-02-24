@@ -51,6 +51,21 @@ Position >> isEqualAs: aPosition [
 	^ aPosition isAt: square and: laps.
 ]
 
+{ #category : 'testing' }
+Position >> isHigherThanScore: aNumberPosition in: aBoardSize [ 
+	| myTotal |
+	myTotal := square + ( laps * aBoardSize).
+    ^ myTotal > aNumberPosition.
+]
+
+{ #category : 'testing' }
+Position >> isLowerThan: aPosition in: boardSize [ 
+    | myTotal |
+    
+    myTotal := square + ( laps * boardSize).
+    ^ aPosition isHigherThanScore: myTotal in: boardSize.
+]
+
 { #category : 'as yet unclassified' }
 Position >> lap [
 	^ laps.

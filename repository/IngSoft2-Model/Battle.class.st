@@ -16,21 +16,12 @@ Battle class >> with: spaceships and: dice [
 
 { #category : 'behavior' }
 Battle >> checkForBattleIfNeededWith: aSpaceship [
-	"Refactorizar cuando se haga nullSpaceship"
-	| opponent |
-	opponent := spaceships
-		detect: [ :other | self isBattleOpponent: other for: aSpaceship ]
-		ifNone: [ nil ].
+    | opponent |
+    opponent := spaceships 
+        detect: [ :other | aSpaceship canBattleAgainst: other ]
+        ifNone: [ ^ self ]. "Salida temprana si no hay nadie"
 
-	opponent ifNotNil: [ self resolveBattleBetween: aSpaceship and: opponent ].
-]
-
-{ #category : 'behavior' }
-Battle >> getAllDiceValuesFrom: diceCollection [
-
-	^ diceCollection
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
+    self resolveBattleBetween: aSpaceship and: opponent.
 ]
 
 { #category : 'initialization' }

@@ -61,6 +61,15 @@ Spaceship >> beMercenaryOf: anOwnerSpaceship [
 	anOwnerSpaceship makeHimOwnerOf: self
 ]
 
+{ #category : 'testing' }
+Spaceship >> canBattleAgainst: anotherSpaceship [
+    self == anotherSpaceship ifTrue: [ ^ false ].
+    (self isAtSamePositionAs: anotherSpaceship) ifFalse: [ ^ false ].
+    (mercenaries includes: anotherSpaceship) ifTrue: [ ^ false ].
+    (anotherSpaceship hasHimAsMercenary: self) ifTrue: [ ^ false ].
+    ^ true
+]
+
 { #category : 'behavior' }
 Spaceship >> changeShieldStatusTo: aNewShieldStatus [
     shieldStatus := aNewShieldStatus
@@ -171,7 +180,7 @@ Spaceship >> initializeWith: aCollectionOfCards and: anId [
 
 { #category : 'testing' }
 Spaceship >> isAheadOf: aSpaceship inBoard: aBoardSize [ 
-	^ aSpaceship isBehind: position square +(position lap*aBoardSize asParsec) in: aBoardSize.
+	^ aSpaceship isBehind: position in: aBoardSize.
 ]
 
 { #category : 'adding' }
@@ -186,7 +195,7 @@ Spaceship >> isAtSamePositionAs: aSpaceship [
 
 { #category : 'testing' }
 Spaceship >> isBehind: anotherPosition in: aBoardSize [ 
-	^ position square +(position lap*aBoardSize asParsec) < anotherPosition
+	^ position isLowerThan: anotherPosition in: aBoardSize.
 ]
 
 { #category : 'testing' }

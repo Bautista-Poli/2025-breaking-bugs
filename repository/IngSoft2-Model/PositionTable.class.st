@@ -18,7 +18,7 @@ PositionTable class >> with: spaceships boardSize: aBoardSize [
 { #category : 'behavior' }
 PositionTable >> getRanking [
     ^ spaceships asSortedCollection: [ :s1 :s2 | 
-        s1 isAheadOf: s2 inBoard: boardSize ]
+        s1 isAheadOf: s2 inBoard: boardSize asParsec ]
 ]
 
 { #category : 'initialization' }
