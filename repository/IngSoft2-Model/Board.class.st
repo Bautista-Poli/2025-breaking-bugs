@@ -21,31 +21,32 @@ Board class >> withDistance: aSizeDistance andLapsToWin: aLapsToWin and: tiles [
 
 { #category : 'as yet unclassified' }
 Board class >> withSize: aSize and: tiles [
-	^ self withSize: aSize andLapsToWin: 1 and: tiles.
+	^ self new
+        initializeWith: tiles
+        andSize: aSize
+		  andLapsToWin: 1.
 ]
 
 { #category : 'creation' }
 Board class >> withSize: aSize andLapsToWin: aLapsToWin and: tiles [
 	 | aParsec |
 	 aParsec := (Parsec with: aSize).
-    ^ self 
-        withDistance: aParsec
-		  andLapsToWin: aLapsToWin
-        and: tiles   
+    ^ self new
+        initializeWith: tiles
+        andSize: aParsec
+		  andLapsToWin: aLapsToWin.   
 ]
 
 { #category : 'as yet unclassified' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
-	  | builder tiles parsec |
+	  | tiles parsec |
 	 parsec := (Parsec with: aSize).
 	 parsec validate.
-	 builder := TilesBuilder with: aSize.
-    builder addWormholeFrom: wormholeEntry to: wormholeExit.
-    tiles := builder build.
-    ^ self 
-        withDistance: parsec
-		  andLapsToWin: 1
-        and: tiles.   
+    tiles := (TilesBuilder with: aSize) addWormholeFrom: wormholeEntry to: wormholeExit; build.
+    ^ self new
+        initializeWith: tiles
+        andSize: parsec
+		  andLapsToWin: 1.
 ]
 
 { #category : 'as yet unclassified' }

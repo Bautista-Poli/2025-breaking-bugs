@@ -1,23 +1,37 @@
 Class {
 	#name : 'RedoCardTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'aGameBuilder',
+		'id1',
+		'id2',
+		'id3'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'running' }
+RedoCardTest >> setUp [
+	super setUp.
+
+	aGameBuilder := GameBuilder new.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	id3 := 'nave3'.
+]
+
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
-    | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherSpeedCard aCollectionOfCards aCancelationCard id |
+    | aGame aSpaceship position1 aSpeedCard aRedoCard anotherSpeedCard aCollectionOfCards aCancelationCard  |
     position1 := 6.
-    aGameBuilder := GameBuilder new.
     aSpeedCard := SpeedCard new.
     anotherSpeedCard := SpeedCard new.
     aCancelationCard := CancelationCard new.
     aRedoCard := RedoCard new.
     aCollectionOfCards := (OrderedCollection with: aSpeedCard with: aRedoCard with: aCancelationCard with: anotherSpeedCard).
 
-    id := 'nave1'.
-    aSpaceship := Spaceship with: aCollectionOfCards and: id.
+    aSpaceship := Spaceship with: aCollectionOfCards and: id1.
         
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -25,29 +39,24 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: SpeedCard by: id targeting: id.
-    aGame playCard: SpeedCard by: id targeting: id.
-    aGame play: CancelationCard by: id affecting: SpeedCard targeting: nil.
-    aGame play: RedoCard by: id affecting: SpeedCard targeting: nil.
+    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: CancelationCard by: id1 affecting: SpeedCard targeting: nil.
+    aGame play: RedoCard by: id1 affecting: SpeedCard targeting: nil.
 
     aGame playTurn.
 
     self deny: (aGame hasActivePermanentCardOfType: SpeedCard).
-    self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
+    self assert: (aGame spaceshipMatchWith: id1) getCards isEmpty.
 
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHas2Mercenaries [
-    | aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 aMercenaryCard aRedoCard id1 id2 id3 |
+    | aGame aSpaceship aSpaceship2 aSpaceship3 position1 aMercenaryCard aRedoCard |
     position1 := 6.
-    aGameBuilder := GameBuilder new.
     aMercenaryCard := MercenaryCard new.
     aRedoCard := RedoCard new.
-
-    id1 := 'nave1'.
-    id2 := 'nave2'.
-    id3 := 'nave3'.
 
     aSpaceship := Spaceship with: (OrderedCollection with: aMercenaryCard with: aRedoCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
@@ -72,15 +81,13 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsReapplied [
-    | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherRedoCard id |
+    | aGame aSpaceship  position1 aSpeedCard aRedoCard anotherRedoCard |
     position1 := 6.
-    aGameBuilder := GameBuilder new.
     aSpeedCard := SpeedCard new.
     aRedoCard := RedoCard new.
     anotherRedoCard := RedoCard new.
 
-    id := 'nave1'.
-    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard with: anotherRedoCard) and: id.
+    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard with: anotherRedoCard) and: id1.
                                     
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
@@ -88,29 +95,29 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: SpeedCard by: id targeting: id. "Speed +1"
+    aGame playCard: SpeedCard by: id1 targeting: id1. "Speed +1"
     aGame playTurn. "6 + 1 = 7"
 
-    aGame playCard: RedoCard by: id targeting: id. 
+    aGame playCard: RedoCard by: id1 targeting: id1. 
     aGame playTurn.
 
-    aGame playCard: RedoCard by: id targeting: id. 
+    aGame playCard: RedoCard by: id1 targeting: id1. 
     aGame playTurn. 
 
     aGame playTurn.
     
-    self assert: ((aGame spaceshipMatchWith: id) isAt: 33 and: 0).
-    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 33 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOnTarget [
-    | gameBuilder board titleBuilder tile dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game id1 id2 id3 |
+    | gameBuilder board titleBuilder tile dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game id3 |
 
     repeatCard := RepeatCard new.
     redoCard := RedoCard new.
-    id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
+    id3 := 'nave3'.
 
     spaceship1 := Spaceship with: (OrderedCollection with: repeatCard with: redoCard) and: id1.
     spaceship2 := Spaceship with: id2.
@@ -150,43 +157,37 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDoublesItsSpeed [
-    | aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard id |
-    position1 := 6.
-    aGameBuilder := GameBuilder new.
+    | aGame aSpaceship aSpeedCard aRedoCard |
+
     aSpeedCard := SpeedCard new.
     aRedoCard := RedoCard new.
 
-    id := 'nave1'.
-    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard) and: id.
+    aSpaceship := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard) and: id1.
 
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
-        addDice: (FixedDice onFace: position1);
+        addDice: (FixedDice onFace: 6);
         build.
 
-    aGame playCard: SpeedCard by: id targeting: id.
+    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame playTurn. 
+    aGame playCard: RedoCard by: id1 targeting: id1.
+    
+    aGame playTurn. 
     aGame playTurn. 
 
-    aGame playCard: RedoCard by: id targeting: id.
-    aGame playTurn. 
-    aGame playTurn. 
-
-    self assert: ((aGame spaceshipMatchWith: id) isAt: 23 and: 0).
-    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 23 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpaceshipsDoubleItsSpeed [
-    | aGame aSpaceship aSpaceship2 aGameBuilder position1 position2 anAccelerationCard aRedoCard id1 id2 |
+    | aGame aSpaceship aSpaceship2 position1 position2 anAccelerationCard aRedoCard  |
     position1 := 6. position2 := 4.
-    aGameBuilder := GameBuilder new.
-    anAccelerationCard := AccelerationCard new.
+	 anAccelerationCard := AccelerationCard new.
     aRedoCard := RedoCard new.
-
-    id1 := 'nave1'. id2 := 'nave2'.
-
     aSpaceship := Spaceship with: (OrderedCollection with: anAccelerationCard with: aRedoCard) and: id1.
     aSpaceship2 := Spaceship with: id2.
 
@@ -214,13 +215,11 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens [
-    | aGame aSpaceship aGameBuilder position1 aRedoCard id |
+    | aGame aSpaceship  position1 aRedoCard |
     position1 := 6.
-    aGameBuilder := GameBuilder new.
-    aRedoCard := RedoCard new.
 
-    id := 'nave1'.
-    aSpaceship := Spaceship with: (OrderedCollection with: aRedoCard) and: id.
+    aRedoCard := RedoCard new.
+    aSpaceship := Spaceship with: (OrderedCollection with: aRedoCard) and: id1.
 
     aGame := aGameBuilder
                  addSpaceship: aSpaceship;
@@ -228,9 +227,9 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
                  addDice: (FixedDice onFace: position1);
                  build.
 
-    aGame playCard: RedoCard by: id targeting: nil.
+    aGame playCard: RedoCard by: id1 targeting: nil.
 
-    self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
-    self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 
 ]

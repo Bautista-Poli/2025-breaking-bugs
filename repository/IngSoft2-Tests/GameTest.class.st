@@ -1,9 +1,35 @@
 Class {
 	#name : 'GameTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'aGameBuilder',
+		'id1',
+		'id2',
+		'id3',
+		'id4'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
+
+{ #category : 'asserting' }
+GameTest >> addFourSpaceshipsNoCards [
+	^ aGameBuilder
+		addSpaceship: (Spaceship with: id1);
+		addSpaceship: (Spaceship with: id2);
+		addSpaceship: (Spaceship with: id3);
+		addSpaceship: (Spaceship with: id4).
+]
+
+{ #category : 'running' }
+GameTest >> setUp [
+
+	super setUp.
+	aGameBuilder := GameBuilder new.
+    id1 := 'nave1'. id2 := 'nave2'. 
+    id3 := 'nave3'. id4 := 'nave4'.
+	
+]
 
 { #category : 'asserting' }
 GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
@@ -17,15 +43,8 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 
 { #category : 'tests' }
 GameTest >> testAllTheEffectsOnGame [
-	| aGame aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board aGameBuilder finishLine tileBuilder tileCollection id1 id2 id3 id4 |
+	| aGame  board finishLine tileBuilder tileCollection  |
 	
-	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'. id4 := 'nave4'.
-
-	aSpaceship1 := Spaceship with: id1.
-	aSpaceship2 := Spaceship with: id2.
-	aSpaceship3 := Spaceship with: id3.
-	aSpaceship4 := Spaceship with: id4.
 	finishLine := 25.
 
 	tileBuilder := TilesBuilder with: finishLine.
@@ -42,10 +61,10 @@ GameTest >> testAllTheEffectsOnGame [
 	board := Board withSize: finishLine andLapsToWin: 1 and: tileCollection.
 
 	aGame := aGameBuilder
-		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
 		addBoard: board;
-		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4 16));
-		build.
+		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4 16)).
+	self addFourSpaceshipsNoCards.
+	aGame := aGameBuilder build.
 
 	"Ronda 1"
 	4 timesRepeat: [ aGame playTurn ].
@@ -63,7 +82,6 @@ GameTest >> testAllTheEffectsOnGame [
 	self assert: ((aGame spaceshipMatchWith: id3) isAt: 20 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id4) isAt: 14 and: 0).
 	
-	"Mantenemos los escudos con hasShields: para consistencia de diseño"
 	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 1).
 	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
 	self assert: ((aGame spaceshipMatchWith: id3) hasShields: 0).
@@ -76,7 +94,7 @@ GameTest >> testAllTheEffectsOnGame [
 
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable aSpeedCard aCancelationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 id1 id2 id3 id4 |
+	| aGame aSpaceship1 aSpaceship2 aBoard aSpaceship3 aSpaceship4 finishLine aTileBuilder aTileCollection aPositionTable aSpeedCard aCancelationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 |
 
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
@@ -87,11 +105,6 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	aCancellationCard2 := CancelationCard new.
 	aAccelerationCard2 := AccelerationCard new.
 	aMercenaryCard2 := MercenaryCard new.
-
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
-	id4 := 'nave4'.
 
 	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with: aMercenaryCard2) and: id1.
 	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancelationCard with: aSpeedCard2) and: id2.
@@ -121,7 +134,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 		addDice: (FixedDice onFace: 1);
 		build.
 
-	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
+	4 timesRepeat:[ aGame playTurn].
 
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 8 and: 0).
@@ -149,7 +162,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
 
 	aGame playCard: SpeedCard by: id1 targeting: id1.
-	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
+	4 timesRepeat:[aGame playTurn].
 
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 29 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 35 and: 0).
@@ -173,47 +186,26 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable id1 id2 id3 id4 |
-	"board con laps 2"
-	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
-	id4 := 'nave4'.
-	aSpaceship1 := Spaceship with: id1.
-	aSpaceship2 := Spaceship with: id2.
-	aSpaceship3 := Spaceship with: id3.
-	aSpaceship4 := Spaceship with: id4.
-	
-	finishLine := 25.
-	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder
-		with: BlackHoleEffect new at: 9;
-		with: AtomicBombEffect new at: 3;
-		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalkEffect for: 1) at: 19;
-		with: HyperSpaceJumpEffect new at: 16;
-		with: (WormholeEffect targeting: 15) at: 4;
-		with: (WormholeEffect targeting: 4) at: 15.
-	aTileBuilder addWormholeFrom: 4 to: 15.
-	aTileCollection := aTileBuilder build.
-	
-	aBoard := Board
-		          withSize: finishLine
-		          andLapsToWin: 2
-		          and: aTileCollection.
-		
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship1;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addSpaceship: aSpaceship4;
-		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #(2 7 8 14 18 100));
-		         addDice: (FixedDice onFace: 1);
-		         build.
+    | aGame aBoard aTileBuilder aTileCollection aPositionTable |
+    
+    aTileBuilder := TilesBuilder with: 25.
+    aTileBuilder
+        with: BlackHoleEffect new at: 9;
+        with: AtomicBombEffect new at: 3;
+        with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
+        with: (MoonWalkEffect for: 1) at: 19.
+    aTileBuilder addWormholeFrom: 4 to: 15.
+    
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: 25 andLapsToWin: 2 and: aTileCollection.
+	 self addFourSpaceshipsNoCards.
+    aGame := aGameBuilder
+        addBoard: aBoard;
+        addDice: (SequentialFixedDice onFaces: #(2 7 8 14 18 100));
+        addDice: (FixedDice onFace: 1);
+        build.
 
-	aGame playTurn. aGame playTurn. aGame playTurn. aGame playTurn.
+    4 timesRepeat: [ aGame playTurn ].
 
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 8 and: 0).
@@ -244,10 +236,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithWinner [
-	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine id1 id2 |
-	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
+	| aGame aSpaceship1 aSpaceship2 finishLine |
 	aSpaceship1 := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
 	finishLine := 19.
@@ -266,48 +255,40 @@ GameTest >> testFullGameSimulationWithWinner [
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesCertainPosition [
+    | aGame aSpaceship |
+    aSpaceship := Spaceship with: id1.
 
-	| aGame aSpaceship aGameBuilder id |
-	aGameBuilder := GameBuilder new.
-	id := 'nave1'.
-	aSpaceship := Spaceship with: id.
+    aGame := aGameBuilder
+        addSpaceship: aSpaceship;
+        addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+        addDice: (FixedDice onFace: 5);
+        build.
 
-	aGame := aGameBuilder
-		          addSpaceship: aSpaceship;
-		          addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-		          addDice: (FixedDice onFace: 5);
-		          build.
-
-	aGame playTurn.
-	self assert: ((aGame spaceshipMatchWith: id) isAt: 5 and: 0).
+    aGame playTurn.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
 
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitValue [
+    | aGame aSpaceship |
+    aSpaceship := Spaceship with: id1.
+    aGame := aGameBuilder
+        addSpaceship: aSpaceship;
+        addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+        addDice: (FixedDice onFace: 4);
+        build.
 
-	| aGame aSpaceship aGameBuilder id |
-	aGameBuilder := GameBuilder new.
-	id := 'nave1'.
-	aSpaceship := Spaceship with: id.
-	aGame := aGameBuilder
-		          addSpaceship: aSpaceship;
-		          addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-		          addDice: (FixedDice onFace: 4);
-		          build.
-
-	aGame playTurn.
-	self assert: ((aGame spaceshipMatchWith: id) isAt: 9 and: 0).
+    aGame playTurn.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 9 and: 0).
 
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryValue [
 
-	| aGame aSpaceship aGameBuilder id |
-	aGameBuilder := GameBuilder new.
-	id := 'nave1'.
-	aSpaceship := Spaceship with: id.
+	| aGame aSpaceship |
+	aSpaceship := Spaceship with: id1.
 	aGame := aGameBuilder
 		          addSpaceship: aSpaceship;
 		          addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -315,16 +296,15 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		          build.
 
 	aGame playTurn.
-	self assert: ((aGame spaceshipMatchWith: id) isAt: 4 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 4 and: 0).
 
 ]
 
 { #category : 'tests' }
 GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 
-	| aGame aSpaceship aGameBuilder |
-	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	| aGame aSpaceship |
+	aSpaceship := Spaceship with: id1.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -340,10 +320,7 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 
 { #category : 'tests' }
 GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds [
-	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine id1 id2 |
-	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
+	| aGame aSpaceship1 aSpaceship2 finishLine  |
 	aSpaceship1 := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
 	finishLine := 20.
@@ -363,11 +340,8 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 { #category : 'tests' }
 GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 
-	| aGame aSpaceship aGameBuilder |
-	
-
-	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	| aGame aSpaceship |
+	aSpaceship := Spaceship with: id1.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
@@ -381,11 +355,9 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedItDoesntFinish [
 
-	| aGame  aGameBuilder |
-	
-	aGameBuilder := GameBuilder new.
+	| aGame  |
 	aGame := aGameBuilder
-		         addSpaceship: (Spaceship with: 'nave1');
+		         addSpaceship: (Spaceship with: id1);
 		         addBoard: (Board withSize: 6 andWormholeFrom: 2 to: 5);
 				   addDice: (FixedDice onFace: 4);
 		         build.
@@ -395,28 +367,23 @@ GameTest >> testWhenGameCreatedItDoesntFinish [
 
 { #category : 'tests' }
 GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameDoesntEnds [
-	| aGame aSpaceship aGameBuilder id |
-	aGameBuilder := GameBuilder new.
-	id := 'nave1'.
-	aSpaceship := Spaceship with: id.
+	| aGame |
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+		         addSpaceship: (Spaceship with: id1);
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 20);
 		         addDice: (FixedDice onFace: 4);
 		         build.
 	aGame playTurn.
-	self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 1).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 1).
 	self assert: aGame hasFinished.
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 
-	| aGame aSpaceship aGameBuilder |
-	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	| aGame |
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+		         addSpaceship: (Spaceship with: id1);
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 					addDice: (FixedDice onFace: 25);
 		         build.
@@ -429,11 +396,9 @@ GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds [
 
-	| aGame aSpaceship aGameBuilder |
-	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship with: 'nave1'.
+	| aGame |
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+		         addSpaceship: (Spaceship with: id1);
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 					addDice: (FixedDice onFace: 11);
 					addDice: (FixedDice onFace: 10);
