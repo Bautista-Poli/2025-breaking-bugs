@@ -109,14 +109,16 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 
 	aGame playCard: SpeedCard by: id targeting: id.
 	aGame playCard: AccelerationCard by: id targeting: nil.
-	self assert: aGame activePermanentCards size equals: 2.
+	self assert: (aGame hasActivePermanentCardOfType: SpeedCard).
+	self assert: (aGame hasActivePermanentCardOfType: AccelerationCard).
 
 	aGame play: CancelationCard by: id affecting: SpeedCard targeting: nil.
-	self assert: aGame activePermanentCards size equals: 1.
-	self assert: (aGame activePermanentCards anySatisfy: [ :card | card isKindOf: AccelerationCard ]).
+	self deny: (aGame hasActivePermanentCardOfType: SpeedCard).
+	self assert: (aGame hasActivePermanentCardOfType: AccelerationCard).
 
 	aGame play: RedoCard by: id affecting: AccelerationCard targeting: id.
-	self assert: aGame activePermanentCards isEmpty.
+	self deny: (aGame hasActivePermanentCardOfType: SpeedCard).
+	self deny: (aGame hasActivePermanentCardOfType: AccelerationCard).
 	
 	"Asumiendo que hasCards: o similar reemplaza getCards isEmpty"
 	self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
@@ -144,14 +146,14 @@ CancelationCardTest >> testWhenSpeedCardIsCanceledThenSpaceshipMovesAtNormalSpee
 		build.
 
 	aGame playCard: SpeedCard by: id targeting: id.
-	aGame playTurn. "6 + 1 (Speed) = 7"
-	self assert: ((aGame spaceshipMatchWith: id) isAt: 7 and: 0).
+	aGame playTurn.
+	self assert: (aGame hasActivePermanentCardOfType: SpeedCard).
 
 	aGame play: CancelationCard by: id affecting: SpeedCard targeting: nil.
-	aGame playTurn. "7 + 6 = 13"
+	aGame playTurn.
 
 	self assert: ((aGame spaceshipMatchWith: id) isAt: 13 and: 0).
-	self assert: aGame activePermanentCards isEmpty.
+	self deny: (aGame hasActivePermanentCardOfType: SpeedCard).
 ]
 
 { #category : 'tests' }

@@ -48,7 +48,7 @@ Spaceship >> advancedBy: positionsToAdvance withBoardSize: aSize and: lapsToWin 
 
 { #category : 'initialization' }
 Spaceship >> applyPenality [
-	position returnToStart.
+	position := position returnToStart.
 	shieldStatus lowerShieldFor: self
 ]
 
@@ -59,12 +59,6 @@ Spaceship >> beMercenaryOf: anOwnerSpaceship [
 		Error signal: 'A mercenary cannot hire other spaceships' ].
 	owner := true.
 	anOwnerSpaceship makeHimOwnerOf: self
-]
-
-{ #category : 'behavior' }
-Spaceship >> canPlay [
-
-	^ shieldStatus canPlay
 ]
 
 { #category : 'behavior' }
@@ -111,8 +105,14 @@ Spaceship >> handleEndOfCycle [
 ]
 
 { #category : 'as yet unclassified' }
-Spaceship >> handleRoll: aRoll in: aGame [ 
+Spaceship >> handleRollFromShields: aRoll in: aGame [ 
 	jailStatus handleRoll: aRoll for: self in: aGame.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> handleTurnIn: aGame [ 
+	shieldStatus playIfPosible: self in: aGame.
+	
 ]
 
 { #category : 'testing' }
@@ -143,7 +143,7 @@ Spaceship >> hasOwner [
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
-	^ position lap >= lapsToWin
+	^ position hasReached: lapsToWin
 ]
 
 { #category : 'adding' }

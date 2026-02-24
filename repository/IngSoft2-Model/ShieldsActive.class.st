@@ -40,6 +40,13 @@ ShieldsActive >> lowerShieldFor: aSpaceship [
     
 ]
 
+{ #category : 'as yet unclassified' }
+ShieldsActive >> playIfPosible: aSpaceship in: aGame [ 
+	 | roll |
+    roll := aGame rollFor: aSpaceship.
+    aSpaceship handleRollFromShields: roll in: aGame.
+]
+
 { #category : 'initialization' }
 ShieldsActive >> rechargeShieldsFor: aSpaceship [ 
     countOfShields := 3.

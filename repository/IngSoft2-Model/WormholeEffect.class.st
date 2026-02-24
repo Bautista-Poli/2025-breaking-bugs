@@ -18,7 +18,7 @@ WormholeEffect class >> targeting: exitPosition [
 WormholeEffect >> applyTo: aSpaceship in: aGame [
     | delta |
     delta := targetPosition - aSpaceship position square.
-    (aGame board) move: aSpaceship by: delta.
+    aGame move: aSpaceship by: delta.
     aGame checkForBattleInvolving: aSpaceship.
     aGame registerAppliedEffect: self.
 ]

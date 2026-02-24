@@ -30,6 +30,11 @@ Position >> advancedBy: delta boardSize: boardSize and: lapsToWin [
 	^ self class at: newSquare lap: newLap.
 ]
 
+{ #category : 'testing' }
+Position >> hasReached: lapsToWin [ 
+	^ laps >= lapsToWin.
+]
+
 { #category : 'accessing' }
 Position >> initializeAt: aSquare lap: aLap [
     square := aSquare.
@@ -53,7 +58,7 @@ Position >> lap [
 
 { #category : 'as yet unclassified' }
 Position >> returnToStart [
-	square := 0.
+	^ self class at: 0 lap: laps.
 ]
 
 { #category : 'accessing' }

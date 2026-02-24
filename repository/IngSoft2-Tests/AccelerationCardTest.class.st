@@ -29,7 +29,7 @@ AccelerationCardTest >> testIsValidIfAccelerationCardIncreasesMovementOfAllSpace
     game playCard: AccelerationCard by: id1 targeting: nil.
 
     self assert: ((game spaceshipMatchWith: id1) getCards size) equals: 0.
-    self assert: (game activePermanentCards anySatisfy: [ :card | card isKindOf: AccelerationCard ]).
+    self assert: (game hasActivePermanentCardOfType: AccelerationCard).
 
     game playTurn. game playTurn.
     

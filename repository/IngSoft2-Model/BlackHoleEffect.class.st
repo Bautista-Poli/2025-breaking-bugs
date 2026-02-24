@@ -10,7 +10,7 @@ Class {
 
 { #category : 'operations' }
 BlackHoleEffect >> applyTo: aSpaceship in: aGame [
-    (aGame board) move: aSpaceship by: numberOfPositionsToGoBack negated.
+    aGame move: aSpaceship by: numberOfPositionsToGoBack negated.
     aGame registerAppliedEffect: self.
     aGame checkForBattleInvolving: aSpaceship.
 ]
