@@ -30,7 +30,7 @@ JailEffectTest >> testWhenFreedomCardIsPlayedItReleasesTheSpaceshipFromJailOutsi
     aGame playTurn.
     self assert: (aGame spaceshipMatchWith: id1) isInJail.
     
-    aGame playCard: FreedomCard by: id1 targeting: id1.
+    aGame play: FreedomCard by: id1 affecting: nil targeting: id1.
     self deny: (aGame spaceshipMatchWith: id1) isInJail.
     
     aGame playTurn.

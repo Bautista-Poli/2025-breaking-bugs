@@ -8,7 +8,7 @@ Class {
 { #category : 'as yet unclassified' }
 FreeFromJail >> handleRoll: aRoll for: aSpaceship in: aGame [ 
 	aGame move: aSpaceship by: aRoll.
-   aGame handleLandingOf: aSpaceship in: aGame.
+   aGame handleLandingOf: aSpaceship.
 ]
 
 { #category : 'testing' }

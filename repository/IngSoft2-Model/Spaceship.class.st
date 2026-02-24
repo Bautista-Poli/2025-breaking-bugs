@@ -63,11 +63,9 @@ Spaceship >> beMercenaryOf: anOwnerSpaceship [
 
 { #category : 'testing' }
 Spaceship >> canBattleAgainst: anotherSpaceship [
-    self == anotherSpaceship ifTrue: [ ^ false ].
-    (self isAtSamePositionAs: anotherSpaceship) ifFalse: [ ^ false ].
-    (mercenaries includes: anotherSpaceship) ifTrue: [ ^ false ].
-    (anotherSpaceship hasHimAsMercenary: self) ifTrue: [ ^ false ].
-    ^ true
+    ^(self isAtSamePositionAs: anotherSpaceship)
+        and: [ (mercenaries includes: anotherSpaceship) not
+         and: [ (anotherSpaceship hasHimAsMercenary: self) not ]].
 ]
 
 { #category : 'behavior' }
@@ -79,8 +77,7 @@ Spaceship >> changeShieldStatusTo: aNewShieldStatus [
 Spaceship >> extractCardIfAvailable: aCard [
     | cardToPlay |
     cardToPlay := cards 
-        detect: [ :each | each class = aCard ] 
-        ifNone: [ Error signal: 'Cant use a card that is not on the deck' ].
+        detect: [ :each | each class = aCard ].
     
     cards remove: cardToPlay.
     ^ cardToPlay

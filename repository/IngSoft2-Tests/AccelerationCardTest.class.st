@@ -34,7 +34,7 @@ AccelerationCardTest >> testAccelerationAffectsTotalRollAndNotEachIndividualDice
 		addDice: (FixedDice onFace: 3);
 		build.
 		
-	aGame playCard: AccelerationCard by: id1 targeting: nil.
+	aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
 	aGame playTurn. 
 	
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 7 and: 0).
@@ -58,7 +58,7 @@ AccelerationCardTest >> testAccelerationEffectPersistsOverTurns [
 		build.
 		
 
-	aGame playCard: AccelerationCard by: id1 targeting: nil.
+	aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
 	
 	aGame playTurn. 
 	aGame playTurn. 
@@ -88,7 +88,7 @@ AccelerationCardTest >> testIsValidIfAccelerationCardIncreasesMovementOfAllSpace
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
     
-    game playCard: AccelerationCard by: id1 targeting: nil.
+    game play: AccelerationCard by: id1 affecting: nil targeting: nil.
 
     self assert: ((game spaceshipMatchWith: id1) getCards size) equals: 0.
     self assert: (game hasActivePermanentCardOfType: AccelerationCard).
@@ -120,9 +120,9 @@ AccelerationCardTest >> testWhenTwoAccelerationCardsAreActiveThenAllSpaceshipsMo
 		build.
 		
 	"Activamos ambas cartas"
-	aGame playCard: AccelerationCard by: id1 targeting: nil.
+	aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
 	aGame playTurn. 
-	aGame playCard: AccelerationCard by: id2 targeting: nil.
+	aGame play: AccelerationCard by: id2 affecting: nil targeting: nil.
 	aGame playTurn. 
 	
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 6 and: 0).

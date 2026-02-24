@@ -39,8 +39,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: SpeedCard by: id1 targeting: id1.
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     aGame play: CancelationCard by: id1 affecting: SpeedCard targeting: nil.
     aGame play: RedoCard by: id1 affecting: SpeedCard targeting: nil.
 
@@ -70,8 +70,8 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: MercenaryCard by: id1 targeting: id2.
-    aGame playCard: RedoCard by: id1 targeting: id3.
+    aGame play: MercenaryCard by: id1 affecting:nil targeting: id2.
+    aGame play: RedoCard by: id1 affecting:nil targeting: id3.
 
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
     self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
@@ -95,13 +95,13 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
         addDice: (FixedDice onFace: position1);
         build.
 
-    aGame playCard: SpeedCard by: id1 targeting: id1. "Speed +1"
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     aGame playTurn. "6 + 1 = 7"
 
-    aGame playCard: RedoCard by: id1 targeting: id1. 
+    aGame play: RedoCard by: id1 affecting:nil targeting: id1.
     aGame playTurn.
 
-    aGame playCard: RedoCard by: id1 targeting: id1. 
+    aGame play: RedoCard by: id1 affecting:nil targeting: id1.
     aGame playTurn. 
 
     aGame playTurn.
@@ -113,11 +113,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOnTarget [
-    | gameBuilder board titleBuilder tile dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game id3 |
+    | gameBuilder board titleBuilder tile dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game |
 
     repeatCard := RepeatCard new.
     redoCard := RedoCard new.
-    id3 := 'nave3'.
 
     spaceship1 := Spaceship with: (OrderedCollection with: repeatCard with: redoCard) and: id1.
     spaceship2 := Spaceship with: id2.
@@ -145,10 +144,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARepeatReappliesLastTileEffectOn
     self assert: ((game spaceshipMatchWith: id2) isAt: 14 and: 0).
     self assert: ((game spaceshipMatchWith: id3) isAt: 9 and: 0).
 
-    game playCard: RepeatCard by: id1 targeting: id2. 
+    game play: RepeatCard by: id1 affecting:nil targeting: id2.
     self assert: ((game spaceshipMatchWith: id2) isAt: 29 and: 0).
 
-    game playCard: RedoCard by: id1 targeting: id2.
+    game play: RedoCard by: id1 affecting:nil targeting: id2.
     self assert: ((game spaceshipMatchWith: id1) isAt: 19 and: 0).
     self assert: ((game spaceshipMatchWith: id2) isAt: 39 and: 0).
     self assert: ((game spaceshipMatchWith: id3) isAt: 9 and: 0).
@@ -170,9 +169,9 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
         addDice: (FixedDice onFace: 6);
         build.
 
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+   aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     aGame playTurn. 
-    aGame playCard: RedoCard by: id1 targeting: id1.
+   aGame play: RedoCard by: id1 affecting:nil targeting: id1.
     
     aGame playTurn. 
     aGame playTurn. 
@@ -198,16 +197,16 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
         addDice: (SequentialFixedDice onFaces: { position1. position2 });
         build.
 
-    aGame playCard: AccelerationCard by: id1 targeting: nil.
-    aGame playTurn. "6+1 = 7"
-    aGame playTurn. "4+1 = 5"
+    aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
+    aGame playTurn. 
+    aGame playTurn. 
     
-    aGame playCard: RedoCard by: id1 targeting: nil. "Ahora hay +2 de aceleración global"
+    aGame play: RedoCard by: id1 affecting:nil targeting: nil.
     
-    aGame playTurn. "7 + (6+2) = 15"
-    aGame playTurn. "5 + (4+2) = 11"
-    aGame playTurn. "15 + (6+2) = 23"
-    aGame playTurn. "11 + (4+2) = 17"
+    aGame playTurn. 
+    aGame playTurn. 
+    aGame playTurn. 
+    aGame playTurn. 
 
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 23 and: 0).
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 17 and: 0).
@@ -227,7 +226,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
                  addDice: (FixedDice onFace: position1);
                  build.
 
-    aGame playCard: RedoCard by: id1 targeting: nil.
+    aGame play: RedoCard by: id1 affecting:nil targeting: nil.
 
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).

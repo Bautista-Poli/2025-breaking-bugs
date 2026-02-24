@@ -1,19 +1,15 @@
 Class {
 	#name : 'Battle',
 	#superclass : 'Object',
-	#instVars : [
-		'dice'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'behavior' }
-Battle >> checkIfNeededFor: aSpaceship against: spaceships using: dices [
-    spaceships 
+Battle >> checkIfNeededFor: aSpaceship against: spaceships using: dices [ 
+    (spaceships reject: [ :other | other == aSpaceship ])
         detect: [ :other | aSpaceship canBattleAgainst: other ]
         ifFound: [ :opponent | self resolveBetween: aSpaceship and: opponent using: dices ]
-        ifNone: [ ^ self. ]
 ]
 
 { #category : 'behavior' }

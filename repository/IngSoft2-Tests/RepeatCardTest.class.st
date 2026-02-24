@@ -28,14 +28,12 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
                  addDice: (SequentialFixedDice onFaces: #(4 5));
                  build.
 
-    aGame playTurn. "Cae en 4 -> Black Hole -> Retrocede a 0"
+    aGame playTurn. 
     self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
-
-    aGame playTurn. "Mueve a 5"
+    aGame playTurn. 
     self assert: ((aGame spaceshipMatchWith: id) isAt: 5 and: 0).
 
-    aGame playCard: RepeatCard by: id targeting: id.
-    "Se reaplica Black Hole: 5 - 4 = 1"
+    aGame play: RepeatCard by: id affecting:nil targeting: id.
     self assert: ((aGame spaceshipMatchWith: id) isAt: 1 and: 0).
 ]
 
@@ -74,7 +72,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 14 and: 0).
     self assert: ((aGame spaceshipMatchWith: id3) isAt: 9 and: 0).
 
-    aGame playCard: RepeatCard by: id1 targeting: id2.
+    aGame play: RepeatCard by: id1 affecting:nil targeting: id2.
     "Nave 2 estaba en 14, se le aplica el HyperJump de 30 parsecs (15 casilleros) -> 14 + 15 = 29"
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 19 and: 0).
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 29 and: 0).
@@ -114,7 +112,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 2 and: 0).
     self assert: ((aGame spaceshipMatchWith: id1) hasShields: 2).
 
-    aGame playCard: RepeatCard by: id1 targeting: id1.
+    aGame play: RepeatCard by: id1 affecting:nil targeting: id1.
     "Reaplica HyperSpaceJump: Salta 4 y pierde 1 escudo -> Pos 12, Escudos 1"
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 12 and: 0).
     self assert: ((aGame spaceshipMatchWith: id1) hasShields: 1).
@@ -155,7 +153,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 5 and: 0).
     self assert: ((aGame spaceshipMatchWith: id3) isAt: 9 and: 0).
 
-    aGame playCard: RepeatCard by: id1 targeting: id1.
+    aGame play: RepeatCard by: id1 affecting:nil targeting: id1.
     "Todas las naves (menos la víctima id1) retroceden 3"
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 4 and: 0).
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 2 and: 0).
@@ -202,7 +200,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 
     3 timesRepeat: [ aGame playTurn ]. "Mueven a 7, 8 y 9"
 
-    aGame playCard: RepeatCard by: id1 targeting: id2.
+    aGame play: RepeatCard by: id1 affecting:nil targeting: id2.
     "Reaplica Bomba: todos a 0 y pierden otro escudo"
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
@@ -234,7 +232,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterLandingOnANoEffectTileThenNothing
     aGame playTurn. aGame playTurn.
 
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
-    aGame playCard: RepeatCard by: id1 targeting: id2.
+    aGame play: RepeatCard by: id1 affecting:nil targeting: id2.
 
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
@@ -257,7 +255,7 @@ RepeatCardTest >> testWhenUsingARepeatCardBeforeAnyMoveThenNothingHappens [
                  addDice: (FixedDice onFace: 5);
                  build.
 
-    aGame playCard: RepeatCard by: id targeting: id.
+    aGame play: RepeatCard by: id affecting:nil targeting: id.
 
     self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
     self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
@@ -289,7 +287,7 @@ RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNoth
     aGame playTurn.
     self assert: ((aGame spaceshipMatchWith: id) isAt: 4 and: 0).
 
-    aGame playCard: RepeatCard by: id targeting: id.
+    aGame play: RepeatCard by: id affecting:nil targeting: id.
 
     self assert: ((aGame spaceshipMatchWith: id) isAt: 4 and: 0).
     self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).

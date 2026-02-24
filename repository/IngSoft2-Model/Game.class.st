@@ -5,7 +5,6 @@ Class {
 		'board',
 		'spaceships',
 		'dice',
-		'battle',
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
@@ -35,7 +34,9 @@ Game >> calculateTotalRollFor: aSpaceship [
 
 	| baseRoll |
 	"NUEVO"
-	baseRoll := self getAllDiceValuesFrom: dice.
+	baseRoll :=  dice
+		  inject: 0
+		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ].
 	^ activePermanentCards
 		  inject: baseRoll
 		  into: [ :currentTotal :eachCard |
@@ -55,14 +56,6 @@ Game >> checkIfGameHasAlreadyFinished [
 ]
 
 { #category : 'behavior' }
-Game >> getAllDiceValuesFrom: diceCollection [
-
-	^ diceCollection
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
-]
-
-{ #category : 'behavior' }
 Game >> getPositionTable [
     (board hasAnySpaceshipFinished: spaceships) ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
@@ -71,15 +64,14 @@ Game >> getPositionTable [
 
 { #category : 'behavior' }
 Game >> getRealCard: aTargetCard [
-	"ROMPE INMUTABILIDAD"
      ^ activePermanentCards 
         detect: [ :each | each class = aTargetCard ] 
         ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
 ]
 
 { #category : 'initialization' }
-Game >> handleLandingOf: aSpaceship in: aGame [ 
-	board handleLandingOf: aSpaceship in: aGame 
+Game >> handleLandingOf: aSpaceship [
+	board handleLandingOf: aSpaceship in: self 
 ]
 
 { #category : 'behavior' }
@@ -93,12 +85,10 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice [
-
-	spaceships := aCollectionOfSpacehips deepCopy.
+Game >> initializeWith: aBoard and: aCollectionOfSpaceships and: aCollectionOfDice [
+	spaceships := (aCollectionOfSpaceships deepCopy).
 	board := aBoard.
 	dice := aCollectionOfDice.
-	battle := Battle new.
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
@@ -145,11 +135,6 @@ Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetSh
 ]
 
 { #category : 'behavior' }
-Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
-    self play: aCard by: aSpaceshipId affecting: (NoEffectCard new)  targeting: aTargetSpaceship
-]
-
-{ #category : 'behavior' }
 Game >> playTurn [
 
 	| spaceshipToPlay |
@@ -178,11 +163,6 @@ Game >> registerLastCardPlayed: aCard [
 { #category : 'accessing' }
 Game >> removeActivePermanentCard: aCard [
     activePermanentCards remove: aCard ifAbsent: [ ^ self ].
-]
-
-{ #category : 'as yet unclassified' }
-Game >> rollFor: aSpaceship [ 
-	^ self calculateTotalRollFor: aSpaceship.
 ]
 
 { #category : 'behavior' }

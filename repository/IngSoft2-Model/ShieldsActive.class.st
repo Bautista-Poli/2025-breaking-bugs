@@ -43,7 +43,7 @@ ShieldsActive >> lowerShieldFor: aSpaceship [
 { #category : 'as yet unclassified' }
 ShieldsActive >> playIfPosible: aSpaceship in: aGame [ 
 	 | roll |
-    roll := aGame rollFor: aSpaceship.
+    roll := aGame calculateTotalRollFor: aSpaceship.
     aSpaceship handleRollFromShields: roll in: aGame.
 ]
 

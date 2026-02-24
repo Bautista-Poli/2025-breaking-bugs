@@ -52,7 +52,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 		build.
 
 	aGame playTurn.
-	aGame playCard: SpeedCard by: id2 targeting: id2.
+	aGame play: SpeedCard by: id2 affecting: nil targeting: id2.
 	aGame playTurn.
 
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
@@ -95,7 +95,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: position and: 0).
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
 
-	aGame playCard: MercenaryCard by: id1 targeting: id2.
+	aGame play: MercenaryCard by: id1 affecting: nil targeting: id2.
 
 	self assert: ((aGame spaceshipMatchWith: id1) hasMercenariesAmount: 1).
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
@@ -126,13 +126,13 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 		addDice: (FixedDice onFace: position);
 		build.
 		
-	aGame playCard: MercenaryCard by: id1 targeting: id2.
+	aGame play: MercenaryCard by: id1 affecting: nil targeting: id2.
 	aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
 
-	aGame playCard: RedoCard by: id1 targeting: id3.
+	aGame play: RedoCard by: id1 affecting: nil targeting: id3.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
@@ -164,7 +164,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTile [
 	3 timesRepeat: [ aGame playTurn ].
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 3).
 
-	aGame playCard: SpeedCard by: id1 targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	3 timesRepeat: [ aGame playTurn ].
 	
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: position*2+1 and: 0).
@@ -200,7 +200,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 4 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id3) isAt: 10 and: 0).
 
-	aGame playCard: AccelerationCard by: id1 targeting: nil.
+	aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
 	3 timesRepeat: [ aGame playTurn ].
 
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).

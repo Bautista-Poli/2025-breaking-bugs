@@ -48,12 +48,12 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 		addDice: (SequentialFixedDice onFaces: #(6 4 6 4));
 		build.
 	
-	aGame playCard: SpeedCard by: id1 targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	aGame playTurn. aGame playTurn.
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
 	self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
 
-	aGame playCard: SpeedCard by: id1 targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	aGame playTurn. aGame playTurn.
 	
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
@@ -77,14 +77,14 @@ SpeedCardTest >> testIsValidIfSpeedCardAppliesEffectCorrectlyToEachSpaceshipAndC
         addDice: (SequentialFixedDice onFaces: { position. position2 });
         build.
     
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     aGame playTurn. aGame playTurn.
     
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
     self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
     
     aGame playTurn.
-    aGame playCard: SpeedCard by: id2 targeting: id2.
+    aGame play: SpeedCard by: id2 affecting: nil targeting: id2.
     aGame playTurn.
     
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
@@ -106,7 +106,7 @@ SpeedCardTest >> testIsValidIfSpeedCardIncrementsPositionDynamically [
         addDice: (FixedDice onFace: position);
         build.
         
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     aGame playTurn.
 
     self assert: ((aGame spaceshipMatchWith: id1) isAt: 7 and: 0).
@@ -128,11 +128,11 @@ SpeedCardTest >> testIsValidIfaSpeedCardIsOnlyRemovedFromOwnersHand [
         build.
         
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
 	 self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
     
-	 aGame playCard: SpeedCard by: id1 targeting: id1.
+	 aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 	 self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 2).
 
@@ -150,7 +150,7 @@ SpeedCardTest >> testIsValidIfaSpeedCardIsRemovedFromOwnersHand [
         build.
         
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
-    aGame playCard: SpeedCard by: id1 targeting: id1.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
 
 
@@ -172,7 +172,7 @@ SpeedCardTest >> testShowsErrorIfSpeedCardWantsToBePlayedOutsideOwnersTurn [
 	aGame playTurn.
 
 	self
-		should: [ aGame playCard: SpeedCard by: id1 targeting: id1 ]
+		should: [ aGame play: SpeedCard by: id1 affecting: nil targeting: id1. ]
 		raise: Error
 		withMessageText: 'Card cannot be played at this turn'.
 	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
@@ -193,8 +193,8 @@ SpeedCardTest >> testSpaceshipUsesTwoSpeedCardsAndBonusesAccumulateImmediately [
 		addDice: (FixedDice onFace: positions);
 		build.
 		
-	aGame playCard: SpeedCard by: id1 targeting: id1.
-	aGame playCard: SpeedCard by: id1 targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	aGame playTurn.
 	
 	"6 (dado) + 1 (speed1) + 1 (speed2) = 8"
@@ -219,8 +219,8 @@ SpeedCardTest >> testSpeedAndAccelerationBonusesAccumulateForTargetSpaceship [
         addDice: (FixedDice onFace: 5);
         build.
 
-    aGame playCard: SpeedCard by: id1 targeting: id1.
-    aGame playCard: AccelerationCard by: id1 targeting: nil.
+    aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
+    aGame play: AccelerationCard by: id1 affecting: nil targeting: nil.
     
     aGame playTurn.
     aGame playTurn.

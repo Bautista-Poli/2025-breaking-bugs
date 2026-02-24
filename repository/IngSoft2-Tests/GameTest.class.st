@@ -148,7 +148,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self deny: aGame hasFinished.
 
 	aGame playTurn. aGame playTurn.
-	aGame playCard: AccelerationCard by: id3 targeting: nil.
+	aGame play: AccelerationCard by: id3 affecting: nil targeting: nil.
 	aGame playTurn. aGame playTurn.
 
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 19 and: 0).
@@ -161,7 +161,7 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
 	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
 
-	aGame playCard: SpeedCard by: id1 targeting: id1.
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	4 timesRepeat:[aGame playTurn].
 
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 29 and: 0).
