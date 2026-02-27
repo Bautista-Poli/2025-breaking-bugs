@@ -165,6 +165,11 @@ Game >> removeActivePermanentCard: aCard [
     activePermanentCards remove: aCard ifAbsent: [ ^ self ].
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> reverseTurnOrder [
+	turnManager reverseOrder.
+]
+
 { #category : 'behavior' }
 Game >> skipTurn [
 

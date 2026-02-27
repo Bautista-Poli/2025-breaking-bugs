@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
-		'turnIndex'
+		'turnIndex',
+		'fowardDirection'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -23,6 +24,7 @@ TurnManager >> currentSpaceship [
 TurnManager >> initializeWith: aCollectionOfSpaceships [
     spaceships := aCollectionOfSpaceships.
     turnIndex := 1.
+	 fowardDirection := 1.
 ]
 
 { #category : 'initialization' }
@@ -32,5 +34,14 @@ TurnManager >> isCurrentTurnOf: aSpaceship [
 
 { #category : 'initialization' }
 TurnManager >> nextTurn [
-    turnIndex := (turnIndex \\ spaceships size) + 1.
+
+	turnIndex := turnIndex + fowardDirection.
+	turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
+	turnIndex < 1 ifTrue: [ turnIndex := spaceships size ]
+]
+
+{ #category : 'as yet unclassified' }
+TurnManager >> reverseOrder [
+	fowardDirection := 0-fowardDirection.
+	turnIndex := spaceships size - turnIndex + 1.
 ]
