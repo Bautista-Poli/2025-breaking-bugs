@@ -22,6 +22,36 @@ RedoCardTest >> setUp [
 ]
 
 { #category : 'tests' }
+RedoCardTest >> testWhenUsingARedoCardAfterAReverseCardThenTurnOrderIsRestoredToNormal [
+    | aSpaceship1 aSpaceship2 aSpaceship3  finishLine aGame aBoard aReverseCard aRedoCard|
+    aReverseCard := ReverseCard new.
+    aRedoCard := RedoCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aReverseCard) and: id1.
+    aSpaceship2 := Spaceship with: (OrderedCollection with: aRedoCard) and: id2.
+    aSpaceship3 := Spaceship with: id3.
+    finishLine := 90.
+    aBoard := Board withSize: finishLine andWormholeFrom: 70 to: 72.
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addSpaceship: aSpaceship3;
+                 addBoard: aBoard;
+                 addDice: (SequentialFixedDice onFaces: #(3 6 9 5));
+                 build.
+
+    aGame playTurn.
+	 aGame playTurn.
+	 aGame play: ReverseCard by: id1 affecting: nil targeting: nil.
+	 aGame play: RedoCard by: id2 affecting: nil targeting: nil.
+	 aGame playTurn.
+	 self assert: ((aGame spaceshipMatchWith: id2) isAt: 6 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 9 and: 0).
+
+    
+
+]
+
+{ #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
     | aGame aSpaceship position1 aSpeedCard aRedoCard anotherSpeedCard aCollectionOfCards aCancelationCard  |
     position1 := 6.
