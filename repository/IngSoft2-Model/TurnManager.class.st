@@ -35,9 +35,8 @@ TurnManager >> isCurrentTurnOf: aSpaceship [
 { #category : 'initialization' }
 TurnManager >> nextTurn [
 
-	turnIndex := turnIndex + fowardDirection.
-	turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
-	turnIndex < 1 ifTrue: [ turnIndex := spaceships size ]
+	turnIndex := (turnIndex + fowardDirection) \\ spaceships size.
+	(turnIndex < 1) ifTrue: [ ^ turnIndex := spaceships size ].
 ]
 
 { #category : 'as yet unclassified' }
