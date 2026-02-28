@@ -144,8 +144,7 @@ Game >> playTurn [
 
 	spaceshipToPlay handleTurnIn: self.
 
-	turnManager nextTurn.
-	spaceshipToPlay handleEndOfCycle
+	turnManager endTurn.
 ]
 
 { #category : 'behavior' }
@@ -181,7 +180,7 @@ Game >> skipCurrentTurn [
 ]
 
 { #category : 'behavior' }
-Game >> skipTurn [
+Game >> skipMyTurn [
 
     self checkIfGameHasAlreadyFinished.
     turnManager currentSpaceship rechargeShields.

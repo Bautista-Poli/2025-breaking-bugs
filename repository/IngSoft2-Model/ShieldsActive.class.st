@@ -14,11 +14,6 @@ ShieldsActive class >> withCount: aNumberOfShields [
 ]
 
 { #category : 'initialization' }
-ShieldsActive >> canPlay [ 
-    ^ true
-]
-
-{ #category : 'initialization' }
 ShieldsActive >> handleEndOfCycleFor: aSpaceship [
 ]
 

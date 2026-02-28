@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
-		'winner',
 		'boardSize'
 	],
 	#category : 'IngSoft2-Model',

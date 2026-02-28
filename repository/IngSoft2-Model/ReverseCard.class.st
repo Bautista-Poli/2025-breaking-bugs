@@ -16,3 +16,7 @@ ReverseCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aT
 	aGame reverseTurnOrder.
 	aGame registerLastCardPlayed: self.
 ]
+
+{ #category : 'behavior' }
+ReverseCard >> undoEffect: aGame [
+]

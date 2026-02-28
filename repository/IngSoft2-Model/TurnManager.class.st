@@ -20,6 +20,12 @@ TurnManager >> currentSpaceship [
     ^ spaceships at: turnIndex.
 ]
 
+{ #category : 'as yet unclassified' }
+TurnManager >> endTurn [
+	self currentSpaceship handleEndOfCycle.
+	self nextTurn.
+]
+
 { #category : 'initialization' }
 TurnManager >> initializeWith: aCollectionOfSpaceships [
     spaceships := aCollectionOfSpaceships.
@@ -35,13 +41,7 @@ TurnManager >> isCurrentTurnOf: aSpaceship [
 { #category : 'initialization' }
 TurnManager >> nextTurn [
 
-	turnIndex := (turnIndex + fowardDirection) \\ spaceships size.
-	(turnIndex < 1) ifTrue: [ ^ turnIndex := spaceships size ].
-]
-
-{ #category : 'as yet unclassified' }
-TurnManager >> repeatTurn [
-	self shouldBeImplemented.
+	turnIndex := (turnIndex + fowardDirection - 1 \\ spaceships size) + 1.
 ]
 
 { #category : 'as yet unclassified' }

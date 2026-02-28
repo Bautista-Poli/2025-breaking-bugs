@@ -10,7 +10,11 @@ SkipCard class >> canBePlayedBy: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-SkipCard >> playBy: aSpaceship in: aGame targeting: anUndefinedObject affecting: aSpaceship4 [ 
+SkipCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
 	aGame skipCurrentTurn.
 	aGame registerLastCardPlayed: self.
+]
+
+{ #category : 'behavior' }
+SkipCard >> undoEffect: aGame [
 ]

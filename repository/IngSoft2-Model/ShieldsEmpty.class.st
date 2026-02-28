@@ -10,11 +10,11 @@ Class {
 
 { #category : 'initialization' }
 ShieldsEmpty >> handleEndOfCycleFor: aSpaceship [ 
-    turnsRemaining := turnsRemaining - 1.
     
     turnsRemaining = 0 ifTrue: [
         aSpaceship changeShieldStatusTo: (ShieldsActive withCount: 3)
-    ]
+    ].
+	 turnsRemaining := turnsRemaining - 1.
 
 ]
 
@@ -25,7 +25,7 @@ ShieldsEmpty >> hasAmount: aNumberOfShields [
 
 { #category : 'initialization' }
 ShieldsEmpty >> initialize [
-    turnsRemaining := 3.
+    turnsRemaining := 2.
 ]
 
 { #category : 'as yet unclassified' }
