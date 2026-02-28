@@ -78,29 +78,35 @@ ReverseCardTest >> testWhenUsingAReverseCardThenTurnOrderIsInverted [
 
 { #category : 'tests' }
 ReverseCardTest >> testWhenUsingAReverseCardThenTurnOrderIsInvertedForMultipleTurns [
-    | aSpaceship1 aSpaceship2 aSpaceship3 aGame aBoard|
-    aSpaceship1 := Spaceship with: (OrderedCollection with: aReverseCard) and: id1.
-    aSpaceship2 := Spaceship with: id2.
-    aSpaceship3 := Spaceship with: id3.
-    aBoard := Board withSize: 90 andWormholeFrom: 70 to: 72.
-    aGame := aGameBuilder
-                 addSpaceship: aSpaceship1;
-                 addSpaceship: aSpaceship2;
-                 addSpaceship: aSpaceship3;
-                 addBoard: aBoard;
-                 addDice: (SequentialFixedDice onFaces: #(5 6 7 5 7));
-                 build.
 
-    3 timesRepeat: [ aGame playTurn ].
-	 self assert: ((aGame spaceshipMatchWith: id3) isAt: 7 and: 0).
-	 self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
+	| aSpaceship1 aSpaceship2 aSpaceship3 aGame aBoard |
+	aSpaceship1 := Spaceship
+		               with: (OrderedCollection with: aReverseCard)
+		               and: id1.
+	aSpaceship2 := Spaceship with: id2.
+	aSpaceship3 := Spaceship with: id3.
+	aBoard := Board withSize: 90 andWormholeFrom: 70 to: 72.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 5 6 7 5 7 ));
+		         build.
+
+	3 timesRepeat: [ aGame playTurn ].
+
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 6 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 7 and: 0).
 
 
-    aGame play: ReverseCard by: id1 affecting: nil targeting: nil.
-	 aGame playTurn.
-	 aGame playTurn.
-    self assert: ((aGame spaceshipMatchWith: id3) isAt: 12 and: 0).
-	 self assert: ((aGame spaceshipMatchWith: id2) isAt: 13 and: 0).
+	aGame play: ReverseCard by: id1 affecting: nil targeting: nil.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 12 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 13 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
 ]
 
 { #category : 'tests' }

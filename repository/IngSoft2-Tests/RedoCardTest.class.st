@@ -52,6 +52,36 @@ RedoCardTest >> testWhenUsingARedoCardAfterAReverseCardThenTurnOrderIsRestoredTo
 ]
 
 { #category : 'tests' }
+RedoCardTest >> testWhenUsingARedoCardAfterASkipCardThenCurrentSpaceshipLosesItsTurn [
+    | aSpaceship1 aSpaceship2 aSpaceship3 finishLine aGame aBoard aTileCollection aTileBuilder aSkipCard aRedoCard |
+    aSkipCard := SkipCard new.
+    aRedoCard := RedoCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aSkipCard with: aRedoCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    aSpaceship3 := Spaceship with: id3.
+    finishLine := 90.
+    aTileBuilder := TilesBuilder with: finishLine.
+    aTileBuilder addWormholeFrom: 70 to: 72.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addSpaceship: aSpaceship3;
+                 addBoard: aBoard;
+                 addDice: (SequentialFixedDice onFaces: #(3 6 9));
+                 build.
+    aGame playTurn.
+    aGame play: SkipCard by: id1 affecting: nil targeting: nil.
+    aGame play: RedoCard by: id1 affecting: nil targeting: nil.
+    aGame playTurn.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 9 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id3) isAt: 0 and: 0).
+
+]
+
+{ #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
     | aGame aSpaceship position1 aSpeedCard aRedoCard anotherSpeedCard aCollectionOfCards aCancelationCard  |
     position1 := 6.

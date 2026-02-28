@@ -170,6 +170,11 @@ Game >> reverseTurnOrder [
 	turnManager reverseOrder.
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> skipCurrentTurn [
+	turnManager nextTurn.
+]
+
 { #category : 'behavior' }
 Game >> skipTurn [
 
