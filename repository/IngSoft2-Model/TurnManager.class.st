@@ -40,6 +40,11 @@ TurnManager >> nextTurn [
 ]
 
 { #category : 'as yet unclassified' }
+TurnManager >> repeatTurn [
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
 TurnManager >> reverseOrder [
 	fowardDirection := 0-fowardDirection.
 	turnIndex := spaceships size - turnIndex + 1.

@@ -22,6 +22,32 @@ RedoCardTest >> setUp [
 ]
 
 { #category : 'tests' }
+RedoCardTest >> testWhenUsingARedoCardAfterADoubleCardThenSpaceshipRollsThreeTimes [
+    | aSpaceship1 aSpaceship2  finishLine aGame aBoard aTileCollection aTileBuilder aDoubleCard aRedoCard|
+    aDoubleCard := DoubleCard new.
+    aRedoCard := RedoCard new.
+    aSpaceship1 := Spaceship with: (OrderedCollection with: aDoubleCard with: aRedoCard) and: id1.
+    aSpaceship2 := Spaceship with: id2.
+    finishLine := 90.
+    aTileBuilder := TilesBuilder with: finishLine.
+    aTileBuilder addWormholeFrom: 70 to: 72.
+    aTileCollection := aTileBuilder build.
+    aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
+    aGame := aGameBuilder
+                 addSpaceship: aSpaceship1;
+                 addSpaceship: aSpaceship2;
+                 addBoard: aBoard;
+                 addDice: (SequentialFixedDice onFaces: #(3 4 5));
+                 build.
+    aGame play: DoubleCard by: id1 affecting: nil targeting: nil. 
+    aGame play: RedoCard by: id1 affecting: nil targeting: nil. 
+    aGame playTurn. 
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 12 and: 0).
+    self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
+
+]
+
+{ #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterAReverseCardThenTurnOrderIsRestoredToNormal [
     | aSpaceship1 aSpaceship2 aSpaceship3  finishLine aGame aBoard aReverseCard aRedoCard|
     aReverseCard := ReverseCard new.

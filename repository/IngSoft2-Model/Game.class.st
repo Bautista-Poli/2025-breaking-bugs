@@ -166,6 +166,11 @@ Game >> removeActivePermanentCard: aCard [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> repeatTurn [
+	turnManager currentSpaceship handleTurnIn: self.
+]
+
+{ #category : 'as yet unclassified' }
 Game >> reverseTurnOrder [
 	turnManager reverseOrder.
 ]
