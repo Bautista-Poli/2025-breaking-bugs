@@ -133,7 +133,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
     aGame playTurn.
 
     self deny: (aGame hasActivePermanentCardOfType: SpeedCard).
-    self assert: (aGame spaceshipMatchWith: id1) getCards isEmpty.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 
 ]
 

@@ -17,16 +17,13 @@ Class {
 
 { #category : 'tests' }
 MercenaryCardTest >> assert: aSpaceshipId hasMercenaryWithId: aMercenaryId in: aGame [
-	self assert: ((aGame spaceshipMatchWith: aSpaceshipId) getMercenaries
-		anySatisfy: [ :each | each matchesId: aMercenaryId ]).
+	self assert: ((aGame spaceshipMatchWith: aSpaceshipId) hasMercenaryWithId: aMercenaryId).
 
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> deny: anOwnerId hasMercenaryWithId: aMercenaryId in: aGame [
-	self deny: ((aGame spaceshipMatchWith: anOwnerId) getMercenaries
-		anySatisfy: [ :each | each matches: aMercenaryId ]).
-
+	self deny: ((aGame spaceshipMatchWith: anOwnerId) hasMercenaryWithId: aMercenaryId).
 ]
 
 { #category : 'running' }
@@ -75,7 +72,7 @@ MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyA
     self assert: (aGame spaceshipMatchWith: id2) hasOwner.
 
     self deny: id3 hasMercenaryWithId: id2 in: aGame.
-    self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
+    self assert: ((aGame spaceshipMatchWith: id3) hasCardsAmount: 1).
 
 ]
 
@@ -102,7 +99,7 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWi
 		withMessageText: 'A mercenary cannot hire other spaceships'.
 
 	self assert: id1 hasMercenaryWithId: id2 in: aGame.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 
 
 
@@ -150,7 +147,7 @@ MercenaryCardTest >> testIsInvalidIfASpaceshipThatUseMercenaryCardWantsToHaveHim
         build.
 
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries isEmpty.
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
 
 ]
 
@@ -173,7 +170,7 @@ MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
     aGame play: MercenaryCard by: id1 affecting: nil targeting: id2.
 
     self assert: id1 hasMercenaryWithId: id2 in: aGame.
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
 
 
 		
@@ -308,7 +305,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
     aGame play: MercenaryCard by: id1 affecting: nil targeting: id2.
     aGame play: AccelerationCard by: id1 affecting: nil targeting: id2.
     
-    self assert: (aGame spaceshipMatchWith: id1) getCards isEmpty.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
     
     3 timesRepeat: [ aGame playTurn ].
 

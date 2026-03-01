@@ -174,11 +174,6 @@ Game >> reverseTurnOrder [
 	turnManager reverseOrder.
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> skipCurrentTurn [
-	turnManager nextTurn.
-]
-
 { #category : 'behavior' }
 Game >> skipMyTurn [
 
@@ -187,6 +182,11 @@ Game >> skipMyTurn [
     turnManager nextTurn.
 
 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> skipTurnForcedBySkipCard [
+	turnManager nextTurn.
 ]
 
 { #category : 'getter' }

@@ -32,8 +32,8 @@ BlackHoleTest >> testWhenBlackHoleMovesShipOntoOccupiedTileThenTheyBattle [
 	aGame playTurn.aGame playTurn.
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 1 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
-	self assert: ((aGame spaceshipMatchWith: id1) getShields) equals: 3.
-	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 3).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
 	
 
 

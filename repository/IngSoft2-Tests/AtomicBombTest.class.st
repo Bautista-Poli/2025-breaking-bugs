@@ -53,11 +53,11 @@ AtomicBombTest >> testWhenAtomicBombExplodesAndSpaceshipHasOneShieldThenItLosesI
 	aGame playTurn.
 	aGame playTurn.
 	
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 1).
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 0).
 
 	
 ]
@@ -116,9 +116,9 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 	self assert: ((aGame spaceshipMatchWith: id2) isAt: 5 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id3) isAt: 6 and: 0).
 	
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id3) hasShields: 2).
 
 	
 ]

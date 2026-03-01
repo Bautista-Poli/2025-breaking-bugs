@@ -130,11 +130,11 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 	aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
 
 	aGame play: RedoCard by: id1 affecting: nil targeting: id3.
 	
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 2.
 	self assert: ((aGame spaceshipMatchWith: id1) getMercenaries anySatisfy: [ :each | each matchesId: id2 ]).
 

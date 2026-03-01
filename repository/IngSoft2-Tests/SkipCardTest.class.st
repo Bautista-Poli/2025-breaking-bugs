@@ -71,7 +71,7 @@ SkipCardTest >> testWhenUsingASkipCardOnASpaceshipInPenaltyThenItWaitsOneExtraTu
     aGame play: SkipCard by: id1 affecting: nil targeting: nil.
 	 3 timesRepeat: [ aGame playTurn ].
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
-    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
+    self assert: ((aGame spaceshipMatchWith: id2) hasShields: 3).
 ]
 
 { #category : 'tests' }
@@ -95,7 +95,7 @@ SkipCardTest >> testWhenUsingASkipCardOnASpaceshipThatIsGoingToBePenalizedThenIt
 	 aGame play: SkipCard by: id1 affecting: nil targeting: nil.
 	 5 timesRepeat: [ aGame playTurn ].
     self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
-    self assert: (aGame spaceshipMatchWith: id2) getShields equals: 3.
+    self assert: ((aGame spaceshipMatchWith: id2) hasShields: 3).
 ]
 
 { #category : 'tests' }

@@ -11,7 +11,7 @@ SkipCard class >> canBePlayedBy: aSpaceship in: aGame [
 
 { #category : 'behavior' }
 SkipCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
-	aGame skipCurrentTurn.
+	aGame skipTurnForcedBySkipCard.
 	aGame registerLastCardPlayed: self.
 ]
 

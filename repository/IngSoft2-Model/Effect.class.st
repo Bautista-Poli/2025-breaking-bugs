@@ -7,7 +7,6 @@ Class {
 
 { #category : 'operations' }
 Effect >> applyTo: aSpaceship in: aGame [
-
 	self subclassResponsibility
 ]
 

@@ -52,6 +52,12 @@ Spaceship >> applyPenality [
 	shieldStatus lowerShieldFor: self
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> applyYourselfSpeedBonusTo: aRollValue ifYouAre: aSpaceship [ 
+	self == aSpaceship ifTrue: [ ^ aRollValue + 1 ].
+    ^ aRollValue
+]
+
 { #category : 'testing' }
 Spaceship >> beMercenaryOf: anOwnerSpaceship [
 
@@ -89,20 +95,8 @@ Spaceship >> fire: aSpaceship [
 ]
 
 { #category : 'getter' }
-Spaceship >> getCards [
-
-	^ cards
-]
-
-{ #category : 'getter' }
 Spaceship >> getMercenaries [
 	^ mercenaries.
-]
-
-{ #category : 'getter' }
-Spaceship >> getShields [
-
-	^ shieldStatus shieldCount
 ]
 
 { #category : 'as yet unclassified' }
@@ -113,6 +107,7 @@ Spaceship >> handleEndOfCycle [
 { #category : 'as yet unclassified' }
 Spaceship >> handleRollFromShields: aRoll in: aGame [ 
 	jailStatus handleRoll: aRoll for: self in: aGame.
+	jailStatus handleHyperGravityRoll: aRoll for:self in: aGame.
 ]
 
 { #category : 'as yet unclassified' }
@@ -134,6 +129,11 @@ Spaceship >> hasHimAsMercenary: aSpaceship [
 { #category : 'testing' }
 Spaceship >> hasMercenariesAmount: anAmountOfMercenaries [ 
 	^ mercenaries size = anAmountOfMercenaries.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasMercenaryWithId: anId [ 
+	^ mercenaries anySatisfy: [ :each | each matchesId: anId ]
 ]
 
 { #category : 'testing' }
@@ -258,6 +258,11 @@ Spaceship >> rollBestValueUsing: dicesCollection [
         best := roll max: best.
     ].
     ^ best
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> sendToHyperGravityRequiring: aRollValue [
+	jailStatus := InJail new.
 ]
 
 { #category : 'as yet unclassified' }

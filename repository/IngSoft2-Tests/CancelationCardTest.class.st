@@ -73,12 +73,12 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 
 	aGame play: MercenaryCard by: id1 affecting: nil targeting: id3.
 
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 1.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 
 	aGame play: CancelationCard by: id1 affecting: MercenaryCard targeting: id2.
 
-    self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 0.
+    self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
     self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 0.
 
 ]
@@ -121,7 +121,7 @@ CancelationCardTest >> testWhenRedoCardIsPlayedAfterCancelationCardThenAnotherPe
 	self deny: (aGame hasActivePermanentCardOfType: AccelerationCard).
 	
 	"Asumiendo que hasCards: o similar reemplaza getCards isEmpty"
-	self assert: (aGame spaceshipMatchWith: id) getCards isEmpty.
+	self assert: ((aGame spaceshipMatchWith: id) hasCardsAmount: 0).
 
 	aGame playTurn.
 	self assert: ((aGame spaceshipMatchWith: id) isAt: 5 and: 0).

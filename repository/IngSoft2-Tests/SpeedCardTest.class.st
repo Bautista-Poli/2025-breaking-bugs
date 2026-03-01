@@ -175,7 +175,7 @@ SpeedCardTest >> testShowsErrorIfSpeedCardWantsToBePlayedOutsideOwnersTurn [
 		should: [ aGame play: SpeedCard by: id1 affecting: nil targeting: id1. ]
 		raise: Error
 		withMessageText: 'Card cannot be played at this turn'.
-	self assert: (aGame spaceshipMatchWith: id1) getCards size equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
 
 
 ]

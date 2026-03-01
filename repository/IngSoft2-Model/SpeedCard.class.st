@@ -15,9 +15,7 @@ SpeedCard class >> canBePlayedBy: aSpaceship in: aGame [
 
 { #category : 'behavior' }
 SpeedCard >> applyBonusTo: aRollValue for: aSpaceship [
-    ^ (aSpaceship = spaceshipAffected)
-        ifTrue: [ aRollValue + 1 ]
-        ifFalse: [ aRollValue ]
+    ^ aSpaceship applyYourselfSpeedBonusTo: aRollValue ifYouAre: spaceshipAffected.
 ]
 
 { #category : 'behavior' }

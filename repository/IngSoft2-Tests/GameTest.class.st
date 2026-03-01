@@ -141,10 +141,10 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: ((aGame spaceshipMatchWith: id3) isAt: 5 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id4) isAt: 4 and: 0).
 
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id4) getShields equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id3) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id4) hasShields: 2).
 	self deny: aGame hasFinished.
 
 	aGame playTurn. aGame playTurn.
@@ -158,8 +158,8 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 
 	aGame play: CancelationCard by: id2 affecting: AccelerationCard targeting: nil.
 
-	self assert: (aGame spaceshipMatchWith: id3) getCards size equals: 1.
-	self assert: (aGame spaceshipMatchWith: id2) getCards size equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id3) hasCardsAmount: 1).
+	self assert: ((aGame spaceshipMatchWith: id2) hasCardsAmount: 1).
 
 	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.
 	4 timesRepeat:[aGame playTurn].
@@ -212,10 +212,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self assert: ((aGame spaceshipMatchWith: id3) isAt: 5 and: 0).
 	self assert: ((aGame spaceshipMatchWith: id4) isAt: 4 and: 0).
 
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id3) getShields equals: 2.
-	self assert: (aGame spaceshipMatchWith: id4) getShields equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id3) hasShields: 2).
+	self assert: ((aGame spaceshipMatchWith: id4) hasShields: 2).
 	self deny: aGame hasFinished.
 
 	aGame playTurn. aGame playTurn.

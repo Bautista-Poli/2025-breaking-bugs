@@ -116,7 +116,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 
 	aGame playTurn.
 	self assert: ((aGame spaceshipMatchWith: id) isAt: 8 and: 0).
-	self assert: (aGame spaceshipMatchWith: id) getShields equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id) hasShields: 2).
 
 	
 ]
