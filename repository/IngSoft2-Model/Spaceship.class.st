@@ -107,7 +107,6 @@ Spaceship >> handleEndOfCycle [
 { #category : 'as yet unclassified' }
 Spaceship >> handleRollFromShields: aRoll in: aGame [ 
 	jailStatus handleRoll: aRoll for: self in: aGame.
-	jailStatus handleHyperGravityRoll: aRoll for:self in: aGame.
 ]
 
 { #category : 'as yet unclassified' }
@@ -262,7 +261,7 @@ Spaceship >> rollBestValueUsing: dicesCollection [
 
 { #category : 'as yet unclassified' }
 Spaceship >> sendToHyperGravityRequiring: aRollValue [
-	jailStatus := InJail new.
+	jailStatus := InHyperGravity withRequiered: aRollValue.
 ]
 
 { #category : 'as yet unclassified' }
