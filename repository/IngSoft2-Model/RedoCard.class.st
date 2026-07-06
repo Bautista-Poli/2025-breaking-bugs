@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'testing' }
+RedoCard class >> canBePlayedBy: aSpaceship in: aGame [
+	^ aGame lastCardThrown class canBePlayedBy: aSpaceship in: aGame.
+]
+
 { #category : 'behavior' }
 RedoCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
     | cardToRedo |

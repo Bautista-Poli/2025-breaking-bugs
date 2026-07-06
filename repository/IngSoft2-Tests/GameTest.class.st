@@ -301,6 +301,26 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 ]
 
 { #category : 'tests' }
+GameTest >> testRaiseErrorIfACardWantsToBePlayedWhenTheGameHasAlreadyFinished [
+
+	| aGame aSpaceship aReverseCard |
+	aReverseCard := ReverseCard new.
+	aSpaceship := Spaceship with: (OrderedCollection with: aReverseCard) and: id1.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 20);
+		         build.
+
+	aGame playTurn.
+
+	self
+		should: [ aGame play: ReverseCard by: id1 affecting: nil targeting: nil ]
+		raise: Error
+		withMessageText: 'Cannot play a turn after the game has finished.'
+]
+
+{ #category : 'tests' }
 GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 
 	| aGame aSpaceship |

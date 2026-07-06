@@ -21,6 +21,42 @@ RedoCardTest >> setUp [
 	id3 := 'nave3'.
 ]
 
+{ #category : 'running' }
+RedoCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testCannotRedoAPermanentCardWhenItIsNotYourTurn [
+
+	| aGame aSpaceship1 aSpaceship2 aSpeedCard aRedoCard |
+	aSpeedCard := SpeedCard new.
+	aRedoCard := RedoCard new.
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with: aRedoCard) and: id1.
+	aSpaceship2 := Spaceship with: id2.
+
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
+		         addDice: (FixedDice onFace: 3);
+		         build.
+
+	aGame play: SpeedCard by: id1 affecting: nil targeting: id1.  
+	aGame playTurn.  
+	self
+		should: [ aGame play: RedoCard by: id1 affecting: nil targeting: id1 ]
+		raise: Error
+		withMessageText: 'Card cannot be played at this turn'.
+
+
+]
+
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterADoubleCardThenSpaceshipRollsThreeTimes [
     | aSpaceship1 aSpaceship2  finishLine aGame aBoard aTileCollection aTileBuilder aDoubleCard aRedoCard|

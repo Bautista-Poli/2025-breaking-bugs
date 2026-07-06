@@ -128,6 +128,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 		
 	aGame play: MercenaryCard by: id1 affecting: nil targeting: id2.
 	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
 	
 	self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 1.
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 1).

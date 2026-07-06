@@ -19,11 +19,6 @@ Game class >> with: aBoard and: spaceships and: dice [
 	^ self new initializeWith: aBoard and: spaceships and: dice.
 ]
 
-{ #category : 'creation' }
-Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
-	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
-]
-
 { #category : 'accessing' }
 Game >> addActivePermanentCard: aCard [
     activePermanentCards add: aCard.
@@ -126,6 +121,7 @@ Game >> move: aSpaceship by: aDiference [
 Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetShipId [
 
     | spaceshipInGame aSpaceshipTarget |
+	 self checkIfGameHasAlreadyFinished.
     spaceshipInGame := spaceships detect: [ :each | each matchesId: aSpaceshipId ].
     
     aSpaceshipTarget := aTargetShipId ifNotNil: [
