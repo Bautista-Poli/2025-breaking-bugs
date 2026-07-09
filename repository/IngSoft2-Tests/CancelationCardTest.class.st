@@ -79,7 +79,7 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 	aGame play: CancelationCard by: id1 affecting: MercenaryCard targeting: id2.
 
     self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 0).
-    self assert: (aGame spaceshipMatchWith: id1) getMercenaries size equals: 0.
+    self assert: (aGame spaceshipMatchWith: id1) getMercenaries isEmpty.
 
 ]
 

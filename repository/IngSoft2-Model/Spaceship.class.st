@@ -96,7 +96,7 @@ Spaceship >> fire: aSpaceship [
 
 { #category : 'getter' }
 Spaceship >> getMercenaries [
-	^ mercenaries.
+	^ mercenaries deepCopy.
 ]
 
 { #category : 'as yet unclassified' }

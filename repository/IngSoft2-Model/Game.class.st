@@ -28,7 +28,6 @@ Game >> addActivePermanentCard: aCard [
 Game >> calculateTotalRollFor: aSpaceship [
 
 	| baseRoll |
-	"NUEVO"
 	baseRoll :=  dice
 		  inject: 0
 		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ].
