@@ -2,7 +2,8 @@ Class {
 	#name : 'FixedDice',
 	#superclass : 'Dice',
 	#instVars : [
-		'fixedFace'
+		'fixedFace',
+		'maxRoll'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -20,21 +21,28 @@ FixedDice class >> on: faces andFixedNumber: aFixedNumber [
 
 	self faceNumberIsPositive: aFixedNumber.
 	self faceNumberIsPositive: faces.
-	^ self new initializeOn: faces andFixedNumber: aFixedNumber
+	^ self new initializeWithMaxRoll: faces fixedAt: aFixedNumber.
 ]
 
 { #category : 'as yet unclassified' }
 FixedDice class >> onFace: aFaceNumber [
 
-	self faceNumberIsPositive: aFaceNumber.
-	^ self new initializeOn: aFaceNumber andFixedNumber: aFaceNumber.
+	^ self withSides: aFaceNumber fixedAt: aFaceNumber.
+]
+
+{ #category : 'as yet unclassified' }
+FixedDice class >> withSides: aMaxRoll fixedAt: aFace [
+
+	self faceNumberIsPositive: aFace.
+	self faceNumberIsPositive: aMaxRoll.
+	^ self basicNew initializeWithMaxRoll: aMaxRoll fixedAt: aFace.
 ]
 
 { #category : 'initialization' }
-FixedDice >> initializeOn: faces andFixedNumber: aFixedFace [
+FixedDice >> initializeWithMaxRoll: aMaxRoll fixedAt: aFixedFace [
 
 	fixedFace := aFixedFace.
-	aNumberOfSides := faces.
+	maxRoll := aMaxRoll.
 ]
 
 { #category : 'behavior' }
