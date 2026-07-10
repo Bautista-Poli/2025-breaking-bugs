@@ -2,8 +2,7 @@ Class {
 	#name : 'FixedDice',
 	#superclass : 'Dice',
 	#instVars : [
-		'fixedFace',
-		'maxRoll'
+		'fixedFace'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -47,6 +46,5 @@ FixedDice >> initializeWithMaxRoll: aMaxRoll fixedAt: aFixedFace [
 
 { #category : 'behavior' }
 FixedDice >> roll [
-
 	^ fixedFace
 ]

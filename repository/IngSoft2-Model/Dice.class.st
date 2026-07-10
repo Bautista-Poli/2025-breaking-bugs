@@ -2,7 +2,7 @@ Class {
 	#name : 'Dice',
 	#superclass : 'Object',
 	#instVars : [
-		'aNumberOfSides'
+		'maxRoll'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -32,19 +32,19 @@ Dice class >> withSides: aNumberOfSides [
 ]
 
 { #category : 'initialization' }
-Dice >> initializeWithSides: numberOfSides [
+Dice >> initializeWithSides: aMaxRoll [
 
-	aNumberOfSides := numberOfSides
+	maxRoll := aMaxRoll
 ]
 
 { #category : 'initialization' }
 Dice >> maxValue [
-	^ aNumberOfSides.
+	^ maxRoll.
 ]
 
 { #category : 'roll' }
 Dice >> roll [
 
-	^ Random new nextIntegerBetween: 1 and: aNumberOfSides
+	^ Random new nextIntegerBetween: 1 and: maxRoll.
 	
 ]

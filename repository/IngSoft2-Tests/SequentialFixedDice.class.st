@@ -40,15 +40,8 @@ SequentialFixedDice class >> onFaces: aFaceNumberCollection [
 { #category : 'initialization' }
 SequentialFixedDice >> initializeOn: sides andFixedNumber: fixedFaces [
 
-	aNumberOfSides := sides.
+	maxRoll := sides.
 	faceNumberCollection := fixedFaces.
-	currentIndex := 0.
-]
-
-{ #category : 'initialization' }
-SequentialFixedDice >> initializeOnFace: aFaceNumberCollection [
-
-	faceNumberCollection := aFaceNumberCollection.
 	currentIndex := 0.
 ]
 
