@@ -12,7 +12,8 @@ Effect >> applyTo: aSpaceship in: aGame [
 
 { #category : 'operations' }
 Effect >> countYourself: aCounter [
-    aCounter countHyperGravity.
+
+	self subclassResponsibility.
 ]
 
 { #category : 'operations' }

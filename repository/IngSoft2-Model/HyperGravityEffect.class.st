@@ -19,6 +19,11 @@ HyperGravityEffect >> applyTo: aSpaceship in: aGame [
 	aGame registerAppliedEffect: self.
 ]
 
+{ #category : 'operations' }
+HyperGravityEffect >> countYourself: aCounter [ 
+	aCounter countHyperGravity.
+]
+
 { #category : 'initialization' }
 HyperGravityEffect >> initializeWith: aRequiredRoll [ 
 	requiredRoll := aRequiredRoll

@@ -23,6 +23,10 @@ WormholeEffect >> applyTo: aSpaceship in: aGame [
     aGame registerAppliedEffect: self.
 ]
 
+{ #category : 'operations' }
+WormholeEffect >> countYourself: aCounter [ 
+]
+
 { #category : 'initialization' }
 WormholeEffect >> initializeWith: exitPosition [
 	targetPosition := exitPosition.
