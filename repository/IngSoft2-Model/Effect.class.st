@@ -20,3 +20,8 @@ Effect >> countYourself: aCounter [
 Effect >> handleArriveOf: aSpaceship in: aGame [
     self applyTo: aSpaceship in: aGame.
 ]
+
+{ #category : 'operations' }
+Effect >> replacementFor: aFullBlockClosure [ 
+	^ self 
+]
