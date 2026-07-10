@@ -13,8 +13,8 @@ Class {
 		'atomicBombPercentage',
 		'cardTitlePercentage',
 		'wormholeCount',
-		'hyperGravityRequiredRoll',
-		'hyperGravityPercentage'
+		'hyperGravityPercentage',
+		'hyperGravityMaxRoll'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -61,7 +61,7 @@ TilesBuilder >> buildRandom [
 		                    at: [ HyperJumpEffect new ] put: hyperJumpPercentage;
 		                    at: [ AtomicBombEffect new ] put: atomicBombPercentage;
 		                    at: [ ObtainCardEffect new ] put: cardTitlePercentage;
-		                    at: [ HyperGravityEffect withRoll: hyperGravityRequiredRoll ]
+		                    at: [ HyperGravityEffect withIn: hyperGravityMaxRoll ]
 		                    put: hyperGravityPercentage;
 		                    yourself.
 
@@ -90,13 +90,15 @@ TilesBuilder >> initializeWith: aSize [
 	atomicBombPercentage := 2.
 	cardTitlePercentage := 0.
 	hyperGravityPercentage := 0.
-	hyperGravityRequiredRoll := 2.
 ]
 
 { #category : 'behavior' }
-TilesBuilder >> setForHyperGravity: aRequiredRoll [
-
-	hyperGravityRequiredRoll := aRequiredRoll
+TilesBuilder >> setForHyperGravityUpTo: aCollectionOfDice [
+	| maxRoll |
+	maxRoll :=  aCollectionOfDice
+		  inject: 0
+		  into: [ :sumOfValues :aDie | sumOfValues + aDie maxValue ].
+	hyperGravityMaxRoll := maxRoll.
 ]
 
 { #category : 'behavior' }

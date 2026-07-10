@@ -52,9 +52,11 @@ TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCa
 { #category : 'tests' }
 TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithHyperGravity [
 
-	| finishLine aTileBuilder aTileCollection counter |
+	| finishLine aTileBuilder aTileCollection counter collectionOfDice|
 	finishLine := 15000. 
+	collectionOfDice := OrderedCollection with: (FixedDice onFace: 6) with: (FixedDice onFace: 6).
 	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder setForHyperGravityUpTo: collectionOfDice.
 	aTileBuilder setRandomnessWithHyperGravity: #(30 19 19 9 7 2 9 5).
 	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder buildRandom.

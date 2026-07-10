@@ -9,7 +9,19 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+HyperGravityEffect class >> withIn: aMaxRoll [
+	^ self new initializeWith: (1 to: aMaxRoll) atRandom.
+]
+
+{ #category : 'as yet unclassified' }
 HyperGravityEffect class >> withRoll: aRequiredRoll [ 
+	^ self new initializeWith: aRequiredRoll
+]
+
+{ #category : 'as yet unclassified' }
+HyperGravityEffect class >> withRoll: aRequiredRoll in: aMaxRoll [ 
+	(aRequiredRoll > aMaxRoll) ifTrue: [
+		Error signal: 'HyperGravity required roll cannot be greater than the maximum possible dice roll' ].
 	^ self new initializeWith: aRequiredRoll
 ]
 

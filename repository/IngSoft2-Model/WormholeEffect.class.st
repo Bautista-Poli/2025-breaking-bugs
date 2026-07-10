@@ -31,8 +31,3 @@ WormholeEffect >> countYourself: aCounter [
 WormholeEffect >> initializeWith: exitPosition [
 	targetPosition := exitPosition.
 ]
-
-{ #category : 'as yet unclassified' }
-WormholeEffect >> replacementFor: aFullBlockClosure [ 
-	^ self 
-]
