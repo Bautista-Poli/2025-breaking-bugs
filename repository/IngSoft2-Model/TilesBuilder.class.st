@@ -51,27 +51,28 @@ TilesBuilder >> build [
 { #category : 'behavior' }
 TilesBuilder >> buildRandom [
 
-	| weightedEffects effectsCollection |
-weightedEffects := Dictionary new
-	                   at: [ NoEffect new ] put: noEffectPercentage;
-	                   at: [ BlackHoleEffect new ] put: blackholePercentage;
-	                   at: [ HyperSpaceJumpEffect new ] put: hyperSpaceJumpPercentage;
-	                   at: [ MoonWalkEffect for: numberOfPositionsToGoBack ]
-	                   put: moonwalkPercentage;
-	                   at: [ HyperJumpEffect new ] put: hyperJumpPercentage;
-	                   at: [ AtomicBombEffect new ] put: atomicBombPercentage;
-							at: [ ObtainCardEffect new ] put: cardTitlePercentage ;
-							at: [ HyperGravityEffect withRoll: hyperGravityRequiredRoll ] put: hyperGravityPercentage ;
-	                   yourself.
+	| weightedEffects |
+	weightedEffects := Dictionary new
+		                    at: [ NoEffect new ] put: noEffectPercentage;
+		                    at: [ BlackHoleEffect new ] put: blackholePercentage;
+		                    at: [ HyperSpaceJumpEffect new ] put: hyperSpaceJumpPercentage;
+		                    at: [ MoonWalkEffect for: numberOfPositionsToGoBack ]
+		                    put: moonwalkPercentage;
+		                    at: [ HyperJumpEffect new ] put: hyperJumpPercentage;
+		                    at: [ AtomicBombEffect new ] put: atomicBombPercentage;
+		                    at: [ ObtainCardEffect new ] put: cardTitlePercentage;
+		                    at: [ HyperGravityEffect withRoll: hyperGravityRequiredRoll ]
+		                    put: hyperGravityPercentage;
+		                    yourself.
 
+	aTileCollection do: [ :aTile |
+		aTile replaceIfEmptyWith: [
+			(weightedEffects keys
+				 atRandom: Random new
+				 weighting: [ :block | weightedEffects at: block ]) value ] ].
 
-effectsCollection := (1 to: size asParsec ) collect: [ :i |
-	                     Tile with: (weightedEffects keys
-			                      atRandom: Random new
-			                      weighting: [ :block |
-			                      weightedEffects at: block ]) value ].
-
-^ effectsCollection
+	self validateWormholesPresence.
+	^ aTileCollection
 ]
 
 { #category : 'initialize' }
