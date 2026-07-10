@@ -8,7 +8,8 @@ Class {
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
-		'turnManager'
+		'turnManager',
+		'cardManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -21,18 +22,12 @@ Game class >> with: aBoard and: spaceships and: dice [
 
 { #category : 'accessing' }
 Game >> addActivePermanentCard: aCard [
-    activePermanentCards add: aCard.
+    cardManager addActivePermanentCard: aCard.
 ]
 
 { #category : 'behavior' }
 Game >> calculateTotalRollFor: aSpaceship [
-
-	| baseRoll |
-	baseRoll :=  dice roll.
-	^ activePermanentCards
-		  inject: baseRoll
-		  into: [ :currentTotal :eachCard |
-			  eachCard applyBonusTo: currentTotal for: aSpaceship ]
+	^ cardManager applyBonusesTo: dice roll for: aSpaceship.
 ]
 
 { #category : 'accessing' }
@@ -56,9 +51,7 @@ Game >> getPositionTable [
 
 { #category : 'behavior' }
 Game >> getRealCard: aTargetCard [
-     ^ activePermanentCards 
-        detect: [ :each | each class = aTargetCard ] 
-        ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
+     ^ cardManager getRealCard: aTargetCard
 ]
 
 { #category : 'initialization' }
@@ -68,7 +61,7 @@ Game >> handleLandingOf: aSpaceship [
 
 { #category : 'behavior' }
 Game >> hasActivePermanentCardOfType: aCardClass [
-    ^ activePermanentCards anySatisfy: [ :card | card isKindOf: aCardClass ]
+    ^ cardManager hasActivePermanentCardOfType: aCardClass.
 ]
 
 { #category : 'accessing' }
@@ -84,6 +77,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpaceships and: aCollectionOfDi
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
+	cardManager := CardManager new.
 	turnManager := TurnManager with: spaceships.
 
 ]
@@ -100,7 +94,7 @@ Game >> isMaxRoll: aRoll [
 
 { #category : 'accessing' }
 Game >> lastCardThrown [
-    ^ cardsThrown
+    ^ cardManager lastCardThrown
 ]
 
 { #category : 'accessing' }
@@ -149,12 +143,12 @@ Game >> registerAppliedEffect: anEffect [
 { #category : 'accessing' }
 Game >> registerLastCardPlayed: aCard [
 
-    cardsThrown := aCard.
+    cardManager registerLastCardPlayed: aCard.
 ]
 
 { #category : 'accessing' }
 Game >> removeActivePermanentCard: aCard [
-    activePermanentCards remove: aCard ifAbsent: [ ^ self ].
+    cardManager removeActivePermanentCard: aCard.
 ]
 
 { #category : 'as yet unclassified' }

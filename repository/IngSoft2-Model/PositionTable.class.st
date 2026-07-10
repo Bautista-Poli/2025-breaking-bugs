@@ -21,14 +21,8 @@ PositionTable >> getRanking [
 ]
 
 { #category : 'initialization' }
-PositionTable >> instanceWith: aCollectionOfSpaceships [
-
-	spaceships := aCollectionOfSpaceships collect: [ :each | each copy ].
-]
-
-{ #category : 'initialization' }
 PositionTable >> instanceWith: aCollectionOfSpaceships boardSize: aBoardSize [
-    spaceships := aCollectionOfSpaceships collect: [ :each | each copy ].
+    spaceships := aCollectionOfSpaceships collect: [ :each | each deepCopy ].
     boardSize := aBoardSize.
 ]
 
