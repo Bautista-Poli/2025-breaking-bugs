@@ -136,11 +136,6 @@ Spaceship >> hasMercenaryWithId: anId [
 ]
 
 { #category : 'testing' }
-Spaceship >> hasMercenaryWithId: anID in: aGame [ 
-	^ mercenaries anySatisfy: [ :each | each matchesId: anID].
-]
-
-{ #category : 'testing' }
 Spaceship >> hasOwner [
 	^ owner.
 ]

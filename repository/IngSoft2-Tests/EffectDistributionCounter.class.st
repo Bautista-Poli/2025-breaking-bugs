@@ -9,7 +9,8 @@ Class {
 		'blackHoleCount',
 		'hyperSpaceJumpCount',
 		'obtainCardCount',
-		'total'
+		'total',
+		'hyperGravityCount'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -28,6 +29,11 @@ EffectDistributionCounter >> countAtomicBomb [
 { #category : 'initialization' }
 EffectDistributionCounter >> countBlackHole [
 blackHoleCount := blackHoleCount + 1.
+]
+
+{ #category : 'as yet unclassified' }
+EffectDistributionCounter >> countHyperGravity [
+	hyperGravityCount := hyperGravityCount + 1.
 ]
 
 { #category : 'initialization' }
@@ -66,6 +72,7 @@ EffectDistributionCounter >> initializeWith: totalNumberOfTitles [
 	blackHoleCount := 0.
 	hyperSpaceJumpCount := 0.
 	obtainCardCount := 0.
+	hyperGravityCount := 0.
 	total := totalNumberOfTitles.
 ]
 
@@ -77,6 +84,11 @@ EffectDistributionCounter >> isAtomicBombPercentageBetween: aFloor and: aCeiling
 { #category : 'testing' }
 EffectDistributionCounter >> isBlackHolePercentageBetween: aFloor and: aCeiling [ 
 	^ ((blackHoleCount / total) * 100) between: aFloor and: aCeiling.
+]
+
+{ #category : 'testing' }
+EffectDistributionCounter >> isHyperGravityPercentageBetween: aFloor and: aCeiling [ 
+	^ (hyperGravityCount / total) * 100 between: aFloor and: aCeiling.
 ]
 
 { #category : 'testing' }

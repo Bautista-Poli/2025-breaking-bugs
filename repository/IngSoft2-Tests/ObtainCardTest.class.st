@@ -99,7 +99,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	self assert: ((aGame spaceshipMatchWith: id1) hasMercenariesAmount: 1).
 	self assert: ((aGame spaceshipMatchWith: id1) hasCardsAmount: 2).
-	self assert: ((aGame spaceshipMatchWith: id1) hasMercenaryWithId: id2 in: aGame).
+	self assert: ((aGame spaceshipMatchWith: id1) hasMercenaryWithId: id2).
 ]
 
 { #category : 'tests' }

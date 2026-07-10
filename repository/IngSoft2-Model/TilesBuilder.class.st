@@ -12,7 +12,9 @@ Class {
 		'hyperJumpPercentage',
 		'atomicBombPercentage',
 		'cardTitlePercentage',
-		'wormholeCount'
+		'wormholeCount',
+		'hyperGravityRequiredRoll',
+		'hyperGravityPercentage'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -59,6 +61,7 @@ weightedEffects := Dictionary new
 	                   at: [ HyperJumpEffect new ] put: hyperJumpPercentage;
 	                   at: [ AtomicBombEffect new ] put: atomicBombPercentage;
 							at: [ ObtainCardEffect new ] put: cardTitlePercentage ;
+							at: [ HyperGravityEffect withRoll: hyperGravityRequiredRoll ] put: hyperGravityPercentage ;
 	                   yourself.
 
 
@@ -85,6 +88,14 @@ TilesBuilder >> initializeWith: aSize [
 	hyperJumpPercentage := 8.
 	atomicBombPercentage := 2.
 	cardTitlePercentage := 0.
+	hyperGravityPercentage := 0.
+	hyperGravityRequiredRoll := 2.
+]
+
+{ #category : 'behavior' }
+TilesBuilder >> setForHyperGravity: aRequiredRoll [
+
+	hyperGravityRequiredRoll := aRequiredRoll
 ]
 
 { #category : 'behavior' }
@@ -95,7 +106,7 @@ TilesBuilder >> setForMoonwalk: aNumberOfPositionsToGoBack [
 
 { #category : 'behavior' }
 TilesBuilder >> setRandomness: aCollectionOfPercentages [
-	(aCollectionOfPercentages size = 7) ifFalse: [ Error signal: 'La colección debe tener 6 probabilidades' ].
+	(aCollectionOfPercentages size = 7) ifFalse: [ Error signal: 'La colección debe tener 7 probabilidades' ].
 	(aCollectionOfPercentages sum = 100) ifFalse: [ Error signal: 'Las probabilidades deben sumar 100' ].
 	noEffectPercentage := aCollectionOfPercentages first.
 	blackholePercentage := aCollectionOfPercentages at: 2.
@@ -104,6 +115,20 @@ TilesBuilder >> setRandomness: aCollectionOfPercentages [
 	hyperJumpPercentage := aCollectionOfPercentages at: 5.
 	atomicBombPercentage := aCollectionOfPercentages at: 6.
 	cardTitlePercentage := aCollectionOfPercentages at: 7.
+]
+
+{ #category : 'behavior' }
+TilesBuilder >> setRandomnessWithHyperGravity: aCollectionOfPercentages [
+	(aCollectionOfPercentages size = 8) ifFalse: [ Error signal: 'La colección debe tener 8 probabilidades' ].
+	(aCollectionOfPercentages sum = 100) ifFalse: [ Error signal: 'Las probabilidades deben sumar 100' ].
+	noEffectPercentage := aCollectionOfPercentages first.
+	blackholePercentage := aCollectionOfPercentages at: 2.
+	hyperSpaceJumpPercentage := aCollectionOfPercentages at: 3.
+	moonwalkPercentage := aCollectionOfPercentages at: 4.
+	hyperJumpPercentage := aCollectionOfPercentages at: 5.
+	atomicBombPercentage := aCollectionOfPercentages at: 6.
+	cardTitlePercentage := aCollectionOfPercentages at: 7.
+	hyperGravityPercentage := aCollectionOfPercentages at: 8.
 ]
 
 { #category : 'behavior' }

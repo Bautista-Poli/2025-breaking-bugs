@@ -97,7 +97,7 @@ Game >> isCurrentTurnOf: aSpaceship [
 
 { #category : 'behavior' }
 Game >> isMaxRoll: aRoll [
-    ^ aRoll = (dice inject: 0 into: [ :sum :aDie | sum + aDie maxValue ])
+    ^ aRoll >= (dice inject: 0 into: [ :sum :aDie | sum + aDie maxValue ])
 ]
 
 { #category : 'accessing' }

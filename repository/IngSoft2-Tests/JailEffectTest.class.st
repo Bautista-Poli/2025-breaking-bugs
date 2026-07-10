@@ -97,3 +97,32 @@ JailEffectTest >> testWhenSpaceshipLandsOnJailItCannotMoveOnNextTurn [
     aGame playTurn.
     self assert: ((aGame spaceshipMatchWith: id) isAt: 3 and: 0).
 ]
+
+{ #category : 'tests' }
+JailEffectTest >> testWhenSpaceshipRollsPhysicalMaximumWhileAnAccelerationCardIsActiveThenItIsStillReleasedFromJail [
+	| aGame aSpaceship aGameBuilder aBoard aTileBuilder aTileCollection id anAccelerationCard |
+	aGameBuilder := GameBuilder new.
+	id := 'nave1'.
+	anAccelerationCard := AccelerationCard new.
+	aSpaceship := Spaceship with: (OrderedCollection with: anAccelerationCard) and: id.
+
+	aTileBuilder := TilesBuilder with: 20.
+	aTileBuilder with: JailEffect new at: 3.
+	aTileBuilder addWormholeFrom: 5 to: 10.
+	aTileCollection := aTileBuilder build.
+
+	aBoard := Board withSize: 20 andLapsToWin: 1 and: aTileCollection.
+	aGame := aGameBuilder
+		addSpaceship: aSpaceship;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice on: 6 andFixedNumbers: #(3 6));
+		build.
+
+	aGame playTurn.
+	self assert: (aGame spaceshipMatchWith: id) isInJail.
+
+	aGame play: AccelerationCard by: id affecting: nil targeting: nil.
+	aGame playTurn.
+
+	self deny: (aGame spaceshipMatchWith: id) isInJail.
+]
