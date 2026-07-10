@@ -24,3 +24,8 @@ NoEffect >> handleArriveOf: aSpaceship in: aGame [
 
 	
 ]
+
+{ #category : 'as yet unclassified' }
+NoEffect >> replacementFor: anEffectBlock [
+	^ anEffectBlock value.
+]

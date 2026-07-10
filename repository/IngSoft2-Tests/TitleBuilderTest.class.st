@@ -10,6 +10,7 @@ TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilit
 	| finishLine aTileBuilder aTileCollection counter |
 	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder buildRandom.
 	
 	counter := EffectDistributionCounter with: finishLine.
@@ -31,10 +32,12 @@ TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCa
 	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder setRandomness: #(35 19 19 9 7 2 9).
+	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder buildRandom.
 	counter := EffectDistributionCounter with: finishLine.
 
 	aTileCollection do: [ :tile | tile countYourselfIn: counter ].
+	
 
 	self assert: (counter isNoEffectPercentageBetween: 34 and: 36).
 	self assert: (counter isBlackHolePercentageBetween: 18 and: 20).
@@ -53,6 +56,7 @@ TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithHy
 	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder setRandomnessWithHyperGravity: #(30 19 19 9 7 2 9 5).
+	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder buildRandom.
 	counter := EffectDistributionCounter with: finishLine.
 

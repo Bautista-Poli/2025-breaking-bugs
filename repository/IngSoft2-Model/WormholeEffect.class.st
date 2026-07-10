@@ -27,3 +27,8 @@ WormholeEffect >> applyTo: aSpaceship in: aGame [
 WormholeEffect >> initializeWith: exitPosition [
 	targetPosition := exitPosition.
 ]
+
+{ #category : 'as yet unclassified' }
+WormholeEffect >> replacementFor: aFullBlockClosure [ 
+	^ self 
+]
