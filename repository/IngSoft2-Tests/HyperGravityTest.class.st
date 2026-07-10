@@ -6,6 +6,16 @@ Class {
 }
 
 { #category : 'tests' }
+HyperGravityTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ].
+]
+
+{ #category : 'tests' }
 HyperGravityTest >> testIsValidIfTwoDifferentHyperGravityTilesWithDifferentRequiredValuesWorkIndependently [
     | aGame aSpaceship aSpaceship2 aGameBuilder aBoard aTileBuilder aTileCollection id id2|
     aGameBuilder := GameBuilder new.
@@ -15,8 +25,8 @@ HyperGravityTest >> testIsValidIfTwoDifferentHyperGravityTilesWithDifferentRequi
 	 aSpaceship2 := Spaceship with: id2.
 
     aTileBuilder := TilesBuilder with: 60.
-    aTileBuilder with: (HyperGravityEffect withRoll: 7) at: 5.
-	 aTileBuilder with: (HyperGravityEffect withRoll: 5) at: 3.
+    aTileBuilder with: (HyperGravityEffect withRoll: 7 in:10) at: 5.
+	 aTileBuilder with: (HyperGravityEffect withRoll: 5 in: 10) at: 3.
     aTileBuilder addWormholeFrom: 50 to: 55.
     aTileCollection := aTileBuilder build.
 
@@ -44,6 +54,15 @@ HyperGravityTest >> testIsValidIfTwoDifferentHyperGravityTilesWithDifferentRequi
 ]
 
 { #category : 'tests' }
+HyperGravityTest >> testRaiseErrorIfRequiredRollIsGreaterThanMaxRoll [ 
+
+	self
+		should: [ HyperGravityEffect withRoll: 7 in: 6 ]
+		raise: Error
+		withMessageText: 'HyperGravity required roll cannot be greater than the maximum possible dice roll'
+]
+
+{ #category : 'tests' }
 HyperGravityTest >> testWhenSpaceshipInHyperGravityDoesNotRollRequiredValueItStays [
     | aGame aSpaceship aGameBuilder aBoard aTileBuilder aTileCollection id |
     aGameBuilder := GameBuilder new.
@@ -51,7 +70,7 @@ HyperGravityTest >> testWhenSpaceshipInHyperGravityDoesNotRollRequiredValueItSta
     aSpaceship := Spaceship with: id.
 
     aTileBuilder := TilesBuilder with: 60.
-    aTileBuilder with: (HyperGravityEffect withRoll: 7) at: 4.
+    aTileBuilder with: (HyperGravityEffect withRoll: 5 in:6) at: 4.
     aTileBuilder addWormholeFrom: 50 to: 55.
     aTileCollection := aTileBuilder build.
 
@@ -77,7 +96,7 @@ HyperGravityTest >> testWhenSpaceshipInHyperGravityRollsRequiredValueItIsRelease
     aSpaceship := Spaceship with: id.
 
     aTileBuilder := TilesBuilder with: 60.
-    aTileBuilder with: (HyperGravityEffect withRoll: 7) at: 4.
+    aTileBuilder with: (HyperGravityEffect withRoll: 7 in: 10) at: 4.
     aTileBuilder addWormholeFrom: 50 to: 55.
     aTileCollection := aTileBuilder build.
 
