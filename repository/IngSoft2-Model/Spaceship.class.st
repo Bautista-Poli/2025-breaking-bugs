@@ -70,7 +70,7 @@ Spaceship >> beMercenaryOf: anOwnerSpaceship [
 { #category : 'testing' }
 Spaceship >> canBattleAgainst: anotherSpaceship [
     ^(self isAtSamePositionAs: anotherSpaceship)
-        and: [ (mercenaries includes: anotherSpaceship) not
+        and: [ (mercenaries hasHimAsMercenary: anotherSpaceship) not
          and: [ (anotherSpaceship hasHimAsMercenary: self) not ]].
 ]
 
@@ -91,12 +91,12 @@ Spaceship >> extractCardIfAvailable: aCard [
 
 { #category : 'behavior' }
 Spaceship >> fire: aSpaceship [ 
-	mercenaries remove: aSpaceship ifAbsent: [].
+	mercenaries fire: aSpaceship.
 ]
 
 { #category : 'getter' }
 Spaceship >> getMercenaries [
-	^ mercenaries deepCopy.
+	^ mercenaries members deepCopy.
 ]
 
 { #category : 'as yet unclassified' }
@@ -122,17 +122,17 @@ Spaceship >> hasCardsAmount: aNumberOfCards [
 
 { #category : 'testing' }
 Spaceship >> hasHimAsMercenary: aSpaceship [ 
-	^ mercenaries includes: aSpaceship.
+	^ mercenaries hasHimAsMercenary: aSpaceship.
 ]
 
 { #category : 'testing' }
 Spaceship >> hasMercenariesAmount: anAmountOfMercenaries [ 
-	^ mercenaries size = anAmountOfMercenaries.
+	^ mercenaries hasAmount: anAmountOfMercenaries.
 ]
 
 { #category : 'testing' }
 Spaceship >> hasMercenaryWithId: anId [ 
-	^ mercenaries anySatisfy: [ :each | each matchesId: anId ]
+	^ mercenaries hasMercenaryWithId: anId
 ]
 
 { #category : 'testing' }
@@ -163,7 +163,7 @@ Spaceship >> initializeWith: aCollectionOfCards and: anId [
 	position := Position start.
 	shieldStatus := ShieldsActive withCount: 3.
 	cards := aCollectionOfCards.
-	mercenaries := OrderedCollection new.
+	mercenaries := MercenaryFleet new.
 	owner := false.
 	id:= anId.
 	jailStatus := FreeFromJail new.
@@ -219,7 +219,7 @@ Spaceship >> matchesId: anId [
 
 { #category : 'as yet unclassified' }
 Spaceship >> penalizeMercenaries [
-	mercenaries do: [ :mercenary | mercenary lowerAShield ]
+	mercenaries penalizeAll.
 ]
 
 { #category : 'accessing' }
@@ -245,13 +245,7 @@ Spaceship >> releaseFromOwner [
 
 { #category : 'as yet unclassified' }
 Spaceship >> rollBestValueUsing: aDiceSet [ 
-    | best roll |
-    best := aDiceSet roll.
-    mercenaries size timesRepeat: [
-        roll := aDiceSet roll.
-        best := roll max: best.
-    ].
-    ^ best
+    ^ mercenaries bestRollFrom: aDiceSet roll using: aDiceSet
 ]
 
 { #category : 'as yet unclassified' }
