@@ -28,9 +28,7 @@ Game >> addActivePermanentCard: aCard [
 Game >> calculateTotalRollFor: aSpaceship [
 
 	| baseRoll |
-	baseRoll :=  dice
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ].
+	baseRoll :=  dice roll.
 	^ activePermanentCards
 		  inject: baseRoll
 		  into: [ :currentTotal :eachCard |
@@ -82,7 +80,7 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard and: aCollectionOfSpaceships and: aCollectionOfDice [
 	spaceships := (aCollectionOfSpaceships deepCopy).
 	board := aBoard.
-	dice := aCollectionOfDice.
+	dice := DiceSet with: (aCollectionOfDice).
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
@@ -97,7 +95,7 @@ Game >> isCurrentTurnOf: aSpaceship [
 
 { #category : 'behavior' }
 Game >> isMaxRoll: aRoll [
-    ^ aRoll >= (dice inject: 0 into: [ :sum :aDie | sum + aDie maxValue ])
+    ^ aRoll >= dice maxPossibleRoll
 ]
 
 { #category : 'accessing' }

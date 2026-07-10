@@ -6,10 +6,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-FreeFromJail >> handleHyperGravityRoll: anInteger for: aSpaceship in: aGame [ 
-]
-
-{ #category : 'as yet unclassified' }
 FreeFromJail >> handleRoll: aRoll for: aSpaceship in: aGame [ 
 	aGame move: aSpaceship by: aRoll.
    aGame handleLandingOf: aSpaceship.

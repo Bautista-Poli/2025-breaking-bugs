@@ -6,12 +6,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-InJail >> handleHyperGravityRoll: aRoll for: aSpaceship in: aGame [ 
-	(aGame isMaxRoll: aRoll) ifFalse: [ ^self ].
-	 aSpaceship releaseFromJail.
-]
-
-{ #category : 'as yet unclassified' }
 InJail >> handleRoll: aRoll for: aSpaceship in: aGame [ 
 	(aGame isMaxRoll: aRoll) ifFalse: [ ^self ].
 	aSpaceship releaseFromJail.

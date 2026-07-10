@@ -244,11 +244,11 @@ Spaceship >> releaseFromOwner [
 ]
 
 { #category : 'as yet unclassified' }
-Spaceship >> rollBestValueUsing: dicesCollection [ 
+Spaceship >> rollBestValueUsing: aDiceSet [ 
     | best roll |
-    best := dicesCollection inject: 0 into: [ :sum :aDie | sum + aDie roll ].
+    best := aDiceSet roll.
     mercenaries size timesRepeat: [
-        roll := dicesCollection inject: 0 into: [ :sum :aDie | sum + aDie roll ].
+        roll := aDiceSet roll.
         best := roll max: best.
     ].
     ^ best
