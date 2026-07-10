@@ -9,32 +9,22 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Dice class >> new [
-
-	| aDefaultNumberOfSides dice |
-	aDefaultNumberOfSides := 6.
-	dice := super new.
-	^ dice initializeWithSides: aDefaultNumberOfSides
-]
-
-{ #category : 'as yet unclassified' }
 Dice class >> numberOfSidesIsPositive: aNumberOfSides [
 
 	aNumberOfSides <= 0 ifTrue: [
 		Error signal: 'A dice should have a positive amount of sides' ]
 ]
 
-{ #category : 'as yet unclassified' }
-Dice class >> withSides: aNumberOfSides [
-
-	self numberOfSidesIsPositive: aNumberOfSides.
-	^ self new initializeWithSides: aNumberOfSides
+{ #category : 'accessing' }
+Dice class >> with: numberOfFaces [ 
+	self numberOfSidesIsPositive: numberOfFaces.
+	^ self new initializeAt: numberOfFaces.
 ]
 
 { #category : 'initialization' }
-Dice >> initializeWithSides: aMaxRoll [
+Dice >> initializeAt: aMaxRoll [
 
-	maxRoll := aMaxRoll
+	maxRoll := aMaxRoll.
 ]
 
 { #category : 'initialization' }

@@ -87,7 +87,7 @@ JailEffectTest >> testWhenSpaceshipLandsOnJailItCannotMoveOnNextTurn [
     aGame := aGameBuilder
         addSpaceship: aSpaceship;
         addBoard: aBoard;
-        addDice: (FixedDice on: 6 andFixedNumber: 3);
+        addDice: (FixedDice on: 6 fixedAt: 3);
         build.
     
     aGame playTurn.

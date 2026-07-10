@@ -16,7 +16,7 @@ FixedDice class >> faceNumberIsPositive: aFaceNumber [
 ]
 
 { #category : 'as yet unclassified' }
-FixedDice class >> on: faces andFixedNumber: aFixedNumber [
+FixedDice class >> on: faces fixedAt: aFixedNumber [
 
 	self faceNumberIsPositive: aFixedNumber.
 	self faceNumberIsPositive: faces.
