@@ -1,38 +1,27 @@
 Class {
 	#name : 'AccelerationCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-AccelerationCard >> = anotherCard [
-
-^ (anotherCard compareID: id).
+{ #category : 'testing' }
+AccelerationCard class >> canBePlayedBy: aSpaceship in: aGame [
+    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
 ]
 
 { #category : 'behavior' }
-AccelerationCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [ 
-]
-
-{ #category : 'comparing' }
-AccelerationCard >> compareID: anId [ 
-	^ id = anId.
+AccelerationCard >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aRollValue + 1.
 ]
 
 { #category : 'behavior' }
-AccelerationCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
-	aGame makeAllSpaceShipsMoveAtHigherVelocity.
-	aGame registerThrownCard: self.
-]
-
-{ #category : 'initialization' }
-AccelerationCard >> initialize [
-id := 'AccelerationCard-' , (0 to: 9999) atRandom asString.
+AccelerationCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
 ]
 
 { #category : 'behavior' }
-AccelerationCard >> undoEffect: aGame to: aTargetSpaceship [
-
-	aGame makeAllSpaceShipsMoveAtLowerVelocity
+AccelerationCard >> undoEffect: aGame [
+	^ self.
 ]

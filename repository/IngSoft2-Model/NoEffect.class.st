@@ -10,3 +10,22 @@ NoEffect >> applyTo: aSpaceship in: aGame [
 
 	
 ]
+
+{ #category : 'operations' }
+NoEffect >> countYourself: aCounter [
+    aCounter countNoEffect.
+
+	
+]
+
+{ #category : 'operations' }
+NoEffect >> handleArriveOf: aSpaceship in: aGame [
+    aGame checkForBattleInvolving: aSpaceship.
+
+	
+]
+
+{ #category : 'as yet unclassified' }
+NoEffect >> replacementFor: anEffectBlock [
+	^ anEffectBlock value.
+]

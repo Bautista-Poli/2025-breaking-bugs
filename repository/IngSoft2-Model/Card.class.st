@@ -1,27 +1,26 @@
 Class {
 	#name : 'Card',
 	#superclass : 'Object',
-	#instVars : [
-		'id'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-Card >> compareID: anId [ 
-
-	self subclassResponsibility
+{ #category : 'testing' }
+Card class >> canBePlayedBy: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-Card >> isInstant [
-
-	self subclassResponsibility
+Card >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aRollValue
 ]
 
 { #category : 'behavior' }
-Card >> isPermanent [
+Card >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
+    self subclassResponsibility
+]
+
+{ #category : 'behavior' }
+Card >> undoEffect: aGame [
 
 	self subclassResponsibility
 ]

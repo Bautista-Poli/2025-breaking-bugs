@@ -1,0 +1,21 @@
+Class {
+	#name : 'AtomicBombEffect',
+	#superclass : 'Effect',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
+}
+
+{ #category : 'operations' }
+AtomicBombEffect >> applyTo: aSpaceship in: aGame [
+
+	aGame spaceshipsDo: [ :ship |
+		ship applyPenality
+	].
+
+	aGame registerAppliedEffect: self.
+]
+
+{ #category : 'operations' }
+AtomicBombEffect >> countYourself: aCounter [
+    aCounter countAtomicBomb.
+]

@@ -1,6 +1,6 @@
 Class {
 	#name : 'SpeedCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
 		'spaceshipAffected'
 	],
@@ -8,37 +8,25 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-SpeedCard >> = anotherCard [
-
-^ (anotherCard compareID: id).
+{ #category : 'testing' }
+SpeedCard class >> canBePlayedBy: aSpaceship in: aGame [
+    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this turn' ].
 ]
 
 { #category : 'behavior' }
-SpeedCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
-]
-
-{ #category : 'comparing' }
-SpeedCard >> compareID: anId [ 
-	^ id = anId.
+SpeedCard >> applyBonusTo: aRollValue for: aSpaceship [
+    ^ aSpaceship applyYourselfSpeedBonusTo: aRollValue ifYouAre: spaceshipAffected.
 ]
 
 { #category : 'behavior' }
-SpeedCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
-	
-	spaceshipAffected := aSpaceship.
-	aSpaceship moveAtHigherVelocity.
-	aGame registerThrownCard: self.
-]
-
-{ #category : 'initialization' }
-SpeedCard >> initialize [
-id := 'Card-' , (0 to: 9999) atRandom asString.
-
+SpeedCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [ 
+    
+    spaceshipAffected := aTargetSpaceship.
+    
+    aGame addActivePermanentCard: self.
+    aGame registerLastCardPlayed: self.
 ]
 
 { #category : 'behavior' }
-SpeedCard >> undoEffect: aGame to: aTargetSpaceship [ 
-
-	spaceshipAffected moveAtLowerVelocity
+SpeedCard >> undoEffect: aGame [
 ]

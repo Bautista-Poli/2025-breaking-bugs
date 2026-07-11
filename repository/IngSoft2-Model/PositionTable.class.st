@@ -3,43 +3,39 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
-		'winner'
+		'boardSize'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'instance creation' }
-PositionTable class >> with: spaceships and: aFinishLine [
-
-	^ self new instanceWith: spaceships and: aFinishLine
+PositionTable class >> with: spaceships boardSize: aBoardSize [
+    ^ self new instanceWith: spaceships boardSize: aBoardSize
 ]
 
 { #category : 'behavior' }
 PositionTable >> getRanking [
-
-	^ spaceships asSortedCollection: [ :s1 :s2 |
-		(s1 getLapsCompleted = s2 getLapsCompleted)
-			ifTrue: [ s1 getPosition > s2 getPosition ]
-			ifFalse: [ s1 getLapsCompleted > s2 getLapsCompleted ]
-	]
-]
-
-{ #category : 'checking' }
-PositionTable >> getSpaceshipsPositions [
-    ^ spaceships collect: [ :aSpaceship | aSpaceship getPosition ].
+    ^ spaceships asSortedCollection: [ :s1 :s2 | 
+        s1 isAheadOf: s2 inBoard: boardSize asParsec ]
 ]
 
 { #category : 'initialization' }
-PositionTable >> instanceWith: aCollectionOfSpaceships and: aFinishLine [
-
-	spaceships := aCollectionOfSpaceships.
-	winner := aCollectionOfSpaceships detect: [ :aSpaceship |
-		          aSpaceship isAtPosition: aFinishLine ]
+PositionTable >> instanceWith: aCollectionOfSpaceships boardSize: aBoardSize [
+    spaceships := aCollectionOfSpaceships collect: [ :each | each deepCopy ].
+    boardSize := aBoardSize.
 ]
 
 { #category : 'behavior' }
-PositionTable >> isWinner: aSpaceship [
+PositionTable >> isShipWithId: anId atLap: aLap andSquare: aSquare [
+    | foundShip |
+    foundShip := spaceships 
+        detect: [ :each | each matchesId: anId ] 
+        ifNone: [ ^ false ].
+    ^ foundShip isAt: aSquare and: aLap.
+]
 
-	^ aSpaceship = winner
+{ #category : 'behavior' }
+PositionTable >> isWinner: anId [
+    ^ (self getRanking first) matchesId: anId.
 ]

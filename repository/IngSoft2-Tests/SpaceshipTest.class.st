@@ -16,36 +16,48 @@ SpaceshipTest >> should: anErrorBlock raise: anErrorClass withMessageText: error
 ]
 
 { #category : 'tests' }
+SpaceshipTest >> testSpaceshipMovesWhatItGotFromTheDice [
+    | aGame id aBoard diceNum |
+    id := 'nave1'.
+    diceNum := 3.
+    aBoard := Board withSize: 20 andWormholeFrom: 10 to: 12.
+    aGame := GameBuilder new
+        addSpaceship: (Spaceship with: id);
+        addBoard: aBoard;
+        addDice: (FixedDice onFace: diceNum);
+        build.
+
+    aGame playTurn.
+    "La nave debe estar en la posición del dado, vuelta 0"
+    self assert: ((aGame spaceshipMatchWith: id) isAt: diceNum and: 0).
+]
+
+{ #category : 'tests' }
 SpaceshipTest >> testWhenCreatingASpaceshipThenItIsAtTheInitialPosition [
+    | aSpaceship |
+    aSpaceship := Spaceship with: 'nave1'.
 
-	| aSpaceship initialPosition |
-	aSpaceship := Spaceship new.
-	initialPosition := 0.
-
-	self assert: (aSpaceship isAtPosition: initialPosition)
+    "Recién creada, la nave está en el casillero 0 de la vuelta 0"
+    self assert: (aSpaceship isAt: 0 and: 0).
 ]
 
 { #category : 'tests' }
-SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
+SpaceshipTest >> testWhenSpaceshipMovesAndGoesNegativeItStaysAtZero [
+    | aGame id aBoard aTileBuilder aTileCollection |
+    id := 'nave1'.
+    aTileBuilder := TilesBuilder with: 20.
+    aTileBuilder with: BlackHoleEffect new at: 2.
+    aTileBuilder addWormholeFrom: 5 to: 10.
+    aTileCollection := aTileBuilder build.
+    
+    aBoard := Board withSize: 20 andLapsToWin: 1 and: aTileCollection.
+    aGame := GameBuilder new
+        addSpaceship: (Spaceship with: id);
+        addBoard: aBoard;
+        addDice: (FixedDice onFace: 2);
+        build.
 
-	| aSpaceship finalPosition |
-	aSpaceship := Spaceship new.
-	finalPosition := 3.
-
-	aSpaceship moveToPosition: finalPosition.
-
-	self assert: (aSpaceship isAtPosition: finalPosition)
-]
-
-{ #category : 'tests' }
-SpaceshipTest >> testWhenTryingToMoveToANegativePositionTheSpaceshipIsNotAllowed [
-
-	| aSpaceship finalPosition |
-	aSpaceship := Spaceship new.
-	finalPosition := -1.
-
-	self
-		should: [ aSpaceship moveToPosition: finalPosition ]
-		raise: Error
-		withMessageText: 'The spaceship cannot move to a negative position'
+    aGame playTurn.
+    "Cae en 2 -> Black Hole retrocede 4 -> Queda en 0, vuelta 0 (no se sale del tablero)"
+    self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
 ]

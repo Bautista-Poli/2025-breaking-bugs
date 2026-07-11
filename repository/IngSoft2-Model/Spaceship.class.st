@@ -3,14 +3,12 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'laps',
-		'shields',
-		'turnsPenalize',
 		'cards',
-		'velocity',
 		'mercenaries',
 		'id',
-		'owner'
+		'owner',
+		'shieldStatus',
+		'jailStatus'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,145 +16,123 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
+	self error: 'Debe ser inicializado con un id'
+]
 
-	| randomCards |
-	randomCards := OrderedCollection
+{ #category : 'instance creation' }
+Spaceship class >> with: anId [
+
+	| randomCardsCollection |
+	randomCardsCollection := OrderedCollection
 		               with: RandomCard obtainCard
 		               with: RandomCard obtainCard.
-	^ self basicNew
-		  initializeWithPosition: 0
-		  laps: 0
-		  shields: 3
-		  turnsPenalize: -1
-		  cards: randomCards
-		  velocity: 0
-		  mercenaries: OrderedCollection new
-		  owner: false
-		  id: 'Nave-' , (0 to: 9999) atRandom asString
+	^ self basicNew initializeWith: randomCardsCollection and: anId.
 ]
 
 { #category : 'instance creation' }
-Spaceship class >> with: cardsCollection [
+Spaceship class >> with: cardsCollection and: anId [
 
-	^ self basicNew
-		  initializeWithPosition: 0
-		  laps: 0
-		  shields: 3
-		  turnsPenalize: -1
-		  cards: cardsCollection
-		  velocity: 0
-		  mercenaries: OrderedCollection new
-		  owner: false
-		  id: 'Nave-' , (0 to: 9999) atRandom asString
-]
-
-{ #category : 'instance creation' }
-Spaceship class >> withValuesOf: aSpaceship andCard: aCard [
-	|cards|
-	cards := (aSpaceship getCards) deepCopy.
-	cards add: aCard.
-	^ self basicNew
-		initializeWithPosition: aSpaceship getPosition
-		laps: aSpaceship getLapsCompleted 
-		shields: aSpaceship getShields 
-		turnsPenalize: aSpaceship getTurnsPenalize
-		cards: cards
-		velocity: aSpaceship getVelocity
-		mercenaries: aSpaceship getMercenaries 
-		owner: aSpaceship hasOwner
-		id: aSpaceship getId.
-
-]
-
-{ #category : 'comparing' }
-Spaceship >> = anotherSpaceship [
-	| boolean |
-	anotherSpaceship ifNil: [ ^ false ].
-	boolean := (id = anotherSpaceship getId).
-	^ boolean.
-	
+	^ self basicNew initializeWith:cardsCollection and: anId.
 ]
 
 { #category : 'adding' }
 Spaceship >> addNewCard: aCard [ 
-	^ self class withValuesOf: self andCard: aCard.
+    cards add: aCard.
 	
 ]
 
-{ #category : 'behavior' }
-Spaceship >> canPlay [
+{ #category : 'as yet unclassified' }
+Spaceship >> advancedBy: positionsToAdvance withBoardSize: aSize and: lapsToWin [
+	position := position advancedBy: positionsToAdvance boardSize: aSize and: lapsToWin.
+]
 
-	^ self getShields > 0
+{ #category : 'initialization' }
+Spaceship >> applyPenality [
+	position := position returnToStart.
+	shieldStatus lowerShieldFor: self
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> applyYourselfSpeedBonusTo: aRollValue ifYouAre: aSpaceship [ 
+	self == aSpaceship ifTrue: [ ^ aRollValue + 1 ].
+    ^ aRollValue
+]
+
+{ #category : 'testing' }
+Spaceship >> beMercenaryOf: anOwnerSpaceship [
+
+	self hasOwner ifTrue: [
+		Error signal: 'A mercenary cannot hire other spaceships' ].
+	owner := true.
+	anOwnerSpaceship makeHimOwnerOf: self
+]
+
+{ #category : 'testing' }
+Spaceship >> canBattleAgainst: anotherSpaceship [
+    ^(self isAtSamePositionAs: anotherSpaceship)
+        and: [ (mercenaries hasHimAsMercenary: anotherSpaceship) not
+         and: [ (anotherSpaceship hasHimAsMercenary: self) not ]].
 ]
 
 { #category : 'behavior' }
-Spaceship >> decrementLapsBy: lapsIncremented [
-	
-	laps := laps - lapsIncremented
+Spaceship >> changeShieldStatusTo: aNewShieldStatus [
+    shieldStatus := aNewShieldStatus
 ]
 
 { #category : 'behavior' }
-Spaceship >> extractCardIfAvailable: aCard [ 
-	| foundCard |
-	"REVISAR"
-    foundCard := cards detect: [ :each | each class = aCard class  ] ifNone: [ NoEffectCard new ].
-    cards remove: foundCard ifAbsent: [].
-    ^ foundCard
+Spaceship >> extractCardIfAvailable: aCard [
+    | cardToPlay |
+    cardToPlay := cards 
+        detect: [ :each | each class = aCard ].
+    
+    cards remove: cardToPlay.
+    ^ cardToPlay
 ]
 
 { #category : 'behavior' }
 Spaceship >> fire: aSpaceship [ 
-	mercenaries remove: aSpaceship ifAbsent: [].
-]
-
-{ #category : 'getter' }
-Spaceship >> getCards [
-
-	^ cards
-]
-
-{ #category : 'getter' }
-Spaceship >> getId [
-
-	^ id.
-]
-
-{ #category : 'getter' }
-Spaceship >> getLapsCompleted [
-
-	^ laps
+	mercenaries fire: aSpaceship.
 ]
 
 { #category : 'getter' }
 Spaceship >> getMercenaries [
-	^ mercenaries.
+	^ mercenaries members deepCopy.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> handleEndOfCycle [
+	shieldStatus handleEndOfCycleFor: self
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> handleRollFromShields: aRoll in: aGame [ 
+	jailStatus handleRoll: aRoll for: self in: aGame.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> handleTurnIn: aGame [ 
+	shieldStatus playIfPosible: self in: aGame.
+	
 ]
 
 { #category : 'testing' }
-Spaceship >> getPosition [
-
-	^ position
-]
-
-{ #category : 'getter' }
-Spaceship >> getShields [
-
-	^ shields
-]
-
-{ #category : 'getter' }
-Spaceship >> getTurnsPenalize [
-	^ turnsPenalize.
-]
-
-{ #category : 'getter' }
-Spaceship >> getVelocity [
-	^ velocity.
+Spaceship >> hasCardsAmount: aNumberOfCards [ 
+	^ cards size = aNumberOfCards
 ]
 
 { #category : 'testing' }
 Spaceship >> hasHimAsMercenary: aSpaceship [ 
-	^ mercenaries includes: aSpaceship.
+	^ mercenaries hasHimAsMercenary: aSpaceship.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasMercenariesAmount: anAmountOfMercenaries [ 
+	^ mercenaries hasAmount: anAmountOfMercenaries.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasMercenaryWithId: anId [ 
+	^ mercenaries hasMercenaryWithId: anId
 ]
 
 { #category : 'testing' }
@@ -167,112 +143,135 @@ Spaceship >> hasOwner [
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
-	^ laps >= lapsToWin
+	^ position hasReached: lapsToWin
 ]
 
-{ #category : 'behavior' }
-Spaceship >> incrementLapsBy: lapsIncremented [
+{ #category : 'adding' }
+Spaceship >> hasSameIdAs: anotherSpaceship [
 
-	laps := laps + lapsIncremented
-]
-
-{ #category : 'initialization' }
-Spaceship >> initializeWith: aCollectionOfCards [
-
-	position := 0.
-	laps := 0.
-	shields := 3.
-	turnsPenalize := -1.
-	cards := aCollectionOfCards.
-	velocity := 0.
-	mercenaries := OrderedCollection new.
-	owner := false.
-	id := 'Nave-' , (0 to: 9999) atRandom asString
-]
-
-{ #category : 'initialization' }
-Spaceship >> initializeWithPosition: aPosition laps: aLaps shields: aShields turnsPenalize: aTurns cards: aCollectionOfCards velocity: aVelocity mercenaries: aMercenaries owner: anOwner id: anId [
-
-	position := aPosition.
-	laps := aLaps.
-	shields := aShields.
-	turnsPenalize := aTurns.
-	cards := aCollectionOfCards.
-	velocity := aVelocity.
-	mercenaries := aMercenaries.
-	owner := anOwner.
-	id := anId.
-
-	^ self
+	^ anotherSpaceship matchesId: id
 ]
 
 { #category : 'testing' }
-Spaceship >> isAtPosition: aPosition [
+Spaceship >> hasShields: anNumberOfShields [ 
+	^ shieldStatus hasAmount: anNumberOfShields
+]
 
-	^ position = aPosition
+{ #category : 'initialization' }
+Spaceship >> initializeWith: aCollectionOfCards and: anId [
+
+	position := Position start.
+	shieldStatus := ShieldsActive withCount: 3.
+	cards := aCollectionOfCards.
+	mercenaries := MercenaryFleet new.
+	owner := false.
+	id:= anId.
+	jailStatus := FreeFromJail new.
+]
+
+{ #category : 'testing' }
+Spaceship >> isAheadOf: aSpaceship inBoard: aBoardSize [ 
+	^ aSpaceship isBehind: position in: aBoardSize.
+]
+
+{ #category : 'adding' }
+Spaceship >> isAt: aSquare and: aLap [
+    ^ position isAt: aSquare and: aLap.
+]
+
+{ #category : 'testing' }
+Spaceship >> isAtSamePositionAs: aSpaceship [ 
+	^ aSpaceship isInPosition: position.
+]
+
+{ #category : 'testing' }
+Spaceship >> isBehind: anotherPosition in: aBoardSize [ 
+	^ position isLowerThan: anotherPosition in: aBoardSize.
+]
+
+{ #category : 'testing' }
+Spaceship >> isInJail [
+	^ jailStatus isInJail
+]
+
+{ #category : 'testing' }
+Spaceship >> isInPosition: aPosition [ 
+	^ position isEqualAs: aPosition.
 ]
 
 { #category : 'behavior' }
 Spaceship >> lowerAShield [
 
-	shields > 0 ifTrue: [ shields := shields - 1 ]
+	shieldStatus lowerShieldFor: self
 ]
 
 { #category : 'behavior' }
-Spaceship >> makeHimOwnerOf: aSpaceship [ 
-	mercenaries add: aSpaceship.
+Spaceship >> makeHimOwnerOf: aMercenarySpaceship [ 
+    self hasOwner ifTrue: [ Error signal: 'A mercenary cannot hire other spaceships' ].
+    mercenaries add: aMercenarySpaceship.
 
 ]
 
-{ #category : 'behavior' }
-Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
-	owner := true.
-
+{ #category : 'testing' }
+Spaceship >> matchesId: anId [ 
+	^ id = anId.
 ]
 
-{ #category : 'behavior' }
-Spaceship >> moveAtHigherVelocity [
-
-	velocity := velocity + 1
+{ #category : 'as yet unclassified' }
+Spaceship >> penalizeMercenaries [
+	mercenaries penalizeAll.
 ]
 
-{ #category : 'behavior' }
-Spaceship >> moveAtLowerVelocity [
-
-	velocity := velocity - 1
-]
-
-{ #category : 'move' }
-Spaceship >> moveToPosition: aPosition [
-
-	aPosition negative ifTrue: [
-		Error signal: 'The spaceship cannot move to a negative position' ].
-	position := aPosition + velocity
-]
-
-{ #category : 'getter' }
-Spaceship >> numberOfMercenaries [
-
-	^ mercenaries size
-]
-
-{ #category : 'behavior' }
-Spaceship >> obtainNewPosition: positionsToAdvance [ 
-	^ position + positionsToAdvance.
-]
-
-{ #category : 'behavior' }
-Spaceship >> penalize [
-
-	turnsPenalize := turnsPenalize + 1.
-	turnsPenalize ~= 2 ifTrue: [ ^ self ].
-
-	self rechargeShields.
-	turnsPenalize := 0
+{ #category : 'accessing' }
+Spaceship >> position [
+	^ position
 ]
 
 { #category : 'behavior' }
 Spaceship >> rechargeShields [
 
-	shields := 3
+	shieldStatus rechargeShieldsFor: self
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> releaseFromJail [
+	jailStatus := FreeFromJail new.
+]
+
+{ #category : 'behavior' }
+Spaceship >> releaseFromOwner [ 
+    owner := false.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> rollBestValueUsing: aDiceSet [ 
+    ^ mercenaries bestRollFrom: aDiceSet roll using: aDiceSet
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> sendToHyperGravityRequiring: aRollValue [
+	jailStatus := InHyperGravity withRequiered: aRollValue.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> sendToJail [
+    jailStatus := InJail new.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> use: aCardClass targeting: aTargetCard affecting: aTargetShip in: aGame [
+    | cardToPlay |
+    self validateHasCardOfType: aCardClass.
+    aCardClass canBePlayedBy: self in: aGame.
+        
+    cardToPlay := self extractCardIfAvailable: aCardClass.
+    cardToPlay playBy: self in: aGame targeting: aTargetCard affecting: aTargetShip.
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> validateHasCardOfType: aCardClass [
+    (cards anySatisfy: [ :c | c class = aCardClass ]) ifFalse: [
+        Error signal: 'Cant use a card that is not on the deck'
+    ].
+
 ]

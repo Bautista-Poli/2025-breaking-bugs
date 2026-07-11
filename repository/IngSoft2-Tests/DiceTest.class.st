@@ -19,7 +19,7 @@ DiceTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 DiceTest >> testWhenRollingADiceThenItIsBetween1And6 [
 
 	| aDice |
-	aDice := Dice new.
+	aDice := Dice with: 6.
 
 	self assert: (aDice roll between: 1 and: 6)
 ]
@@ -30,7 +30,7 @@ DiceTest >> testWhenRollingADiceWithNSidesThenItIsBetween1AndN [
 	| aDice numberOfDiceSides |
 	numberOfDiceSides := 2.
 
-	aDice := Dice withSides: numberOfDiceSides.
+	aDice := Dice with: numberOfDiceSides.
 
 	self assert: (aDice roll between: 1 and: numberOfDiceSides)
 ]
@@ -42,7 +42,7 @@ DiceTest >> testWhenTryingToCreateADiceWithNegativeAmountOfSidesThenNotPossible 
 	numberOfDiceSides := -3.
 
 	self
-		should: [ Dice withSides: numberOfDiceSides ]
+		should: [ Dice with: numberOfDiceSides ]
 		raise: Error 
 		withMessageText: 'A dice should have a positive amount of sides'
 ]

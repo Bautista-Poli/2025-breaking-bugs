@@ -21,12 +21,22 @@ Tile >> applyEffectTo: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-Tile >> hasThisEffect: anEffect [
-	^ (effect isKindOf: anEffect).
+Tile >> countYourselfIn: aCounter [
+    effect countYourself: aCounter.
+]
+
+{ #category : 'behavior' }
+Tile >> handleArrivalOf: aSpaceship in: aGame [
+	effect handleArriveOf: aSpaceship in: aGame.
 ]
 
 { #category : 'initialization' }
 Tile >> initializeWith: anEffect [
 
 	effect := anEffect
+]
+
+{ #category : 'as yet unclassified' }
+Tile >> replaceIfEmptyWith: anEffectBlock [ 
+	effect := effect replacementFor: anEffectBlock.
 ]

@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'spaceships',
 		'aBoard',
-		'dice',
-		'lapsToWin'
+		'dice'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,19 +17,13 @@ GameBuilder >> addBoard: board [
 ]
 
 { #category : 'adding' }
-GameBuilder >> addBoardwithSize: aSize andWormholeFrom: whormholeEntry to: whormholeExit [
-
-	aBoard := Board withSize: aSize andWormholeFrom: whormholeEntry to: whormholeExit.
-]
-
-{ #category : 'adding' }
 GameBuilder >> addDice: aDice [ 
 	dice add: aDice.
 ]
 
 { #category : 'adding' }
 GameBuilder >> addSpaceship: aSpaceship [
-
+	self verifySpaceshipIdIsNotDuplicate: aSpaceship.
 	spaceships add: aSpaceship
 ]
 
@@ -41,7 +34,7 @@ GameBuilder >> build [
 	self verifyAtLeastOneSpaceshipHasBeenAdded.
 	self verifyAtLeastOneDiceHasBeenAdded.
 
-	^ Game with: aBoard and: spaceships and: dice and: lapsToWin.
+	^ Game with: aBoard and: spaceships and: dice.
 ]
 
 { #category : 'initialization' }
@@ -49,13 +42,6 @@ GameBuilder >> initialize [
 
 	spaceships := OrderedCollection new.
 	dice := OrderedCollection new.
-	lapsToWin := 1.
-]
-
-{ #category : 'initialization' }
-GameBuilder >> setLapsToWinTo: numberOfLaps [
-
-	lapsToWin := numberOfLaps
 ]
 
 { #category : 'building' }
@@ -76,4 +62,11 @@ GameBuilder >> verifyAtLeastOneSpaceshipHasBeenAdded [
 
 	spaceships isEmpty ifTrue: [
 		Error signal: 'Cannot build a game without spaceships' ]
+]
+
+{ #category : 'as yet unclassified' }
+GameBuilder >> verifySpaceshipIdIsNotDuplicate: aSpaceship [
+
+	(spaceships anySatisfy: [ :each | aSpaceship hasSameIdAs: each ]) ifTrue: [ 
+		Error signal: 'Cannot add a spaceship with a duplicate ID' ]
 ]

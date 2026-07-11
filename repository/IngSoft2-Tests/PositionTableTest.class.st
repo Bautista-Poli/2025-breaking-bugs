@@ -25,14 +25,14 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 
 	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playRound.
+	aGame playTurn.
 	self
 		should: [ aGame getPositionTable ]
 		raise: Error
@@ -41,63 +41,104 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 ]
 
 { #category : 'tests' }
+PositionTableTest >> testRankingPrioritizesHigherLapOverHigherSquare [
+	| aGame aGameBuilder aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 finishLine aTileBuilder aBoard ranking  expectedIds|
+
+	aGameBuilder := GameBuilder new.
+
+	aSpaceship1 := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
+	aSpaceship4 := Spaceship with: 'nave4'.
+
+	finishLine := 30.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder addWormholeFrom: 4 to: 15.
+	aBoard := Board withSize: finishLine andLapsToWin: 3 and: aTileBuilder build.
+
+	aGame := aGameBuilder
+		addSpaceship: aSpaceship1;
+		addSpaceship: aSpaceship2;
+		addSpaceship: aSpaceship3;
+		addSpaceship: aSpaceship4;
+		addBoard: aBoard;
+		addDice: (SequentialFixedDice onFaces: #(43 29 90 ));
+		build.
+
+	aGame playTurn.  
+	aGame playTurn.  
+	aGame playTurn.  
+	ranking := (aGame getPositionTable) getRanking.
+
+	expectedIds := { 'nave3'. 'nave1'. 'nave2'. 'nave4' }.
+	ranking with: expectedIds do: [ :ship :expectedId |
+    self assert: (ship matchesId: expectedId) ].
+
+
+
+
+	
+]
+
+{ #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 
-	| aGame aSecondSpaceship aPositionTable expectedPositions aGameBuilder |
+	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder id1 id2 |
 	aGameBuilder := GameBuilder new.
-	aSecondSpaceship := Spaceship new.
+	id1 := 'nave1'.
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: id1.
+	aSpaceship2 := Spaceship with: id2.
+
 	aGame := aGameBuilder
-		         addSpaceship: Spaceship new;
-					addSpaceship: aSecondSpaceship; 
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
-	aPositionTable := (aGame getPositionTable).
+	aGame playTurn.
+	aPositionTable := aGame getPositionTable.
 
-	expectedPositions := OrderedCollection newFrom: #( 20 0 ).
-	self assert: (self compareValues: (aPositionTable getSpaceshipsPositions) with: expectedPositions)
+	self assert: (aPositionTable isShipWithId: id1 atLap: 1 andSquare: 0).
+	"Chequear esto"
+	self assert: (aPositionTable isShipWithId: id2 atLap: 0 andSquare: 0).
+
 ]
 
 { #category : 'tests' }
-PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [ 
+PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [  
 
-	| aGame aSecondSpaceship  aGameBuilder aFirstSpaceship aThirdSpaceship expectedRanking aPosicionTable aRankingPosition aFourthSpaceship |
+	| aGame aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aSpaceship4 expectedIds aPosicionTable aRankingPosition |
+
 	aGameBuilder := GameBuilder new.
-	aFirstSpaceship := Spaceship new.
-	aSecondSpaceship := Spaceship new.
-	aThirdSpaceship := Spaceship new.
-	aFourthSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: 'nave2'.
+	aSpaceship3 := Spaceship with: 'nave3'.
+	aSpaceship4 := Spaceship with: 'nave4'.
+
 	aGame := aGameBuilder
-		         addSpaceship: aFirstSpaceship;
-					addSpaceship: aSecondSpaceship; 
-					addSpaceship: aThirdSpaceship;
-					addSpaceship: aFourthSpaceship ; 
-		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 15);
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2; 
+		         addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship4;  
+		         addBoard: (Board withSize: 40 andWormholeFrom: 4 to: 15);
 		         addDice: (SequentialFixedDice onFaces: #(22 4 10 5 20 10 7 1));
-					setLapsToWinTo: 2;
 		         build.
 
-	aGame playRound.
-	aGame playRound.
+	aGame playTurn.  
+	aGame playTurn.  
+	aGame playTurn.  
+	aGame playTurn.  
+	aGame playTurn.
 	
-	aPosicionTable := (aGame getPositionTable ).
-	
+	aPosicionTable := aGame getPositionTable.
 	aRankingPosition := aPosicionTable getRanking.
-	expectedRanking := { aFirstSpaceship. aSecondSpaceship. aThirdSpaceship. aFourthSpaceship }.
-	"nave 1: ganadora
-	nave2: posicion 0 vueltas 1
-	nave3: posicion 17 vueltas 0
-	nave4: posicion 6 vueltas 0 "
-	
-	self assert: aRankingPosition size equals: expectedRanking size.
-"	self assert: (aRankingPosition at: 1 )equals: (expectedRanking at: 1).
-	self assert: (aRankingPosition at: 2 )equals: (expectedRanking at: 2).
-	self assert: (aRankingPosition at: 4 )equals: (expectedRanking at: 4).
-	self assert: (aRankingPosition at: 3 )equals: (expectedRanking at: 3)."
-	1 to: aRankingPosition size do: [ :i |
-		self assert: (aRankingPosition at: i) equals: (expectedRanking at: i) ].
+
+	expectedIds := { 'nave1'. 'nave2'. 'nave3'. 'nave4' }.
+	aRankingPosition with: expectedIds do: [ :ship :expectedId |
+    self assert: (ship matchesId: expectedId) ].
+
 
 
 	
@@ -106,34 +147,42 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 
-	| aGame aSpaceship aPositionTable aGameBuilder |
+	| aGame aSpaceship aPositionTable aGameBuilder id |
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	id := 'nave1'.
+	aSpaceship := Spaceship with: id.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
-	aPositionTable := (aGame getPositionTable).
-	self assert: (aPositionTable isWinner: aSpaceship)
+	aGame playTurn.
+	aPositionTable := aGame getPositionTable.
+	self assert: (aPositionTable isWinner: id).
+
+
 ]
 
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheFinishLine [
 
-	| aGame aSecondSpaceship aPositionTable aGameBuilder |
+	| aGame aSpaceship aSpaceship2 aPositionTable aGameBuilder id2|
 	aGameBuilder := GameBuilder new.
-	aSecondSpaceship := Spaceship new.
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: 'nave1'.
+	aSpaceship2 := Spaceship with: id2.
+
 	aGame := aGameBuilder
-		         addSpaceship: Spaceship new;
-					addSpaceship: aSecondSpaceship; 
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound.
-	aPositionTable := (aGame getPositionTable).
-	self deny: (aPositionTable isWinner: aSecondSpaceship).
+	aGame playTurn.
+	aPositionTable := aGame getPositionTable.
+	self deny: (aPositionTable isWinner: id2).
+
 ]

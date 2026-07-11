@@ -1,6 +1,6 @@
 Class {
 	#name : 'SequentialFixedDice',
-	#superclass : 'Object',
+	#superclass : 'Dice',
 	#instVars : [
 		'faceNumberCollection',
 		'currentIndex'
@@ -24,16 +24,24 @@ SequentialFixedDice class >> faceNumberIsPositive: aFaceNumber [
 ]
 
 { #category : 'creation' }
+SequentialFixedDice class >> on: sides andFixedNumbers: fixedFaces [
+
+	self faceNumberArePositive: fixedFaces.
+	^ self new at: sides cyclingThrough: fixedFaces.
+]
+
+{ #category : 'creation' }
 SequentialFixedDice class >> onFaces: aFaceNumberCollection [
 
 	self faceNumberArePositive: aFaceNumberCollection.
-	^ self new initializeOnFace: aFaceNumberCollection.
+	^ self basicNew at: (aFaceNumberCollection max) cyclingThrough: aFaceNumberCollection.
 ]
 
 { #category : 'initialization' }
-SequentialFixedDice >> initializeOnFace: aFaceNumberCollection [
+SequentialFixedDice >> at: sides cyclingThrough: fixedFaces [
 
-	faceNumberCollection := aFaceNumberCollection.
+	maxRoll := sides.
+	faceNumberCollection := fixedFaces.
 	currentIndex := 0.
 ]
 

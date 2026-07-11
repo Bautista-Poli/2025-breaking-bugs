@@ -1,46 +1,33 @@
 Class {
 	#name : 'MercenaryCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
-		'affectedSpaceship'
+		'affectedSpaceship',
+		'ownerSpaceship'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'comparing' }
-MercenaryCard >> = anotherCard [
-
-^ (anotherCard compareID: id).
+{ #category : 'testing' }
+MercenaryCard class >> canBePlayedBy: aSpaceship in: aGame [
+    (aGame isCurrentTurnOf: aSpaceship) ifFalse: [ Error signal: 'Card cannot be played at this moment' ].
 ]
 
 { #category : 'behavior' }
-MercenaryCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
-	aTargetSpaceship ifNil: [ ^ NoEffectCard new ].
-	^ self.
+MercenaryCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aTargetSpaceship [
+	ownerSpaceship := aSpaceship.
+   affectedSpaceship := aTargetSpaceship.
 
-]
+	aTargetSpaceship beMercenaryOf: aSpaceship.
 
-{ #category : 'comparing' }
-MercenaryCard >> compareID: anId [ 
-	^ id = anId.
-]
-
-{ #category : 'behavior' }
-MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
-	affectedSpaceship := aSpaceship.
-	aTargetSpaceship makeSpaceshipOwnedBy: aSpaceship.
-	aSpaceship makeHimOwnerOf: aTargetSpaceship.
-	aGame registerThrownCard: self.
-]
-
-{ #category : 'initialization' }
-MercenaryCard >> initialize [
-id := 'MercenaryCard-' , (0 to: 9999) atRandom asString.
+	aGame addActivePermanentCard: self.
+	aGame registerLastCardPlayed: self.
 ]
 
 { #category : 'behavior' }
-MercenaryCard >> undoEffect: aGame to: aTargetSpaceship [ 
+MercenaryCard >> undoEffect: aGame [ 
 
-	affectedSpaceship fire: aTargetSpaceship.
+	ownerSpaceship fire: affectedSpaceship.
+	affectedSpaceship releaseFromOwner.
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : 'FixedDice',
-	#superclass : 'Object',
+	#superclass : 'Dice',
 	#instVars : [
 		'fixedFace'
 	],
@@ -16,20 +16,35 @@ FixedDice class >> faceNumberIsPositive: aFaceNumber [
 ]
 
 { #category : 'as yet unclassified' }
+FixedDice class >> on: faces fixedAt: aFixedNumber [
+
+	self faceNumberIsPositive: aFixedNumber.
+	self faceNumberIsPositive: faces.
+	^ self new initializeWithMaxRoll: faces fixedAt: aFixedNumber.
+]
+
+{ #category : 'as yet unclassified' }
 FixedDice class >> onFace: aFaceNumber [
 
-	self faceNumberIsPositive: aFaceNumber.
-	^ self new initializeOnFace: aFaceNumber
+	^ self withSides: aFaceNumber fixedAt: aFaceNumber.
+]
+
+{ #category : 'as yet unclassified' }
+FixedDice class >> withSides: aMaxRoll fixedAt: aFace [
+
+	self faceNumberIsPositive: aFace.
+	self faceNumberIsPositive: aMaxRoll.
+	^ self basicNew initializeWithMaxRoll: aMaxRoll fixedAt: aFace.
 ]
 
 { #category : 'initialization' }
-FixedDice >> initializeOnFace: aFaceNumber [
+FixedDice >> initializeWithMaxRoll: aMaxRoll fixedAt: aFixedFace [
 
-	fixedFace := aFaceNumber
+	fixedFace := aFixedFace.
+	maxRoll := aMaxRoll.
 ]
 
 { #category : 'behavior' }
 FixedDice >> roll [
-
 	^ fixedFace
 ]
