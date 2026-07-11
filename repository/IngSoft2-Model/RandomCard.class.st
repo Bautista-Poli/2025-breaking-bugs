@@ -8,6 +8,6 @@ Class {
 { #category : 'behavior' }
 RandomCard class >> obtainCard [
 	| cardClasses |
-	cardClasses := { SpeedCard. MercenaryCard. AccelerationCard. CancelationCard. RedoCard. RepeatCard }.
+	cardClasses := { SpeedCard. MercenaryCard. AccelerationCard. CancelationCard. RedoCard. RepeatCard. DoubleCard. SkipCard. ReverseCard. FreedomCard }.
 	^ (cardClasses atRandom) new
 ]

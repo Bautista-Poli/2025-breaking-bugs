@@ -32,15 +32,14 @@ HyperJumpTest >> testWhenHyperJumpMovesASpaceshipOntoAnotherSpaceshipThenTheyBat
 		addDice: (SequentialFixedDice onFaces: #(19 4 6 8));
 		build.
 
-	aGame playTurn.  
-	aGame playTurn.   
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 19.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
+	aGame playTurn.
+	aGame playTurn. 
+	
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 19 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
 
-
-	self assert: (aGame spaceshipMatchWith: id1) getShields equals: 3.
-	self assert: (aGame spaceshipMatchWith: id2) getShields equals: 2.
-
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 3).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
 ]
 
 { #category : 'tests' }
@@ -59,12 +58,13 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItDoesNotGoBelow
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 18);
-		         build.
+		          addSpaceship: aSpaceship;
+		          addBoard: aBoard;
+		          addDice: (FixedDice onFace: 18);
+		          build.
 
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
+	"Antes de jugar, verificamos que esté en el origen"
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
 
 ]
 
@@ -75,25 +75,19 @@ HyperJumpTest >> testWhenSpaceshipLandsOnHyperJumpNearFinishThenItFinishesTheGam
 	id := 'nave1'.
 	aSpaceship := Spaceship with: id.
 	finishLine := 20.
-
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 18.
 	aTileBuilder addWormholeFrom: 4 to: 15.
 	aTileCollection := aTileBuilder build.
-
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
-
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: aBoard;
 		         addDice: (FixedDice onFace: 18);
 		         build.
-
 	aGame playTurn.
-	
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: finishLine.
-
-
+	self assert: aGame hasFinished.
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 8 and: 2).
 ]
 
 { #category : 'tests' }
@@ -102,9 +96,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection id1 id2 id3 |
 
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
+	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
@@ -119,18 +111,18 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
-		         build.
+		          addSpaceship: aSpaceship;
+		          addSpaceship: aSpaceship2;
+		          addSpaceship: aSpaceship3;
+		          addBoard: aBoard;
+		          addDice: (FixedDice onFace: 4);
+		          build.
 
 	aGame playTurn. aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 19.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 14.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 9.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 19 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 14 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 9 and: 0).
 
 ]
 
@@ -140,9 +132,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection id1 id2 id3 |
 
 	aGameBuilder := GameBuilder new.
-	id1 := 'nave1'.
-	id2 := 'nave2'.
-	id3 := 'nave3'.
+	id1 := 'nave1'. id2 := 'nave2'. id3 := 'nave3'.
 
 	aSpaceship := Spaceship with: id1.
 	aSpaceship2 := Spaceship with: id2.
@@ -157,16 +147,16 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	aBoard := Board withSize: finishLine*2 andLapsToWin: 1 and: aTileCollection.
 
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSpaceship2;
-		         addSpaceship: aSpaceship3;
-		         addBoard: aBoard;
-		         addDice: (FixedDice onFace: 4);
-		         build.
+		          addSpaceship: aSpaceship;
+		          addSpaceship: aSpaceship2;
+		          addSpaceship: aSpaceship3;
+		          addBoard: aBoard;
+		          addDice: (FixedDice onFace: 4);
+		          build.
 
 	aGame playTurn. aGame playTurn. aGame playTurn.
 
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 19.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 14.
-	self assert: (aGame spaceshipMatchWith: id3) getPosition equals: 9.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 19 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 14 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id3) isAt: 9 and: 0).
 ]

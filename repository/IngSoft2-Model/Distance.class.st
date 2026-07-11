@@ -9,16 +9,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Distance >> calculateLapsIn: aPosition [
-	^ aPosition // value
-]
-
-{ #category : 'as yet unclassified' }
-Distance >> calculatePositionIn: aPosition [
-	^ aPosition \\ value
-]
-
-{ #category : 'as yet unclassified' }
 Distance >> lessThan: aValue [ 
 	^ value < aValue.
 ]

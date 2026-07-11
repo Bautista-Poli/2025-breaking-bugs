@@ -9,23 +9,28 @@ Class {
 }
 
 { #category : 'initialization' }
-ShieldsEmpty >> canPlay [
-	^ false.
-]
-
-{ #category : 'initialization' }
 ShieldsEmpty >> handleEndOfCycleFor: aSpaceship [ 
-    turnsRemaining := turnsRemaining - 1.
     
     turnsRemaining = 0 ifTrue: [
         aSpaceship changeShieldStatusTo: (ShieldsActive withCount: 3)
-    ]
+    ].
+	 turnsRemaining := turnsRemaining - 1.
 
+]
+
+{ #category : 'testing' }
+ShieldsEmpty >> hasAmount: aNumberOfShields [ 
+	^ aNumberOfShields=0.
 ]
 
 { #category : 'initialization' }
 ShieldsEmpty >> initialize [
-    turnsRemaining := 3.
+    turnsRemaining := 2.
+]
+
+{ #category : 'as yet unclassified' }
+ShieldsEmpty >> playIfPosible: aSpaceship in: aGame [ 
+
 ]
 
 { #category : 'initialization' }

@@ -41,9 +41,9 @@ HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 	| nextDistance tilesToAdvance |
 
 	nextDistance := self nextDistanceToAdvance.
-	tilesToAdvance := (aGame board) tilesToMoveForDistance: nextDistance.
+	tilesToAdvance := aGame tilesToMoveForDistance: nextDistance.
 
-	(aGame board) move: aSpaceship by: tilesToAdvance.
+	aGame move: aSpaceship by: tilesToAdvance.
 	aGame checkForBattleInvolving: aSpaceship.
 	aGame registerAppliedEffect: self.
 ]

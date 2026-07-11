@@ -29,11 +29,12 @@ HyperSpaceJumpTest >> testWhenHyperSpaceJumpMovesShipOntoOccupiedTileThenTheyBat
 		addDice: (SequentialFixedDice onFaces: #(5 1 2 9));
 		build.
 
-	aGame playTurn. aGame playTurn.
+	aGame playTurn. "Nave 1 mueve 5 -> Pos 5"
+	aGame playTurn. "Nave 2 mueve 1 -> Cae en HyperSpaceJump -> Salta a pos ocupada -> Batalla"
 	
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 5.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
-	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 1).
 	
 
 
@@ -61,7 +62,7 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItDoes
 		         addDice: (FixedDice onFace: 17);
 		         build.
 
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 0 and: 0).
 
 
 	
@@ -74,27 +75,18 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpNearFinishThenItFini
 	id := 'nave1'.
 	aSpaceship := Spaceship with: id.
 	finishLine := 19.
-
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: HyperSpaceJumpEffect new at: 17.
 	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
-
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
-
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: aBoard;
 		         addDice: (FixedDice onFace: 17);
 		         build.
-
 	aGame playTurn.
-
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: finishLine.
-
-
-
-	
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 2 and: 1).
 ]
 
 { #category : 'tests' }
@@ -123,8 +115,8 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id) getPosition equals: 8.
-	self assert: (aGame spaceshipMatchWith: id) getShields equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id) isAt: 8 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id) hasShields: 2).
 
 	
 ]

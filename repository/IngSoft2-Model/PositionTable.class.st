@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
-		'winner',
 		'boardSize'
 	],
 	#category : 'IngSoft2-Model',
@@ -18,18 +17,12 @@ PositionTable class >> with: spaceships boardSize: aBoardSize [
 { #category : 'behavior' }
 PositionTable >> getRanking [
     ^ spaceships asSortedCollection: [ :s1 :s2 | 
-        s1 isAheadOf: s2 inBoard: boardSize ]
-]
-
-{ #category : 'initialization' }
-PositionTable >> instanceWith: aCollectionOfSpaceships [
-
-	spaceships := aCollectionOfSpaceships collect: [ :each | each copy ].
+        s1 isAheadOf: s2 inBoard: boardSize asParsec ]
 ]
 
 { #category : 'initialization' }
 PositionTable >> instanceWith: aCollectionOfSpaceships boardSize: aBoardSize [
-    spaceships := aCollectionOfSpaceships collect: [ :each | each copy ].
+    spaceships := aCollectionOfSpaceships collect: [ :each | each deepCopy ].
     boardSize := aBoardSize.
 ]
 
@@ -39,7 +32,7 @@ PositionTable >> isShipWithId: anId atLap: aLap andSquare: aSquare [
     foundShip := spaceships 
         detect: [ :each | each matchesId: anId ] 
         ifNone: [ ^ false ].
-    ^ foundShip isAtLap: aLap andAtSquare: aSquare.
+    ^ foundShip isAt: aSquare and: aLap.
 ]
 
 { #category : 'behavior' }

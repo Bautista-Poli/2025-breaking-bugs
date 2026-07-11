@@ -1,9 +1,26 @@
 Class {
 	#name : 'BoardTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'gameBuilder',
+		'id1',
+		'id2',
+		'aSpaceship'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
+
+{ #category : 'running' }
+BoardTest >> setUp [
+	super setUp.
+
+	gameBuilder := GameBuilder new.
+	id1 := 'nave1'. 
+	id2 := 'nave2'.
+	aSpaceship := Spaceship with: id1.
+	gameBuilder addSpaceship: aSpaceship.
+]
 
 { #category : 'asserting' }
 BoardTest >> should: test raise: aErrorClass withMessageError: aMessage [ 
@@ -15,23 +32,15 @@ BoardTest >> should: test raise: aErrorClass withMessageError: aMessage [
 
 { #category : 'tests' }
 BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
-    | aBoard aGame aSpaceship dice tileBuilder aGameBuilder id1 |
+    | aBoard aGame dice tileBuilder |
 
     tileBuilder := TilesBuilder withLighyears: (LightYear with: 60). 
-    
     tileBuilder addWormholeFrom: 4 to: 15.
-    
-    
-	 aBoard := Board withDistance: (LightYear with: 60) andLapsToWin: 2 and: (tileBuilder build).
-    
-    id1 := 'nave'.
-    aSpaceship := Spaceship with: id1.
+    aBoard := Board withDistance: (LightYear with: 60) andLapsToWin: 2 and: (tileBuilder build).
     
     dice := FixedDice onFace: 4. 
-    
-    aGameBuilder := GameBuilder new. 
-    aGame := aGameBuilder
-        addSpaceship: aSpaceship;
+
+    aGame := gameBuilder
         addBoard: aBoard;
         addDice: dice;
         build. 
@@ -39,63 +48,47 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
     aGame playTurn. 
 
     self assert: (aBoard checkSize: (Parsec with: 20)).
-    self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 15.
+    self assert: ((aGame spaceshipMatchWith: id1) isAt: 15 and: 0).
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 
-	| aGameBuilder aSpaceship aGame anId|
-	"board con laps 2"
-	aGameBuilder := GameBuilder new.
-	anId := 'nave1'.
-	aSpaceship := Spaceship with: anId.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+	| aGame|
+	aGame := gameBuilder
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 25);
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 1).
 	
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 	
-	| aGameBuilder aSpaceship aGame anId |
-	aGameBuilder := GameBuilder new.
-	anId := 'nave1'.
-	aSpaceship := Spaceship with: anId.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: (Spaceship with: 'nave2');
+	|  aGame |
+	aGame := gameBuilder
+		         addSpaceship: (Spaceship with:id2 );
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 22); "Si es 20 da error"
 		         build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 1.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 2 and: 1).
 
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
-	
-	| aGameBuilder aSpaceship aGame anId |
-	"ESTA MAL ESTE TEST"
-	aGameBuilder := GameBuilder new.
-	anId := 'nave1'.
-	aSpaceship := Spaceship with: anId.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+	| aGame |
+	aGame := gameBuilder
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 40);
 		         build.
-
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: anId) getLapsCompleted equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 2).
 
 
 ]
@@ -103,21 +96,19 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 { #category : 'tests' }
 BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	
-	| aGameBuilder aSpaceship aGame anId builder tiles|
-	aGameBuilder := GameBuilder new.
-	anId := 'nave1'.
-	aSpaceship := Spaceship with: anId.
-	 builder := TilesBuilder with: 20.
-    builder addWormholeFrom: 4 to: 9.
- 	tiles := builder build.
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: (Board withSize: 20 andLapsToWin: 2 and: tiles);
-		         addDice: (FixedDice onFace: 25);
-		         build.
+	| aGame  builder tiles|
+	
+	builder := TilesBuilder with: 20.
+	builder addWormholeFrom: 4 to: 9.
+	tiles := builder build.
+
+	aGame := gameBuilder
+		          addBoard: (Board withSize: 20 andLapsToWin: 2 and: tiles);
+		          addDice: (FixedDice onFace: 25);
+		          build.
 
 	aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: anId) getPosition equals: 5.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 5 and: 1).
 
 ]
 

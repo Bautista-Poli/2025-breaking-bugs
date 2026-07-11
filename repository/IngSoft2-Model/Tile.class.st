@@ -35,3 +35,8 @@ Tile >> initializeWith: anEffect [
 
 	effect := anEffect
 ]
+
+{ #category : 'as yet unclassified' }
+Tile >> replaceIfEmptyWith: anEffectBlock [ 
+	effect := effect replacementFor: anEffectBlock.
+]

@@ -5,11 +5,11 @@ Class {
 		'board',
 		'spaceships',
 		'dice',
-		'battle',
 		'activePermanentCards',
 		'cardsThrown',
 		'lastTileEffectApplied',
-		'turnManager'
+		'turnManager',
+		'cardManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -20,42 +20,19 @@ Game class >> with: aBoard and: spaceships and: dice [
 	^ self new initializeWith: aBoard and: spaceships and: dice.
 ]
 
-{ #category : 'creation' }
-Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
-	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
-]
-
-{ #category : 'behavior' }
-Game >> activePermanentCards [
-    ^ activePermanentCards deepCopy.
-]
-
 { #category : 'accessing' }
 Game >> addActivePermanentCard: aCard [
-    "NUEVO"
-    activePermanentCards add: aCard.
-]
-
-{ #category : 'initialization' }
-Game >> board [
-    ^ board
+    cardManager addActivePermanentCard: aCard.
 ]
 
 { #category : 'behavior' }
 Game >> calculateTotalRollFor: aSpaceship [
-
-	| baseRoll |
-	"NUEVO"
-	baseRoll := self getAllDiceValuesFrom: dice.
-	^ activePermanentCards
-		  inject: baseRoll
-		  into: [ :currentTotal :eachCard |
-			  eachCard applyBonusTo: currentTotal for: aSpaceship ]
+	^ cardManager applyBonusesTo: dice roll for: aSpaceship.
 ]
 
 { #category : 'accessing' }
 Game >> checkForBattleInvolving: aSpaceship [
-	battle checkForBattleIfNeededWith: aSpaceship.
+	(Battle new) checkIfNeededFor: aSpaceship against: spaceships using: dice.
 ]
 
 { #category : 'testing' }
@@ -63,14 +40,6 @@ Game >> checkIfGameHasAlreadyFinished [
 
 	(board hasAnySpaceshipFinished: spaceships) ifTrue: [
 		Error signal: 'Cannot play a turn after the game has finished.' ].
-]
-
-{ #category : 'behavior' }
-Game >> getAllDiceValuesFrom: diceCollection [
-
-	^ diceCollection
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
 { #category : 'behavior' }
@@ -82,10 +51,17 @@ Game >> getPositionTable [
 
 { #category : 'behavior' }
 Game >> getRealCard: aTargetCard [
-	"ROMPE INMUTABILIDAD"
-     ^ activePermanentCards 
-        detect: [ :each | each class = aTargetCard ] 
-        ifNone: [ Error signal: 'Cannot cancel a card that is not active' ].
+     ^ cardManager getRealCard: aTargetCard
+]
+
+{ #category : 'initialization' }
+Game >> handleLandingOf: aSpaceship [
+	board handleLandingOf: aSpaceship in: self 
+]
+
+{ #category : 'behavior' }
+Game >> hasActivePermanentCardOfType: aCardClass [
+    ^ cardManager hasActivePermanentCardOfType: aCardClass.
 ]
 
 { #category : 'accessing' }
@@ -94,15 +70,14 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice [
-
-	spaceships := aCollectionOfSpacehips deepCopy.
+Game >> initializeWith: aBoard and: aCollectionOfSpaceships and: aCollectionOfDice [
+	spaceships := (aCollectionOfSpaceships deepCopy).
 	board := aBoard.
-	dice := aCollectionOfDice.
-	battle := Battle with: spaceships and: dice.
+	dice := DiceSet with: (aCollectionOfDice).
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new.
+	cardManager := CardManager new.
 	turnManager := TurnManager with: spaceships.
 
 ]
@@ -114,12 +89,12 @@ Game >> isCurrentTurnOf: aSpaceship [
 
 { #category : 'behavior' }
 Game >> isMaxRoll: aRoll [
-    ^ aRoll = (dice inject: 0 into: [ :sum :aDie | sum + aDie maxValue ])
+    ^ aRoll >= dice maxPossibleRoll
 ]
 
 { #category : 'accessing' }
 Game >> lastCardThrown [
-    ^ cardsThrown
+    ^ cardManager lastCardThrown
 ]
 
 { #category : 'accessing' }
@@ -128,10 +103,16 @@ Game >> lastTileEffectApplied [
 	^ lastTileEffectApplied
 ]
 
+{ #category : 'testing' }
+Game >> move: aSpaceship by: aDiference [ 
+   board move: aSpaceship by: aDiference.
+]
+
 { #category : 'behavior' }
 Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetShipId [
 
     | spaceshipInGame aSpaceshipTarget |
+	 self checkIfGameHasAlreadyFinished.
     spaceshipInGame := spaceships detect: [ :each | each matchesId: aSpaceshipId ].
     
     aSpaceshipTarget := aTargetShipId ifNotNil: [
@@ -141,24 +122,16 @@ Game >> play: aCard by: aSpaceshipId affecting: aTargetCard targeting: aTargetSh
 ]
 
 { #category : 'behavior' }
-Game >> playCard: aCard by: aSpaceshipId targeting: aTargetSpaceship [
-    self play: aCard by: aSpaceshipId affecting: (NoEffectCard new)  targeting: aTargetSpaceship
-]
+Game >> playTurn [
 
-{ #category : 'behavior' }
-Game >> playTurn [ 
-    | spaceshipToPlay roll |
-    self checkIfGameHasAlreadyFinished. 
+	| spaceshipToPlay |
+	self checkIfGameHasAlreadyFinished.
 
-    spaceshipToPlay := turnManager currentSpaceship.
-	 
-	(spaceshipToPlay canPlay) ifTrue: [
-		roll := self calculateTotalRollFor: spaceshipToPlay.
-		spaceshipToPlay handleRoll: roll in: self.
-    ].
+	spaceshipToPlay := turnManager currentSpaceship.
 
-    turnManager nextTurn.
-    spaceshipToPlay handleEndOfCycle.
+	spaceshipToPlay handleTurnIn: self.
+
+	turnManager endTurn.
 ]
 
 { #category : 'behavior' }
@@ -170,22 +143,37 @@ Game >> registerAppliedEffect: anEffect [
 { #category : 'accessing' }
 Game >> registerLastCardPlayed: aCard [
 
-    cardsThrown := aCard.
+    cardManager registerLastCardPlayed: aCard.
 ]
 
 { #category : 'accessing' }
 Game >> removeActivePermanentCard: aCard [
-    activePermanentCards remove: aCard ifAbsent: [ ^ self ].
+    cardManager removeActivePermanentCard: aCard.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> repeatTurn [
+	turnManager currentSpaceship handleTurnIn: self.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> reverseTurnOrder [
+	turnManager reverseOrder.
 ]
 
 { #category : 'behavior' }
-Game >> skipTurn [
+Game >> skipMyTurn [
 
     self checkIfGameHasAlreadyFinished.
     turnManager currentSpaceship rechargeShields.
     turnManager nextTurn.
 
 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> skipTurnForcedBySkipCard [
+	turnManager nextTurn.
 ]
 
 { #category : 'getter' }
@@ -204,4 +192,9 @@ Game >> spaceshipsDo: aBlock [
 Game >> spaceshipsExcept: aSpaceship do: aBlock [
 	(spaceships reject: [ :each | each = aSpaceship ]) do: aBlock
 
+]
+
+{ #category : 'testing' }
+Game >> tilesToMoveForDistance: aParsec [ 
+	^ board tilesToMoveForDistance: aParsec.
 ]

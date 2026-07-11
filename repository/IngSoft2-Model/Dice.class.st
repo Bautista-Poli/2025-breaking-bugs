@@ -2,20 +2,11 @@ Class {
 	#name : 'Dice',
 	#superclass : 'Object',
 	#instVars : [
-		'aNumberOfSides'
+		'maxRoll'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
-
-{ #category : 'as yet unclassified' }
-Dice class >> new [
-
-	| aDefaultNumberOfSides dice |
-	aDefaultNumberOfSides := 6.
-	dice := super new.
-	^ dice initializeWithSides: aDefaultNumberOfSides
-]
 
 { #category : 'as yet unclassified' }
 Dice class >> numberOfSidesIsPositive: aNumberOfSides [
@@ -24,27 +15,26 @@ Dice class >> numberOfSidesIsPositive: aNumberOfSides [
 		Error signal: 'A dice should have a positive amount of sides' ]
 ]
 
-{ #category : 'as yet unclassified' }
-Dice class >> withSides: aNumberOfSides [
-
-	self numberOfSidesIsPositive: aNumberOfSides.
-	^ self new initializeWithSides: aNumberOfSides
+{ #category : 'accessing' }
+Dice class >> with: numberOfFaces [ 
+	self numberOfSidesIsPositive: numberOfFaces.
+	^ self new initializeAt: numberOfFaces.
 ]
 
 { #category : 'initialization' }
-Dice >> initializeWithSides: numberOfSides [
+Dice >> initializeAt: aMaxRoll [
 
-	aNumberOfSides := numberOfSides
+	maxRoll := aMaxRoll.
 ]
 
 { #category : 'initialization' }
 Dice >> maxValue [
-	^ aNumberOfSides.
+	^ maxRoll.
 ]
 
 { #category : 'roll' }
 Dice >> roll [
 
-	^ Random new nextIntegerBetween: 1 and: aNumberOfSides
+	^ Random new nextIntegerBetween: 1 and: maxRoll.
 	
 ]

@@ -21,31 +21,32 @@ Board class >> withDistance: aSizeDistance andLapsToWin: aLapsToWin and: tiles [
 
 { #category : 'as yet unclassified' }
 Board class >> withSize: aSize and: tiles [
-	^ self withSize: aSize andLapsToWin: 1 and: tiles.
+	^ self new
+        initializeWith: tiles
+        andSize: aSize
+		  andLapsToWin: 1.
 ]
 
 { #category : 'creation' }
 Board class >> withSize: aSize andLapsToWin: aLapsToWin and: tiles [
 	 | aParsec |
 	 aParsec := (Parsec with: aSize).
-    ^ self 
-        withDistance: aParsec
-		  andLapsToWin: aLapsToWin
-        and: tiles   
+    ^ self new
+        initializeWith: tiles
+        andSize: aParsec
+		  andLapsToWin: aLapsToWin.   
 ]
 
 { #category : 'as yet unclassified' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
-	  | builder tiles parsec |
+	  | tiles parsec |
 	 parsec := (Parsec with: aSize).
 	 parsec validate.
-	 builder := TilesBuilder with: aSize.
-    builder addWormholeFrom: wormholeEntry to: wormholeExit.
-    tiles := builder build.
-    ^ self 
-        withDistance: parsec
-		  andLapsToWin: 1
-        and: tiles.   
+    tiles := (TilesBuilder with: aSize) addWormholeFrom: wormholeEntry to: wormholeExit; build.
+    ^ self new
+        initializeWith: tiles
+        andSize: parsec
+		  andLapsToWin: 1.
 ]
 
 { #category : 'as yet unclassified' }
@@ -61,18 +62,13 @@ Board >> createPositionTable: spaceships [
 { #category : 'initialization' }
 Board >> handleLandingOf: aSpaceship in: aGame [
     | tile |
-    tile := tiles at: (aSpaceship getPosition + 1).
+    tile := tiles at: (aSpaceship position square + 1).
     tile handleArrivalOf: aSpaceship in: aGame.
 ]
 
 { #category : 'testing' }
 Board >> hasAnySpaceshipFinished: aCollectionOfSpaceships [
-    ^ aCollectionOfSpaceships anySatisfy: [ :each | self hasSpaceshipFinished: each ].
-]
-
-{ #category : 'testing' }
-Board >> hasSpaceshipFinished: aSpaceship [ 
-	^ aSpaceship hasReached: lapsToWin
+    ^ aCollectionOfSpaceships anySatisfy: [ :each | each hasReached: lapsToWin ].
 ]
 
 { #category : 'initialization' }
@@ -86,22 +82,9 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andLapsToWin: aL
 
 { #category : 'testing' }
 Board >> move: aSpaceship by: positionsToAdvance [
-    | absolutePosition newAbsolutePosition newLap newPosition |
-    
-    absolutePosition := (aSpaceship getLapsCompleted * aSize asParsec) + aSpaceship getPosition.
-    
-    newAbsolutePosition := absolutePosition + positionsToAdvance.
-    
-    newAbsolutePosition := newAbsolutePosition max: 0.
-    
-    newLap := newAbsolutePosition // aSize asParsec.
-    newPosition := newAbsolutePosition \\ aSize asParsec.
+    aSpaceship advancedBy: positionsToAdvance withBoardSize: aSize asParsec and: lapsToWin.
 
-    aSpaceship setLapsTo: newLap.
-    
-    (self hasSpaceshipFinished: aSpaceship)
-        ifTrue: [ aSpaceship moveToPosition: aSize asParsec ]
-        ifFalse: [ aSpaceship moveToPosition: newPosition ].
+
 	
 ]
 

@@ -7,7 +7,6 @@ Class {
 
 { #category : 'testing' }
 Card class >> canBePlayedBy: aSpaceship in: aGame [
-    ^ true
 ]
 
 { #category : 'behavior' }

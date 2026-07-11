@@ -10,3 +10,7 @@ FreedomCard >> playBy: aSpaceship in: aGame targeting: aTargetCard affecting: aT
     aTargetSpaceship releaseFromJail.
     aGame registerLastCardPlayed: self.
 ]
+
+{ #category : 'behavior' }
+FreedomCard >> undoEffect: aGame [
+]

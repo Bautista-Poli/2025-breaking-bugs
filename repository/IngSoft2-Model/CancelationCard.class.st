@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'testing' }
+CancelationCard class >> canBePlayedBy: aSpaceship in: aGame [
+	^ true
+]
+
 { #category : 'as yet unclassified' }
 CancelationCard >> playBy: aSpaceship in: aGame targeting: aCardToCancel affecting: aTargetSpaceship [
 	| realCardToCancel |

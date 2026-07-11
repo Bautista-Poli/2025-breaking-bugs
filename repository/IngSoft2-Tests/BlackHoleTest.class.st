@@ -30,10 +30,10 @@ BlackHoleTest >> testWhenBlackHoleMovesShipOntoOccupiedTileThenTheyBattle [
 		build.
 
 	aGame playTurn.aGame playTurn.
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 1.
-	self assert: (aGame spaceshipMatchWith: id2) getPosition equals: 0.
-	self assert: ((aGame spaceshipMatchWith: id1) getShields) equals: 3.
-	self assert: ((aGame spaceshipMatchWith: id2) getShields) equals: 2.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 1 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id2) isAt: 0 and: 0).
+	self assert: ((aGame spaceshipMatchWith: id1) hasShields: 3).
+	self assert: ((aGame spaceshipMatchWith: id2) hasShields: 2).
 	
 
 
@@ -61,8 +61,7 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleInFirstPositionsThenItDoesNotG
 
 	aGame playTurn.
 
-	self assert: (aGame spaceshipMatchWith: 'nave1') getPosition equals: 0.
-
+	self assert: ((aGame spaceshipMatchWith: 'nave1') isAt: 0 and: 0).
 ]
 
 { #category : 'tests' }
@@ -80,14 +79,16 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 
 	aBoard := Board withSize: finishLine andLapsToWin: 1 and: aTileCollection.
 	aGame := aGameBuilder
-		         addSpaceship: (Spaceship with: 'nave2');
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 13 9 ));
-		         build.
-	aGame playTurn. aGame playTurn.
+		          addSpaceship: (Spaceship with: 'nave2');
+		          addSpaceship: aSpaceship;
+		          addBoard: aBoard;
+		          addDice: (SequentialFixedDice onFaces: #( 13 9 ));
+		          build.
+	
+	aGame playTurn. 
+	aGame playTurn. 
 
-	self assert: (aGame spaceshipMatchWith: 'nave1') getPosition equals: 5.
+	self assert: ((aGame spaceshipMatchWith: 'nave1') isAt: 5 and: 0).
 ]
 
 { #category : 'tests' }
@@ -104,14 +105,15 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 	aTileBuilder addWormholeFrom: 5 to: 15.
 	aTileCollection := aTileBuilder build.
 	
-	aBoard := (Board withSize: finishLine andLapsToWin: 1  and: aTileCollection).
+	aBoard := (Board withSize: finishLine andLapsToWin: 1 and: aTileCollection).
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
+		          addSpaceship: aSpaceship;
 			      addBoard: aBoard;   
-		         addDice: (FixedDice onFace: 4);
-		         build.
+		          addDice: (FixedDice onFace: 4);
+		          build.
+	
 	aGame playTurn.
 	
-	self assert: (aGame spaceshipMatchWith: id1) getPosition equals: 0.
+	self assert: ((aGame spaceshipMatchWith: id1) isAt: 0 and: 0).
 
 ]

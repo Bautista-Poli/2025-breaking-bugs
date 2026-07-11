@@ -14,12 +14,12 @@ ShieldsActive class >> withCount: aNumberOfShields [
 ]
 
 { #category : 'initialization' }
-ShieldsActive >> canPlay [ 
-    ^ true
+ShieldsActive >> handleEndOfCycleFor: aSpaceship [
 ]
 
-{ #category : 'initialization' }
-ShieldsActive >> handleEndOfCycleFor: aSpaceship [
+{ #category : 'testing' }
+ShieldsActive >> hasAmount: aNumberOfShields [ 
+	^ countOfShields = aNumberOfShields
 ]
 
 { #category : 'initialization' }
@@ -33,6 +33,13 @@ ShieldsActive >> lowerShieldFor: aSpaceship [
     countOfShields = 0 ifTrue: [ 
         aSpaceship changeShieldStatusTo: ShieldsEmpty new]
     
+]
+
+{ #category : 'as yet unclassified' }
+ShieldsActive >> playIfPosible: aSpaceship in: aGame [ 
+	 | roll |
+    roll := aGame calculateTotalRollFor: aSpaceship.
+    aSpaceship handleRollFromShields: roll in: aGame.
 ]
 
 { #category : 'initialization' }
